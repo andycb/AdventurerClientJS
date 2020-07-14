@@ -1,32 +1,8 @@
 import { MachineCommands } from "./MachineCommands"
 import { IPrinterResponce } from "./Entities/IPrinterResponce"
 import { PrinterStatus } from "./Entities/PrinterStatus"
-
-class PendingCall<T extends IPrinterResponce> {
-    constructor(commandId : string, accept : (n: T) => any, reject : (n: Error) => any) {
-
-        this.CommandId = commandId;
-        this.Accept = accept;
-        this.Reject = reject;
-    }
-
-    Accept : (n: T) => any;
-    Reject : (n: Error) => any;
-
-    public readonly CommandId : string;
-}
-
-class RendingResponce{
-    constructor (commandId: string, result : IPrinterResponce, error : Error = null){
-        this.CommandId = commandId;
-        this.Result = result;
-        this.Error = error;
-    }
-
-    public CommandId : string;
-    public Result : IPrinterResponce;
-    public Error : Error;
-}
+import { PendingCall } from "./Entities/PendingCall"
+import { RendingResponce } from "./Entities/RendingResponce"
 
 /// <summary>
 /// A class for reading responces from the printer.
@@ -49,7 +25,7 @@ export class PrinterResponseReader
 
     private readonly lineBuffer : Array<string>  = new Array<string>();
     private readonly responceBuffer : Array<RendingResponce>  = new Array<RendingResponce>();
-    private readonly PendingCalls : Array<PendingCall<IPrinterResponce>> = new Array<PendingCall<IPrinterResponce>>();
+    private readonly pendingCalls : Array<PendingCall<IPrinterResponce>> = new Array<PendingCall<IPrinterResponce>>();
 
     private socket;
 
@@ -59,7 +35,6 @@ export class PrinterResponseReader
     constructor(socket : object)
     {
         this.socket = socket;
-
         this.socket.on('data', d => this.HandleData(d.toString()) );
     }
 
@@ -141,23 +116,22 @@ export class PrinterResponseReader
 
     private TryDrainPendingCalls(){
         for (var i = 0; i < this.responceBuffer.length; ++i){
-            for (var a = 0; a < this.PendingCalls.length; ++a){
+            for (var a = 0; a < this.pendingCalls.length; ++a){
                 var response = this.responceBuffer[i];
-                var pendingCall = this.PendingCalls[a];
+                var pendingCall = this.pendingCalls[a];
 
                 if (response.CommandId == pendingCall.CommandId){
                     pendingCall.Accept(response.Result);
 
                     this.responceBuffer.splice(i, 1);
-                    this.PendingCalls.splice(a, 1);
+                    this.pendingCalls.splice(a, 1);
                     
                     return;
                 }
             }
         }
 
-
-        this.PendingCalls.forEach(pendingCall => {
+        this.pendingCalls.forEach(pendingCall => {
             this.responceBuffer.forEach(responce => {
                 if (response.Error != null) {
                     pendingCall.Reject(responce.Error)
@@ -184,7 +158,7 @@ export class PrinterResponseReader
     {
         var promise = new Promise<T>((a, r) => { 
             var pendingCal = new PendingCall(commandId, a, r);
-            this.PendingCalls.push(pendingCal);
+            this.pendingCalls.push(pendingCal);
             this.TryDrainPendingCalls();
         });
         

@@ -54,6 +54,7 @@ export class Printer {
                 this.isConnected = false;
                 r(ex);
             });
+            
             this.printerConnection.on('close', () => {
                 this.isConnected = false;
             });
@@ -78,6 +79,7 @@ export class Printer {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands.GetEndstopStaus;
         this.printerConnection.write(message);
+
         // Get its answer
          return this.responseReader.GerPrinterResponce<PrinterStatus>(MachineCommands.GetEndstopStaus);
     }
