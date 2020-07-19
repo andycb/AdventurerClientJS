@@ -29,7 +29,7 @@ export class Printer {
     // <summary>
     /// The socket connection to the printer.
     /// </summary>
-    private printerConnection;
+    private printerConnection : any;
 
     // <summary>
     /// The printer response reader.
@@ -69,7 +69,7 @@ export class Printer {
     {
         return new Promise((a, r) => {
             this.printerConnection = new net.Socket();
-            this.printerConnection.on('error', ex => {
+            this.printerConnection.on('error', (ex : any) => {
                 this.isConnected = false;
                 r(ex);
             });
@@ -139,7 +139,7 @@ export class Printer {
 
         // Load teh file from disk
         var modelBytes = await new Promise<Buffer>((a, r) => {
-            fs.readFile(filePath, (error, data) => {
+            fs.readFile(filePath, (error : any, data : any) => {
                 if (error){
                     r(error);
                 }

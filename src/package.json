@@ -1,23 +1,28 @@
 {
-  "name": "adventurerclientjs",
+  "name": "adventurerclient",
   "version": "0.0.1",
-  "description": "A cross platform app for managing 3D printers",
-  "main": "index.js",
-  "dependencies": {
-    "electron": "^9.1.0"
-  },
-  "devDependencies": {},
+  "description": "Am app for controling flashforge printers",
   "scripts": {
-    "start": "electron ."
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "npm run build && electron ./dist/main.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andycb/AdventurerClientJS.git"
-  },
+  "repository": "https://github.com/andycb/AdventurerClientJS",
+  "keywords": [
+    "Monoprice",
+    "Voxel",
+    "Flashforge",
+    "Adventurer"
+  ],
   "author": "Andy Bradford",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/andycb/AdventurerClientJS/issues"
+  "devDependencies": {
+    "electron": "^9.0.4",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5"
   },
-  "homepage": "https://github.com/andycb/AdventurerClientJS#readme"
+  "dependencies": {
+    "crc": "^3.8.0"
+  }
 }

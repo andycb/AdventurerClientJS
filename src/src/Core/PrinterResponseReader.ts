@@ -27,7 +27,7 @@ export class PrinterResponseReader
     private readonly responceBuffer : Array<RendingResponce>  = new Array<RendingResponce>();
     private readonly pendingCalls : Array<PendingCall<IPrinterResponce>> = new Array<PendingCall<IPrinterResponce>>();
 
-    private socket;
+    private socket : any;
 
     /// <summary>
     /// Initializes a new insrance of the PrinterResponseReader class.
@@ -35,7 +35,7 @@ export class PrinterResponseReader
     constructor(socket : object)
     {
         this.socket = socket;
-        this.socket.on('data', d => this.HandleData(d.toString()) );
+        this.socket.on('data', (d : any) => this.HandleData(d.toString()) );
     }
 
     private buffer : string;
