@@ -1,0 +1,23 @@
+{
+  "name": "adventurerclientjs",
+  "version": "0.0.1",
+  "description": "A cross platform app for managing 3D printers",
+  "main": "index.js",
+  "dependencies": {
+    "electron": "^9.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andycb/AdventurerClientJS.git"
+  },
+  "author": "Andy Bradford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andycb/AdventurerClientJS/issues"
+  },
+  "homepage": "https://github.com/andycb/AdventurerClientJS#readme"
+}
