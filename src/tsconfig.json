@@ -1,14 +1,30 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "noImplicitAny": true,
+    "baseUrl": "./",
+    "outDir": "./dist",
     "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "es2020",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
   },
-  "include": [
-    "src/**/*"
-  ]
+"files": [
+  "ElectronApp/AngularMain.ts",
+  "ElectronApp/polyfills.ts"
+],
+"include": [
+  "ElectronApp/**/*.d.ts"
+]
 }
+
+
+
+

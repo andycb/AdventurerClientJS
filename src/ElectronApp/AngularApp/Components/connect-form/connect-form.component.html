@@ -1,0 +1,16 @@
+<div class="loginForm">
+    <h1>Hi</h1>
+    <span class="instructions">Enter printer IP to continue</span>
+    <span *ngIf="isError" class="error">Failed to connect to printer, is the address correct?</span>
+
+    <form>
+      <input *ng type="text" />
+  
+      <br />
+      <button type="button" class="btn btn-default" (click)="connect()">Connect</button>
+    </form>
+  
+    <ul id="log">
+  
+    </ul>
+  </div> 
