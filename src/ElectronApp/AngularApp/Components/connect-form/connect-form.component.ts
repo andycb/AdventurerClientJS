@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PrinterService } from '../../RendererServices/printer.service'
 
 @Component({
   selector: 'app-connect-form',
@@ -8,19 +7,16 @@ import { PrinterService } from '../../RendererServices/printer.service'
 })
 export class ConnectFormComponent implements OnInit {
 
-  private printerService: PrinterService;
-  public isError : boolean;
-
-  constructor(printerService : PrinterService) {
-    this.printerService = printerService;
-   }
-
+  public isError: boolean;
+  public PrinterAddress: string;
   ngOnInit(): void {
+
   }
 
   public async connect(){
     try{
-      await await this.printerService.ConnectAsync("192.168.3.180");
+      console.log(this.PrinterAddress);
+      window["PrinterService"].ConnectAsync(this.PrinterAddress);
     }
     catch {
       this.isError = true;

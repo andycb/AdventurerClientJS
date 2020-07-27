@@ -21,7 +21,7 @@
   "ElectronApp/polyfills.ts"
 ],
 "include": [
-  "ElectronApp/**/*.d.ts"
+  "ElectronApp/**/*.d.ts",
 ]
 }
 

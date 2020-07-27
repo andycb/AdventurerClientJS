@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './Components/App/app.component';
 import { ConnectFormComponent } from './Components/connect-form/connect-form.component';
 

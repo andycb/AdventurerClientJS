@@ -3,20 +3,17 @@ exports.__esModule = true;
 var electron_1 = require("electron");
 var path = require("path");
 var url = require("url");
-var MainProcPrinterService_1 = require("./ElectronApp/MainProcServices/MainProcPrinterService");
-var mainProcPrinterService = new MainProcPrinterService_1.MainProcPrinterService();
 function createWindow() {
     // Create the browser window.
     var mainWindow = new electron_1.BrowserWindow({
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, "preload.js"),
-            nodeIntegration: true
+            nodeIntegration: true,
+            preload: path.join(__dirname, "/preload.js")
         },
         width: 800
     });
     // and load the index.html of the app.
-    //mainWindow.loadFile(path.join(__dirname, "../index.html"));
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, "/dist/index.html"),
         protocol: "file:",

@@ -2,23 +2,19 @@ import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import * as url from "url";
 
-import { MainProcPrinterService } from "./ElectronApp/MainProcServices/MainProcPrinterService"
-
-var mainProcPrinterService = new MainProcPrinterService();
 
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
+      preload: path.join(__dirname, "/preload.js"),
     },
     width: 800,
   });
 
   // and load the index.html of the app.
-  //mainWindow.loadFile(path.join(__dirname, "../index.html"));
   mainWindow.loadURL(
     url.format({
       pathname: path.join(__dirname, "/dist/index.html"),

@@ -13,7 +13,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "tsc ElectronMain.ts && ng build --base-href ./ && electron ."
+    "electron": "tsc ElectronMain.ts && tsc Preload.ts && ng build --base-href ./ && electron ."
   },
   "private": true,
   "dependencies": {
@@ -25,10 +25,10 @@
     "@angular/platform-browser": "~10.0.4",
     "@angular/platform-browser-dynamic": "~10.0.4",
     "@angular/router": "~10.0.4",
+    "crc": "^3.8.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
-    "zone.js": "~0.10.3",
-    "crc": "^3.8.0"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.3",

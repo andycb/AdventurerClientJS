@@ -4,7 +4,7 @@
     <span *ngIf="isError" class="error">Failed to connect to printer, is the address correct?</span>
 
     <form>
-      <input *ng type="text" />
+      <input type="text" [(ngModel)]="PrinterAddress" required>
   
       <br />
       <button type="button" class="btn btn-default" (click)="connect()">Connect</button>
