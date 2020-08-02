@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { PrinterServiceWrapperService } from "../../Services/printer-service-wrapper.service"
+import { ErrorLogger } from "../../../Core/ErrorLogger"
+ 
 @Component({
   selector: 'app-connect-form',
   templateUrl: './connect-form.component.html',
@@ -8,20 +10,27 @@ import { Component, OnInit } from '@angular/core';
 export class ConnectFormComponent implements OnInit {
 
   public isError: boolean;
-  public PrinterAddress: string;
+  private printerService: PrinterServiceWrapperService;
+
+  @Input() PrinterAddress: string;
+  @Output() PrinterAddressChange = new EventEmitter<string>();
+
+  constructor(printerService: PrinterServiceWrapperService){
+    this.printerService = printerService;
+  }
+
   ngOnInit(): void {
 
   }
 
   public async connect(){
     try{
-      console.log(this.PrinterAddress);
-      window["PrinterService"].ConnectAsync(this.PrinterAddress);
+      await this.printerService.ConnectAsync(this.PrinterAddress);
     }
-    catch {
+    catch(e) {
       this.isError = true;
+      ErrorLogger.NonFatalError(e);
     }
-
   } 
 
 }

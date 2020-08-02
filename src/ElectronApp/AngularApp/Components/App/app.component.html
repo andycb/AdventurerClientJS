@@ -1,2 +1,16 @@
-<!-- <app-connect-form *ngIf=ShowConnectForm> -->
-<app-connect-form>
+<ng-container
+  *ngIf="Isconnected; then connected; else notConnected">
+</ng-container>
+
+<ng-template #connected>
+  <div>
+      <app-connected></app-connected>
+  </div>
+</ng-template>
+
+<ng-template #notConnected>
+  <div>
+      <h1>Not connected?</h1>
+      <app-connect-form></app-connect-form>
+  </div>
+</ng-template>
