@@ -1,22 +1,35 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
-import { AppComponent } from './Components/App/app.component';
-import { ConnectFormComponent } from './Components/connect-form/connect-form.component';
-import { ConnectedComponent } from './Components/connected/connected.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppComponent } from './components/App/app.component';
+import { ConnectFormComponent } from './components/connect-form/connect-form.component';
+import { RoutingModule } from './routing/routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
+import { HeaderComponent } from './components/navigation/header/header.component';
+import { AboutComponent } from './components/about/about.component';
+import { StatusComponent } from './components/status/status.component';
+import { DebugComponent } from './components/debug/debug.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConnectFormComponent,
-    ConnectedComponent,
+    HeaderComponent,
+    AboutComponent,
+    StatusComponent,
+    DebugComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RoutingModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent, ConnectedComponent, ConnectFormComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

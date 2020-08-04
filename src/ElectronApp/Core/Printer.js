@@ -117,6 +117,47 @@ var Printer = /** @class */ (function () {
         return this.responseReader.GerPrinterResponce(MachineCommands_1.MachineCommands.GetEndstopStaus);
     };
     /// <summary>
+    /// Gets the firmware version of the printer.
+    /// </summary>
+    /// <returns>
+    /// A task containing the current printer state.
+    /// </returns>
+    Printer.prototype.GetFirmwareVersionAsync = function () {
+        this.ValidatePrinterReady();
+        var message = "~" + MachineCommands_1.MachineCommands.GetFirmwareVersion;
+        this.printerConnection.write(message);
+        // Get its answer
+        return this.responseReader.GerPrinterResponce(MachineCommands_1.MachineCommands.GetFirmwareVersion);
+    };
+    /// <summary>
+    /// Gets the printer temperature.
+    /// </summary>
+    /// <returns>
+    /// A task containing the current printer state.
+    /// </returns>
+    Printer.prototype.GetTemperatureAsync = function () {
+        this.ValidatePrinterReady();
+        var message = "~" + MachineCommands_1.MachineCommands.GetTemperature;
+        this.printerConnection.write(message);
+        // Get its answer
+        return this.responseReader.GerPrinterResponce(MachineCommands_1.MachineCommands.GetTemperature);
+    };
+    /// <summary>
+    /// Senda a command to the printer and returns its raw response.
+    /// </summary>
+    /// <param name="command">
+    /// The full command and any params to send to the printer. 
+    /// Do not include the leading ~
+    /// </param>
+    Printer.prototype.SendDebugCommandAsync = function (command) {
+        this.ValidatePrinterReady();
+        var message = "~" + command;
+        console.log(message);
+        this.printerConnection.write(message);
+        // Get its answer
+        return this.responseReader.GerPrinterResponce(command);
+    };
+    /// <summary>
     /// Instructs the printer to print a file already stored in its internal memory.
     /// </summary>
     /// <param name="fileName">

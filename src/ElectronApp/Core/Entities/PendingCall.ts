@@ -8,8 +8,8 @@ export class PendingCall<T extends IPrinterResponce> {
         this.Reject = reject;
     }
 
-    Accept : (n: T) => any;
-    Reject : (n: Error) => any;
+    Accept: (n: T) => any;
+    Reject: (n: Error) => any;
 
     public readonly CommandId : string;
 }

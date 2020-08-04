@@ -1,0 +1,28 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Routes, RouterModule } from '@angular/router';
+import { ConnectFormComponent } from "../components/connect-form/connect-form.component";
+import { StatusComponent } from "../components/status/status.component";
+import { AboutComponent } from "../components/about/about.component";
+import { ConnectedGuard } from "./ConnectedGuard"
+import { DebugComponent } from "../components//debug/debug.component"
+
+const routes: Routes = [
+  { path: 'connect', component: ConnectFormComponent},
+  { path: 'status', component: StatusComponent, canActivate: [ConnectedGuard]},
+  { path: 'about', component: AboutComponent },
+  { path: 'debug', component: DebugComponent, canActivate: [ConnectedGuard]},
+  { path: '', redirectTo: '/status', pathMatch: 'full' }
+];
+ 
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+    RouterModule
+  ],
+  declarations: []
+})
+export class RoutingModule { }

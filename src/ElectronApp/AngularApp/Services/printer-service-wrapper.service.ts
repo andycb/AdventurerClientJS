@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IPrinterService } from "../../Core/IPrinterService"
 import { PrinterStatus } from "../../Core/Entities/PrinterStatus"
+import { TemperatureResponse } from "../../Core/Entities/TemperatureResponse"
+import { DebugResponse } from "../../Core/Entities/DebugResponse"
+import { FirmwareVersionResponse } from "../../Core/Entities/FirmwareVersionResponse"
 import { EventDispatcher } from "../../Core/EventDispatcher"
 
 @Injectable({
@@ -17,6 +20,10 @@ export class PrinterServiceWrapperService implements IPrinterService {
     this.electronPrinterService.ConnectionStateChanged.Register((e)=> this.ConnectionStateChanged.Invoke(e));
   }
 
+  public GetIsConnected(): boolean {
+    return this.electronPrinterService.GetIsConnected();
+  }
+
   GetPrinterStatusAsync(): Promise<PrinterStatus> {
       return this.electronPrinterService.GetPrinterStatusAsync();
    }
@@ -31,5 +38,17 @@ export class PrinterServiceWrapperService implements IPrinterService {
 
    public ConnectAsync(printerAddress: string) : Promise<any>{
     return this.electronPrinterService.ConnectAsync(printerAddress);
+  }
+
+  GetFirmwareVersionAsync() : Promise<FirmwareVersionResponse> {
+    return this.electronPrinterService.GetFirmwareVersionAsync();
+  }  
+  
+  GetTemperatureAsync(): Promise<TemperatureResponse> {
+    return this.electronPrinterService.GetTemperatureAsync();
+  }
+
+  SendDebugCommandAsync(command: string) : Promise<DebugResponse> {
+    return this.electronPrinterService.SendDebugCommandAsync(command);
   }
 }

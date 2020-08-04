@@ -1,4 +1,4 @@
-<ng-container
+<!-- <ng-container
   *ngIf="Isconnected; then connected; else notConnected">
 </ng-container>
 
@@ -13,4 +13,15 @@
       <h1>Not connected?</h1>
       <app-connect-form></app-connect-form>
   </div>
-</ng-template>
+</ng-template> -->
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav role="navigation">
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <app-header></app-header>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

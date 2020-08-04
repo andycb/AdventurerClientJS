@@ -1,0 +1,23 @@
+<div class="loginForm">
+    <h2 class="instructions">Use this page to send G-Code commands to the printer and see the raw responce.</h2>
+  
+    <mat-form-field class="example-full-width">
+      <mat-label>Command</mat-label>
+      <input 
+        matInput [formControl]="PrinterCommand" 
+        placeholder="M115">
+
+        <mat-error *ngIf="PrinterCommand.hasError('required')">
+            Printer command <strong>required</strong>
+          </mat-error>
+    </mat-form-field>
+  
+    <br>
+    <a mat-stroked-button (click)="sendCommand()">Send Command</a>
+
+    <div class="responce">
+        <ul *ngFor="let line of ResponseLines">
+            <li>{{line}}</li>
+        </ul>
+    </div>
+</div> 

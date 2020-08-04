@@ -52,32 +52,41 @@ var PrinterService = /** @class */ (function () {
             window["PrinterService"] = new PrinterService();
         }
     };
+    PrinterService.prototype.GetIsConnected = function () {
+        return this.isConected;
+    };
     PrinterService.prototype.ConnectAsync = function (printerAddress) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                this.printer = new Printer_1.Printer(printerAddress);
-                //await this.printer.ConnectAsync();
-                this.ConnectionStateChanged.Invoke(true);
-                setInterval(function () { return __awaiter(_this, void 0, void 0, function () {
-                    var e_1;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                _a.trys.push([0, 2, , 3]);
-                                return [4 /*yield*/, this.printer.GetPrinterStatusAsync()];
-                            case 1:
-                                _a.sent();
-                                return [3 /*break*/, 3];
-                            case 2:
-                                e_1 = _a.sent();
-                                ErrorLogger_1.ErrorLogger.NonFatalError(e_1);
-                                return [3 /*break*/, 3];
-                            case 3: return [2 /*return*/];
-                        }
-                    });
-                }); }, 1000);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        this.printer = new Printer_1.Printer(printerAddress);
+                        return [4 /*yield*/, this.printer.ConnectAsync()];
+                    case 1:
+                        _a.sent();
+                        this.isConected = true;
+                        this.ConnectionStateChanged.Invoke(true);
+                        setInterval(function () { return __awaiter(_this, void 0, void 0, function () {
+                            var e_1;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        _a.trys.push([0, 2, , 3]);
+                                        return [4 /*yield*/, this.printer.GetPrinterStatusAsync()];
+                                    case 1:
+                                        _a.sent();
+                                        return [3 /*break*/, 3];
+                                    case 2:
+                                        e_1 = _a.sent();
+                                        ErrorLogger_1.ErrorLogger.NonFatalError(e_1);
+                                        return [3 /*break*/, 3];
+                                    case 3: return [2 /*return*/];
+                                }
+                            });
+                        }); }, 1000);
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -92,6 +101,24 @@ var PrinterService = /** @class */ (function () {
             throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
         }
         return this.printer.PrintFileAsync(fileName);
+    };
+    PrinterService.prototype.SendDebugCommandAsync = function (command) {
+        if (this.printer == null) {
+            throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        }
+        return this.printer.SendDebugCommandAsync(command);
+    };
+    PrinterService.prototype.GetFirmwareVersionAsync = function () {
+        if (this.printer == null) {
+            throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        }
+        return this.printer.GetFirmwareVersionAsync();
+    };
+    PrinterService.prototype.GetTemperatureAsync = function () {
+        if (this.printer == null) {
+            throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        }
+        return this.printer.GetTemperatureAsync();
     };
     PrinterService.prototype.StoreFileAsync = function (filePath) {
         if (this.printer == null) {

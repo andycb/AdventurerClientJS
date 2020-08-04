@@ -1,8 +1,10 @@
 import { MachineCommands } from "./MachineCommands"
 import { IPrinterResponce } from "./Entities/IPrinterResponce"
 import { PrinterStatus } from "./Entities/PrinterStatus"
+import { TemperatureResponse } from "./Entities/TemperatureResponse"
+import { FirmwareVersionResponse } from "./Entities/FirmwareVersionResponse"
 import { PendingCall } from "./Entities/PendingCall"
-import { RendingResponce } from "./Entities/RendingResponce"
+import { RendingResponce as PendingResponce } from "./Entities/PendingResponce"
 
 /// <summary>
 /// A class for reading responces from the printer.
@@ -24,7 +26,7 @@ export class PrinterResponseReader
     private isDisposed = false;
 
     private readonly lineBuffer : Array<string>  = new Array<string>();
-    private readonly responceBuffer : Array<RendingResponce>  = new Array<RendingResponce>();
+    private readonly responceBuffer : Array<PendingResponce>  = new Array<PendingResponce>();
     private readonly pendingCalls : Array<PendingCall<IPrinterResponce>> = new Array<PendingCall<IPrinterResponce>>();
 
     private socket : any;
@@ -48,6 +50,7 @@ export class PrinterResponseReader
         
             // Found a new line
             this.lineBuffer.push(this.buffer);
+            console.log(">>>" + this.buffer);
             this.TryDrainBuffer();
         
             this.buffer = '';
@@ -66,8 +69,7 @@ export class PrinterResponseReader
             var commandId = this.GetCommandId();
 
             if (commandId.length > 0){
-                // Failed to find a command, the buffer is useless.
-                this.responceBuffer.push(new RendingResponce(commandId, this.GenerateResponce(commandId, this.lineBuffer)));
+                this.responceBuffer.push(new PendingResponce(commandId, this.GenerateResponce(commandId, this.lineBuffer)));
 
                 this.TryDrainPendingCalls();
             }
@@ -90,7 +92,7 @@ export class PrinterResponseReader
 
             if (commandId.length > 0){
                 // Failed to find a command, the buffer is useless.
-                this.responceBuffer.push(new RendingResponce(commandId, null, new Error(errorCode)));
+                this.responceBuffer.push(new PendingResponce(commandId, null, new Error(errorCode)));
 
                 this.TryDrainPendingCalls();
             }
@@ -183,9 +185,10 @@ export class PrinterResponseReader
         {
             case MachineCommands.GetEndstopStaus:
                 return new PrinterStatus(data);
+            case MachineCommands.GetFirmwareVersion:
+                return new FirmwareVersionResponse(data);
             case MachineCommands.GetTemperature:
-                return null;
-                //return new PrinterTemperature(data);
+                return new TemperatureResponse(data);
             case MachineCommands.BeginWriteToSdCard:
             case MachineCommands.EndWriteToSdCard:
             case MachineCommands.PrintFileFromSd:

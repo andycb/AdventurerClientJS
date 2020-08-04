@@ -1,5 +1,8 @@
 import { Printer } from "./Printer"
 import { PrinterStatus } from "./Entities/PrinterStatus"
+import { DebugResponse } from "./Entities/DebugResponse"
+import { TemperatureResponse } from "./Entities/TemperatureResponse"
+import { FirmwareVersionResponse } from "./Entities/FirmwareVersionResponse"
 import { ErrorLogger } from "./ErrorLogger"
 import { IPrinterService } from "./IPrinterService";
 import { EventDispatcher } from "./EventDispatcher"
@@ -12,6 +15,11 @@ export class PrinterService implements IPrinterService {
             window["PrinterService"] = new PrinterService();
         }
     }
+
+    private isConected: boolean;
+    public GetIsConnected(): boolean {
+        return this.isConected;
+    }
     
     public readonly ConnectionStateChanged = new EventDispatcher<boolean>();
 
@@ -23,7 +31,8 @@ export class PrinterService implements IPrinterService {
 
     public async ConnectAsync(printerAddress: string) : Promise<any> {
         this.printer = new Printer(printerAddress);
-        //await this.printer.ConnectAsync();
+        await this.printer.ConnectAsync();
+        this.isConected = true;
         this.ConnectionStateChanged.Invoke(true);
 
         setInterval(async () => {
@@ -50,6 +59,30 @@ export class PrinterService implements IPrinterService {
         }
 
         return this.printer.PrintFileAsync(fileName);
+    }
+
+    SendDebugCommandAsync(command: string) : Promise<DebugResponse> {
+        if (this.printer == null){
+            throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        }
+
+        return this.printer.SendDebugCommandAsync(command);
+    }
+
+    GetFirmwareVersionAsync() : Promise<FirmwareVersionResponse> {
+        if (this.printer == null){
+            throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        }
+
+        return this.printer.GetFirmwareVersionAsync();
+    }   
+    
+    GetTemperatureAsync(): Promise<TemperatureResponse> {
+        if (this.printer == null){
+            throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        }
+
+        return this.printer.GetTemperatureAsync();
     }
 
     public StoreFileAsync(filePath: string) : Promise<void>{

@@ -4,8 +4,12 @@ const { crc32 } = require('crc');
 
 import { PrinterResponseReader } from "./PrinterResponseReader"
 import { PrinterStatus } from "./Entities/PrinterStatus"
+import { DebugResponse } from "./Entities/DebugResponse"
+import { FirmwareVersionResponse } from "./Entities/FirmwareVersionResponse"
+import { TemperatureResponse } from "./Entities/TemperatureResponse"
 import { IPrinterResponce } from "./Entities/IPrinterResponce"
 import { MachineCommands } from "./MachineCommands"
+
 
 /// <summary>
 /// Represents the printer.
@@ -65,8 +69,7 @@ export class Printer {
     /// <returns>
     /// A task that compleares once the connection has been established.
     /// </returns>
-    async ConnectAsync()
-    {
+    async ConnectAsync() {
         return new Promise((a, r) => {
             this.printerConnection = new net.Socket();
             this.printerConnection.on('error', (ex : any) => {
@@ -87,20 +90,67 @@ export class Printer {
             });
         });
     }
+
     /// <summary>
     /// Gets the current status of the printer.
     /// </summary>
     /// <returns>
     /// A task containing the current printer state.
     /// </returns>
-    GetPrinterStatusAsync() : Promise<PrinterStatus>
-    {
+    GetPrinterStatusAsync() : Promise<PrinterStatus> {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands.GetEndstopStaus;
         this.printerConnection.write(message);
 
         // Get its answer
         return this.responseReader.GerPrinterResponce<PrinterStatus>(MachineCommands.GetEndstopStaus);
+    }
+
+    /// <summary>
+    /// Gets the firmware version of the printer.
+    /// </summary>
+    /// <returns>
+    /// A task containing the current printer state.
+    /// </returns>
+    GetFirmwareVersionAsync() : Promise<FirmwareVersionResponse> {
+        this.ValidatePrinterReady();
+        var message = "~" + MachineCommands.GetFirmwareVersion;
+        this.printerConnection.write(message);
+
+        // Get its answer
+        return this.responseReader.GerPrinterResponce<FirmwareVersionResponse>(MachineCommands.GetFirmwareVersion);
+    }
+    
+    /// <summary>
+    /// Gets the printer temperature.
+    /// </summary>
+    /// <returns>
+    /// A task containing the current printer state.
+    /// </returns>
+    GetTemperatureAsync() : Promise<TemperatureResponse> {
+        this.ValidatePrinterReady();
+        var message = "~" + MachineCommands.GetTemperature;
+        this.printerConnection.write(message);
+
+        // Get its answer
+        return this.responseReader.GerPrinterResponce<TemperatureResponse>(MachineCommands.GetTemperature);
+    }
+
+    /// <summary>
+    /// Senda a command to the printer and returns its raw response.
+    /// </summary>
+    /// <param name="command">
+    /// The full command and any params to send to the printer. 
+    /// Do not include the leading ~
+    /// </param>
+    SendDebugCommandAsync(command: string) : Promise<DebugResponse> {
+        this.ValidatePrinterReady();
+        var message = "~" + command;
+        console.log(message);
+        this.printerConnection.write(message);
+
+        // Get its answer
+        return this.responseReader.GerPrinterResponce<DebugResponse>(command);
     }
 
     /// <summary>

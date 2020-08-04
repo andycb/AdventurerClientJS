@@ -1,0 +1,17 @@
+.instructions {
+    font-size: 95%;
+    font-weight: lighter;
+}
+
+.responce {
+    font-size: 90%;
+    font-family: 'Courier New', Courier, monospace;
+    background: #ccc;
+    padding: 20px;
+    margin: 20px;
+    overflow: scroll;
+}
+
+.responce ul {
+    list-style-type: none;
+}

@@ -3,8 +3,10 @@ exports.__esModule = true;
 exports.PrinterResponseReader = void 0;
 var MachineCommands_1 = require("./MachineCommands");
 var PrinterStatus_1 = require("./Entities/PrinterStatus");
+var TemperatureResponse_1 = require("./Entities/TemperatureResponse");
+var FirmwareVersionResponse_1 = require("./Entities/FirmwareVersionResponse");
 var PendingCall_1 = require("./Entities/PendingCall");
-var RendingResponce_1 = require("./Entities/RendingResponce");
+var PendingResponce_1 = require("./Entities/PendingResponce");
 /// <summary>
 /// A class for reading responces from the printer.
 /// </summary>
@@ -38,6 +40,7 @@ var PrinterResponseReader = /** @class */ (function () {
             this.buffer += data.substring(prev, next);
             // Found a new line
             this.lineBuffer.push(this.buffer);
+            console.log(">>>" + this.buffer);
             this.TryDrainBuffer();
             this.buffer = '';
             prev = next + 1;
@@ -51,8 +54,7 @@ var PrinterResponseReader = /** @class */ (function () {
             // Find a machine command
             var commandId = this.GetCommandId();
             if (commandId.length > 0) {
-                // Failed to find a command, the buffer is useless.
-                this.responceBuffer.push(new RendingResponce_1.RendingResponce(commandId, this.GenerateResponce(commandId, this.lineBuffer)));
+                this.responceBuffer.push(new PendingResponce_1.RendingResponce(commandId, this.GenerateResponce(commandId, this.lineBuffer)));
                 this.TryDrainPendingCalls();
             }
             this.lineBuffer.length = 0;
@@ -68,7 +70,7 @@ var PrinterResponseReader = /** @class */ (function () {
             }
             if (commandId.length > 0) {
                 // Failed to find a command, the buffer is useless.
-                this.responceBuffer.push(new RendingResponce_1.RendingResponce(commandId, null, new Error(errorCode)));
+                this.responceBuffer.push(new PendingResponce_1.RendingResponce(commandId, null, new Error(errorCode)));
                 this.TryDrainPendingCalls();
             }
             this.lineBuffer.length = 0;
@@ -145,9 +147,10 @@ var PrinterResponseReader = /** @class */ (function () {
         switch (command) {
             case MachineCommands_1.MachineCommands.GetEndstopStaus:
                 return new PrinterStatus_1.PrinterStatus(data);
+            case MachineCommands_1.MachineCommands.GetFirmwareVersion:
+                return new FirmwareVersionResponse_1.FirmwareVersionResponse(data);
             case MachineCommands_1.MachineCommands.GetTemperature:
-                return null;
-            //return new PrinterTemperature(data);
+                return new TemperatureResponse_1.TemperatureResponse(data);
             case MachineCommands_1.MachineCommands.BeginWriteToSdCard:
             case MachineCommands_1.MachineCommands.EndWriteToSdCard:
             case MachineCommands_1.MachineCommands.PrintFileFromSd:

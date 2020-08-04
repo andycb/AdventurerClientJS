@@ -1,13 +1,22 @@
 <div class="loginForm">
-    <h1>Hi</h1>
-    <span class="instructions">Enter printer IP to continue</span>
-    <span *ngIf="isError" class="error">Failed to connect to printer, is the address correct?</span>
+  <h1>Hello!</h1>
 
-    <form>
-      <input name="printerAddressInput" type="text" [(ngModel)]="PrinterAddress" required>
+  <h2 class="instructions">Enter printer's IP address to continue</h2>
+  <span *ngIf="isError" class="error">Failed to connect to printer, is the address correct?</span>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Printer Address</mat-label>
+    <input 
+      matInput [formControl]="PrinterAddress" 
+      [errorStateMatcher]="matcher"
+      placeholder="Ex. 192.168.1.14">
+
+    <mat-error *ngIf="PrinterAddress.hasError('required')">
+      Printer address is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <br>
+  <a mat-stroked-button (click)="connect()">Connect</a>
   
-      <br />
-
-      <button type="button" class="btn btn-default" (click)="connect()">Connect</button>
-    </form>
-  </div> 
+</div> 
