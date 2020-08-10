@@ -6,12 +6,12 @@ var url = require("url");
 function createWindow() {
     // Create the browser window.
     var mainWindow = new electron_1.BrowserWindow({
-        height: 600,
+        height: 450,
         webPreferences: {
             nodeIntegration: true,
             preload: path.join(__dirname, "/preload.js")
         },
-        width: 800
+        width: 500
     });
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
@@ -19,8 +19,6 @@ function createWindow() {
         protocol: "file:",
         slashes: true
     }));
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -42,5 +40,3 @@ electron_1.app.on("window-all-closed", function () {
         electron_1.app.quit();
     }
 });
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.

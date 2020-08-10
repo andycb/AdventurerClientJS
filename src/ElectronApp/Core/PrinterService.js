@@ -84,11 +84,17 @@ var PrinterService = /** @class */ (function () {
                                     case 3: return [2 /*return*/];
                                 }
                             });
-                        }); }, 1000);
+                        }); }, 5000);
                         return [2 /*return*/];
                 }
             });
         });
+    };
+    PrinterService.prototype.Disconnect = function () {
+        this.printer.Disconnect();
+        this.printer = null;
+        this.isConected = false;
+        this.ConnectionStateChanged.Invoke(false);
     };
     PrinterService.prototype.GetPrinterStatusAsync = function () {
         if (this.printer == null) {
@@ -127,13 +133,16 @@ var PrinterService = /** @class */ (function () {
         // Deal with .gcode files by stripping the extension and using .g. Leave gx files alone
         var pathInfo = path.parse(filePath);
         var fileName = pathInfo.name;
-        if (pathInfo.ext.toLowercase() != ".gx") {
+        if (pathInfo.ext.toLowerCase() != ".gx") {
             fileName = fileName + ".g";
         }
         else {
             fileName = fileName + ".gx";
         }
         return this.printer.StoreFileAsync(filePath, fileName);
+    };
+    PrinterService.prototype.GetDebugMonitor = function () {
+        return this.printer.PrinterDebugMonitor;
     };
     return PrinterService;
 }());

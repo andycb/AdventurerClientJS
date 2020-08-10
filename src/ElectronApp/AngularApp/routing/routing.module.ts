@@ -5,20 +5,22 @@ import { ConnectFormComponent } from "../components/connect-form/connect-form.co
 import { StatusComponent } from "../components/status/status.component";
 import { AboutComponent } from "../components/about/about.component";
 import { ConnectedGuard } from "./ConnectedGuard"
-import { DebugComponent } from "../components//debug/debug.component"
+import { DebugComponent } from "../components/debug/debug.component"
+import { PrintComponent } from "../components/print/print.component"
 
 const routes: Routes = [
   { path: 'connect', component: ConnectFormComponent},
   { path: 'status', component: StatusComponent, canActivate: [ConnectedGuard]},
   { path: 'about', component: AboutComponent },
   { path: 'debug', component: DebugComponent, canActivate: [ConnectedGuard]},
+  { path: 'print', component: PrintComponent, canActivate: [ConnectedGuard]},
   { path: '', redirectTo: '/status', pathMatch: 'full' }
 ];
  
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})
   ],
   exports: [
     RouterModule

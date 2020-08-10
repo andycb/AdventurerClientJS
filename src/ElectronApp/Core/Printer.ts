@@ -9,6 +9,7 @@ import { FirmwareVersionResponse } from "./Entities/FirmwareVersionResponse"
 import { TemperatureResponse } from "./Entities/TemperatureResponse"
 import { IPrinterResponce } from "./Entities/IPrinterResponce"
 import { MachineCommands } from "./MachineCommands"
+import { PrinterDebugMonitor } from "./Entities/PrinterDebugMonitor"
 
 
 /// <summary>
@@ -63,6 +64,28 @@ export class Printer {
         this.printerAddress = ipAddress;
     }
 
+    public readonly PrinterDebugMonitor = new PrinterDebugMonitor();
+
+    private SendToPrinter(data: string): void {
+
+        data = data + "\n";
+
+        if (this.PrinterDebugMonitor != null){
+            this.PrinterDebugMonitor.LogDataToPrinter(data);
+        }
+
+        this.printerConnection.write(data);
+    }
+
+    private SendBufferToPrinter(data: Buffer): void {
+
+        if (this.PrinterDebugMonitor != null){
+            this.PrinterDebugMonitor.LogDataToPrinter(data.toString());
+        }
+
+        this.printerConnection.write(data);
+    }
+
     /// <summary>
     /// Connects to the specified printer.
     /// </summary>
@@ -80,6 +103,10 @@ export class Printer {
             this.printerConnection.on('close', () => {
                 this.isConnected = false;
             });
+
+            this.printerConnection.on('data', data => {
+                this.PrinterDebugMonitor.LogDataFromPriter(data)
+            });
             
             this.printerConnection.connect(8899, this.printerAddress, async () => {
                 this.responseReader = new PrinterResponseReader(this.printerConnection);
@@ -91,6 +118,10 @@ export class Printer {
         });
     }
 
+    Disconnect(){
+        this.printerConnection.destroy();
+    }
+
     /// <summary>
     /// Gets the current status of the printer.
     /// </summary>
@@ -100,7 +131,7 @@ export class Printer {
     GetPrinterStatusAsync() : Promise<PrinterStatus> {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands.GetEndstopStaus;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
 
         // Get its answer
         return this.responseReader.GerPrinterResponce<PrinterStatus>(MachineCommands.GetEndstopStaus);
@@ -115,7 +146,7 @@ export class Printer {
     GetFirmwareVersionAsync() : Promise<FirmwareVersionResponse> {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands.GetFirmwareVersion;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
 
         // Get its answer
         return this.responseReader.GerPrinterResponce<FirmwareVersionResponse>(MachineCommands.GetFirmwareVersion);
@@ -130,7 +161,7 @@ export class Printer {
     GetTemperatureAsync() : Promise<TemperatureResponse> {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands.GetTemperature;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
 
         // Get its answer
         return this.responseReader.GerPrinterResponce<TemperatureResponse>(MachineCommands.GetTemperature);
@@ -143,14 +174,14 @@ export class Printer {
     /// The full command and any params to send to the printer. 
     /// Do not include the leading ~
     /// </param>
-    SendDebugCommandAsync(command: string) : Promise<DebugResponse> {
+    SendDebugCommandAsync(command: string) : Promise<void> {
         this.ValidatePrinterReady();
         var message = "~" + command;
         console.log(message);
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
 
         // Get its answer
-        return this.responseReader.GerPrinterResponce<DebugResponse>(command);
+        return this.WaitForPrinterAck(command);
     }
 
     /// <summary>
@@ -166,7 +197,7 @@ export class Printer {
     {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands.PrintFileFromSd + " 0:/user/" + fileName;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
 
         return this.WaitForPrinterAck(MachineCommands.PrintFileFromSd);
     }
@@ -200,7 +231,7 @@ export class Printer {
 
         // Start a transfer
         var message = "~" + MachineCommands.BeginWriteToSdCard + " " + modelBytes.length + " 0:/user/" + fileName;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
         await this.WaitForPrinterAck(MachineCommands.BeginWriteToSdCard);
 
         var count = 0;
@@ -254,19 +285,22 @@ export class Printer {
 
             // Add the data
             for (var i = 0; i < packet.length; ++i){
-                    bufferToSend.writeUInt8(packet[i], i + 16)
+                bufferToSend.writeUInt8(packet[i], i + 16)
             }
 
             // Send it to the printer
-            this.printerConnection.write(bufferToSend);
+            this.SendBufferToPrinter(bufferToSend);
 
             offset += this.packetSizeBytes;
             ++count;
         }
 
+        this.SendToPrinter("");
+
         // Tell the printer that we have finished the file transfer
         var message = "~" + MachineCommands.EndWriteToSdCard;
-        this.printerConnection.write(message);
+
+        this.SendToPrinter(message);
         
         return this.WaitForPrinterAck(MachineCommands.EndWriteToSdCard);
     }

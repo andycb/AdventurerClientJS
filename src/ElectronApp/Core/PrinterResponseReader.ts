@@ -40,7 +40,11 @@ export class PrinterResponseReader
         this.socket.on('data', (d : any) => this.HandleData(d.toString()) );
     }
 
-    private buffer : string;
+    public CheckForNewData(){
+        this.TryDrainPendingCalls();
+    }
+
+    private buffer = "";
 
     private HandleData(data : string) {
         var prev = 0, next;
@@ -50,7 +54,6 @@ export class PrinterResponseReader
         
             // Found a new line
             this.lineBuffer.push(this.buffer);
-            console.log(">>>" + this.buffer);
             this.TryDrainBuffer();
         
             this.buffer = '';
@@ -68,7 +71,7 @@ export class PrinterResponseReader
             // Find a machine command
             var commandId = this.GetCommandId();
 
-            if (commandId.length > 0){
+            if (commandId != null && commandId.length > 0){
                 this.responceBuffer.push(new PendingResponce(commandId, this.GenerateResponce(commandId, this.lineBuffer)));
 
                 this.TryDrainPendingCalls();
@@ -90,7 +93,7 @@ export class PrinterResponseReader
                 errorCode = errorParts[0];
             }
 
-            if (commandId.length > 0){
+            if (commandId != null && commandId.length > 0){
                 // Failed to find a command, the buffer is useless.
                 this.responceBuffer.push(new PendingResponce(commandId, null, new Error(errorCode)));
 
@@ -123,7 +126,12 @@ export class PrinterResponseReader
                 var pendingCall = this.pendingCalls[a];
 
                 if (response.CommandId == pendingCall.CommandId){
-                    pendingCall.Accept(response.Result);
+                    if (response.Error != null){
+                        pendingCall.Reject(response.Error)
+                    }
+                    else {
+                        pendingCall.Accept(response.Result);
+                    }
 
                     this.responceBuffer.splice(i, 1);
                     this.pendingCalls.splice(a, 1);
@@ -133,18 +141,7 @@ export class PrinterResponseReader
             }
         }
 
-        this.pendingCalls.forEach(pendingCall => {
-            this.responceBuffer.forEach(responce => {
-                if (response.Error != null) {
-                    pendingCall.Reject(responce.Error)
-                }
-                else{
-                    pendingCall.Accept(responce.Result);
-                }
-            
-               return;
-            });
-        });
+        console.log("Warning. Found no caller for response. Queue lenth = " + this.responceBuffer.length + " / " + this.pendingCalls.length);
     }
 
     /// <summary>
@@ -161,6 +158,7 @@ export class PrinterResponseReader
         var promise = new Promise<T>((a, r) => { 
             var pendingCal = new PendingCall(commandId, a, r);
             this.pendingCalls.push(pendingCal);
+
             this.TryDrainPendingCalls();
         });
         

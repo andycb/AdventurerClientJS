@@ -11,6 +11,8 @@ import { HeaderComponent } from './components/navigation/header/header.component
 import { AboutComponent } from './components/about/about.component';
 import { StatusComponent } from './components/status/status.component';
 import { DebugComponent } from './components/debug/debug.component';
+import { PrintComponent } from './components/print/print.component';
+import { DragDropDirective } from './ directives/dragDropDirective';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { DebugComponent } from './components/debug/debug.component';
     HeaderComponent,
     AboutComponent,
     StatusComponent,
-    DebugComponent
+    DebugComponent,
+    PrintComponent,
+    DragDropDirective
   ],
   imports: [
     BrowserModule,

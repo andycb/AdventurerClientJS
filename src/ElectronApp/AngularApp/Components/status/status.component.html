@@ -1,4 +1,4 @@
-<p>
+<!-- <p>
     <span>Status: </span>
     <span>{{PrinterStatus}}</span>
     
@@ -37,3 +37,55 @@
     <br>
     <span>Build Plate Temp: </span>
     <span>{{BuildPlateTemp}}C</span>
+
+    <a mat-stroked-button (click)="dosconnect()">Disconnect</a> -->
+
+    <table class="statusTable">
+        <tr>
+            <th>Status</th>
+            <td>{{PrinterStatus}}</td>
+        </tr>
+
+        <tr>
+            <th>Version</th>
+            <td>{{FirmwareVersion}}</td>
+        </tr>
+
+        <tr>
+            <th>Serial Number</th>
+            <td>{{SerialNumber}}</td>
+        </tr>
+
+        <tr>
+            <th>Model</th>
+            <td>{{PrinterName}}</td>
+        </tr>
+
+        <tr>
+            <th>Build Volume</th>
+            <td>{{BuildVolume}}</td>
+        </tr>
+
+        <tr>
+            <th>Endstop</th>
+            <td>{{Endstop}}</td>
+        </tr>
+
+
+        <tr>
+            <th>Extruder temperature</th>
+            <td>{{Tool0Temp}}</td>
+        </tr>
+
+        <tr>
+            <th>Build plate temperature</th>
+            <td>{{BuildPlateTemp}}</td>
+        </tr>
+
+        <tr>
+            <th></th>
+            <td>
+                <a mat-stroked-button (click)="dosconnect()">Disconnect</a> 
+            </td>
+        </tr>
+    </table>

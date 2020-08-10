@@ -6,6 +6,7 @@ import { FirmwareVersionResponse } from "./Entities/FirmwareVersionResponse"
 import { ErrorLogger } from "./ErrorLogger"
 import { IPrinterService } from "./IPrinterService";
 import { EventDispatcher } from "./EventDispatcher"
+import { PrinterDebugMonitor } from "./Entities/PrinterDebugMonitor"
 
 var path = require('path');
 
@@ -42,7 +43,14 @@ export class PrinterService implements IPrinterService {
             catch(e){
                 ErrorLogger.NonFatalError(e);
             }
-        }, 1000);
+        }, 5000);
+    }
+
+    public Disconnect(){
+        this.printer.Disconnect();
+        this.printer = null;
+        this.isConected = false;
+        this.ConnectionStateChanged.Invoke(false);
     }
 
     public GetPrinterStatusAsync() : Promise<PrinterStatus>{
@@ -61,7 +69,7 @@ export class PrinterService implements IPrinterService {
         return this.printer.PrintFileAsync(fileName);
     }
 
-    SendDebugCommandAsync(command: string) : Promise<DebugResponse> {
+    SendDebugCommandAsync(command: string) : Promise<any> {
         if (this.printer == null){
             throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
         }
@@ -89,11 +97,12 @@ export class PrinterService implements IPrinterService {
         if (this.printer == null){
             throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
         }
-
+        
         // Deal with .gcode files by stripping the extension and using .g. Leave gx files alone
         var pathInfo = path.parse(filePath);
+
         var fileName = pathInfo.name;
-        if (pathInfo.ext.toLowercase() != ".gx"){
+        if (pathInfo.ext.toLowerCase() != ".gx"){
             fileName = fileName + ".g"
         }
         else{
@@ -101,5 +110,9 @@ export class PrinterService implements IPrinterService {
         }
         
         return this.printer.StoreFileAsync(filePath, fileName);
+    }
+
+    public GetDebugMonitor() : PrinterDebugMonitor {
+        return this.printer.PrinterDebugMonitor;
     }
 }

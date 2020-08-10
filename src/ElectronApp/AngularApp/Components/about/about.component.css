@@ -1,6 +1,8 @@
+.aboutPage,
 .licence {
     margin: 20px;
 }
+
 .licence span {
     font-size: 80%;
     font-family: 'Courier New', Courier, monospace;

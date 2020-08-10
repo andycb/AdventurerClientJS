@@ -42,6 +42,7 @@ var fs = require('fs');
 var crc32 = require('crc').crc32;
 var PrinterResponseReader_1 = require("./PrinterResponseReader");
 var MachineCommands_1 = require("./MachineCommands");
+var PrinterDebugMonitor_1 = require("./Entities/PrinterDebugMonitor");
 /// <summary>
 /// Represents the printer.
 /// </summary>
@@ -64,8 +65,22 @@ var Printer = /** @class */ (function () {
         /// The number of bytes sent to the printer in each packet.
         /// </summary>
         this.packetSizeBytes = 4096;
+        this.PrinterDebugMonitor = new PrinterDebugMonitor_1.PrinterDebugMonitor();
         this.printerAddress = ipAddress;
     }
+    Printer.prototype.SendToPrinter = function (data) {
+        data = data + "\n";
+        if (this.PrinterDebugMonitor != null) {
+            this.PrinterDebugMonitor.LogDataToPrinter(data);
+        }
+        this.printerConnection.write(data);
+    };
+    Printer.prototype.SendBufferToPrinter = function (data) {
+        if (this.PrinterDebugMonitor != null) {
+            this.PrinterDebugMonitor.LogDataToPrinter(data.toString());
+        }
+        this.printerConnection.write(data);
+    };
     /// <summary>
     /// Connects to the specified printer.
     /// </summary>
@@ -85,6 +100,9 @@ var Printer = /** @class */ (function () {
                         _this.printerConnection.on('close', function () {
                             _this.isConnected = false;
                         });
+                        _this.printerConnection.on('data', function (data) {
+                            _this.PrinterDebugMonitor.LogDataFromPriter(data);
+                        });
                         _this.printerConnection.connect(8899, _this.printerAddress, function () { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
@@ -103,6 +121,9 @@ var Printer = /** @class */ (function () {
             });
         });
     };
+    Printer.prototype.Disconnect = function () {
+        this.printerConnection.destroy();
+    };
     /// <summary>
     /// Gets the current status of the printer.
     /// </summary>
@@ -112,7 +133,7 @@ var Printer = /** @class */ (function () {
     Printer.prototype.GetPrinterStatusAsync = function () {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands_1.MachineCommands.GetEndstopStaus;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
         // Get its answer
         return this.responseReader.GerPrinterResponce(MachineCommands_1.MachineCommands.GetEndstopStaus);
     };
@@ -125,7 +146,7 @@ var Printer = /** @class */ (function () {
     Printer.prototype.GetFirmwareVersionAsync = function () {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands_1.MachineCommands.GetFirmwareVersion;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
         // Get its answer
         return this.responseReader.GerPrinterResponce(MachineCommands_1.MachineCommands.GetFirmwareVersion);
     };
@@ -138,7 +159,7 @@ var Printer = /** @class */ (function () {
     Printer.prototype.GetTemperatureAsync = function () {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands_1.MachineCommands.GetTemperature;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
         // Get its answer
         return this.responseReader.GerPrinterResponce(MachineCommands_1.MachineCommands.GetTemperature);
     };
@@ -153,9 +174,9 @@ var Printer = /** @class */ (function () {
         this.ValidatePrinterReady();
         var message = "~" + command;
         console.log(message);
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
         // Get its answer
-        return this.responseReader.GerPrinterResponce(command);
+        return this.WaitForPrinterAck(command);
     };
     /// <summary>
     /// Instructs the printer to print a file already stored in its internal memory.
@@ -169,7 +190,7 @@ var Printer = /** @class */ (function () {
     Printer.prototype.PrintFileAsync = function (fileName) {
         this.ValidatePrinterReady();
         var message = "~" + MachineCommands_1.MachineCommands.PrintFileFromSd + " 0:/user/" + fileName;
-        this.printerConnection.write(message);
+        this.SendToPrinter(message);
         return this.WaitForPrinterAck(MachineCommands_1.MachineCommands.PrintFileFromSd);
     };
     /// <summary>
@@ -202,7 +223,7 @@ var Printer = /** @class */ (function () {
                     case 1:
                         modelBytes = _a.sent();
                         message = "~" + MachineCommands_1.MachineCommands.BeginWriteToSdCard + " " + modelBytes.length + " 0:/user/" + fileName;
-                        this.printerConnection.write(message);
+                        this.SendToPrinter(message);
                         return [4 /*yield*/, this.WaitForPrinterAck(MachineCommands_1.MachineCommands.BeginWriteToSdCard)];
                     case 2:
                         _a.sent();
@@ -242,12 +263,13 @@ var Printer = /** @class */ (function () {
                                 bufferToSend.writeUInt8(packet[i], i + 16);
                             }
                             // Send it to the printer
-                            this.printerConnection.write(bufferToSend);
+                            this.SendBufferToPrinter(bufferToSend);
                             offset += this.packetSizeBytes;
                             ++count;
                         }
+                        this.SendToPrinter("");
                         message = "~" + MachineCommands_1.MachineCommands.EndWriteToSdCard;
-                        this.printerConnection.write(message);
+                        this.SendToPrinter(message);
                         return [2 /*return*/, this.WaitForPrinterAck(MachineCommands_1.MachineCommands.EndWriteToSdCard)];
                 }
             });

@@ -1,0 +1,14 @@
+.statusTable {
+    display:inline-block;
+    margin: 20px;
+}
+
+.statusTable th {
+    text-align: right;
+    padding: 5px;
+}
+
+.statusTable td {
+    text-align: left;
+    padding: 5px;
+}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterServiceWrapperService } from "../../Services/printer-service-wrapper.service" 
 import { ErrorLogger } from 'ElectronApp/Core/ErrorLogger';
-import { stat } from 'fs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-status',
@@ -10,35 +10,28 @@ import { stat } from 'fs';
 })
 export class StatusComponent implements OnInit {
   PrinterStatus: string;
-  EndstopX: string;
-  EndstopY: string;
-  EndstopZ: string;
-  BuildVolumeX: string;
-  BuildVolumeY: string;
-  BuildVolumeZ: string;
+  Endstop: string;
+  BuildVolume: string;
   FirmwareVersion: string;
   SerialNumber: string;
   PrinterName: string;
   BuildPlateTemp: string;
   Tool0Temp: string;
 
-  constructor(private printerService: PrinterServiceWrapperService) { }
+ 
+  constructor(private printerService: PrinterServiceWrapperService, private router: Router) { }
 
   private async UpdateStatusText(){
     try{
       var status = await this.printerService.GetPrinterStatusAsync();
       this.PrinterStatus = status.MachineStatus;
-      this.EndstopX = status.Endstop.X.toString();
-      this.EndstopY = status.Endstop.Y.toString();
-      this.EndstopZ = status.Endstop.Z.toString();
+      this.Endstop = status.Endstop.X.toString() + "," + status.Endstop.Y.toString() + "," + status.Endstop.Z.toString();
 
       var firmwareInfo = await this.printerService.GetFirmwareVersionAsync();
       this.FirmwareVersion = firmwareInfo.FirmwareVersion;
       this.SerialNumber = firmwareInfo.SerialNumber;
       this.PrinterName = firmwareInfo.MachineType;
-      this.BuildVolumeX = firmwareInfo.BuildVolume.X.toString();
-      this.BuildVolumeY = firmwareInfo.BuildVolume.Y.toString();
-      this.BuildVolumeZ = firmwareInfo.BuildVolume.Z.toString();
+      this.BuildVolume = firmwareInfo.BuildVolume.X.toString() + "," + firmwareInfo.BuildVolume.Y.toString() + "," + firmwareInfo.BuildVolume.Z.toString();
 
       var temp = await this.printerService.GetTemperatureAsync();
       this.Tool0Temp = temp.Tool0Temp.toString();
@@ -51,8 +44,16 @@ export class StatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.UpdateStatusText();
+
+    setInterval(() => {
+      this.UpdateStatusText();
+    }, 2000);
   }
 
+  dosconnect(){
+    this.printerService.Disconnect();
+    this.router.navigate(['/']);
+  }
 
 
 }

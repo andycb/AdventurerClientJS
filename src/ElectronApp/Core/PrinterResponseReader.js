@@ -31,16 +31,19 @@ var PrinterResponseReader = /** @class */ (function () {
         this.lineBuffer = new Array();
         this.responceBuffer = new Array();
         this.pendingCalls = new Array();
+        this.buffer = "";
         this.socket = socket;
         this.socket.on('data', function (d) { return _this.HandleData(d.toString()); });
     }
+    PrinterResponseReader.prototype.CheckForNewData = function () {
+        this.TryDrainPendingCalls();
+    };
     PrinterResponseReader.prototype.HandleData = function (data) {
         var prev = 0, next;
         while ((next = data.indexOf('\n', prev)) > -1) {
             this.buffer += data.substring(prev, next);
             // Found a new line
             this.lineBuffer.push(this.buffer);
-            console.log(">>>" + this.buffer);
             this.TryDrainBuffer();
             this.buffer = '';
             prev = next + 1;
@@ -53,7 +56,7 @@ var PrinterResponseReader = /** @class */ (function () {
         if (mostResentLine == "ok" || mostResentLine == "ok.") {
             // Find a machine command
             var commandId = this.GetCommandId();
-            if (commandId.length > 0) {
+            if (commandId != null && commandId.length > 0) {
                 this.responceBuffer.push(new PendingResponce_1.RendingResponce(commandId, this.GenerateResponce(commandId, this.lineBuffer)));
                 this.TryDrainPendingCalls();
             }
@@ -68,7 +71,7 @@ var PrinterResponseReader = /** @class */ (function () {
             if (errorParts.length == 2) {
                 errorCode = errorParts[0];
             }
-            if (commandId.length > 0) {
+            if (commandId != null && commandId.length > 0) {
                 // Failed to find a command, the buffer is useless.
                 this.responceBuffer.push(new PendingResponce_1.RendingResponce(commandId, null, new Error(errorCode)));
                 this.TryDrainPendingCalls();
@@ -88,30 +91,24 @@ var PrinterResponseReader = /** @class */ (function () {
         return null;
     };
     PrinterResponseReader.prototype.TryDrainPendingCalls = function () {
-        var _this = this;
         for (var i = 0; i < this.responceBuffer.length; ++i) {
             for (var a = 0; a < this.pendingCalls.length; ++a) {
                 var response = this.responceBuffer[i];
                 var pendingCall = this.pendingCalls[a];
                 if (response.CommandId == pendingCall.CommandId) {
-                    pendingCall.Accept(response.Result);
+                    if (response.Error != null) {
+                        pendingCall.Reject(response.Error);
+                    }
+                    else {
+                        pendingCall.Accept(response.Result);
+                    }
                     this.responceBuffer.splice(i, 1);
                     this.pendingCalls.splice(a, 1);
                     return;
                 }
             }
         }
-        this.pendingCalls.forEach(function (pendingCall) {
-            _this.responceBuffer.forEach(function (responce) {
-                if (response.Error != null) {
-                    pendingCall.Reject(responce.Error);
-                }
-                else {
-                    pendingCall.Accept(responce.Result);
-                }
-                return;
-            });
-        });
+        console.log("Warning. Found no caller for response. Queue lenth = " + this.responceBuffer.length + " / " + this.pendingCalls.length);
     };
     /// <summary>
     /// Gets the reponce for a command from the printer.

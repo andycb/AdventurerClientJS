@@ -1,0 +1,18 @@
+<ng-container
+  *ngIf="SendInProgress; then sending; else ready">
+</ng-container>
+
+<ng-template #ready>
+  <div #ready class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+      <span class="instructions drag">To print a .gx .gcode or .g file, drag it here or click to pick.</span>
+      <span class="instructions drop">Drop file here to print it it.</span>
+      <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+  </div>
+</ng-template>
+
+<ng-template #sending>
+  <div #sending class="sendInProgress">
+    <span>Transferring file to printer</span>
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

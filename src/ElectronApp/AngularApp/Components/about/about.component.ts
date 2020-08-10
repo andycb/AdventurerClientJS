@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+const {app} = window.require('electron').remote
+//const {shell} = window.require("shell")
 
 @Component({
   selector: 'app-about',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+    this.Version = app.getVersion();
+  }
+
+  public Version: string;
 
   ngOnInit(): void {
   }
 
+  public OpenProjectUrl() {
+    ////shell.openExternal("https://github.com/andycb/AdventurerClientJS");
+  }
 }

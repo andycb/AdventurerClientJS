@@ -5,6 +5,7 @@ import { TemperatureResponse } from "../../Core/Entities/TemperatureResponse"
 import { DebugResponse } from "../../Core/Entities/DebugResponse"
 import { FirmwareVersionResponse } from "../../Core/Entities/FirmwareVersionResponse"
 import { EventDispatcher } from "../../Core/EventDispatcher"
+import { PrinterDebugMonitor } from "../../Core/Entities/PrinterDebugMonitor"
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class PrinterServiceWrapperService implements IPrinterService {
 
   public GetIsConnected(): boolean {
     return this.electronPrinterService.GetIsConnected();
+  }
+
+  public Disconnect(){
+    this.electronPrinterService.Disconnect();
   }
 
   GetPrinterStatusAsync(): Promise<PrinterStatus> {
@@ -51,4 +56,8 @@ export class PrinterServiceWrapperService implements IPrinterService {
   SendDebugCommandAsync(command: string) : Promise<DebugResponse> {
     return this.electronPrinterService.SendDebugCommandAsync(command);
   }
+
+  public GetDebugMonitor() : PrinterDebugMonitor {
+    return this.electronPrinterService.GetDebugMonitor();
+}
 }

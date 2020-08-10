@@ -1,0 +1,34 @@
+.uploadfilecontainer {
+    height: 200px;
+    margin: 20px;
+    border: 2px dashed #6041b0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.uploadfilecontainer.dragOver,
+.uploadfilecontainer:hover {
+    cursor: pointer;
+    background-color: #6041b044;
+}
+
+.uploadfilecontainer.dragOver .instructions.drag {
+    display: none;
+}
+
+.uploadfilecontainer.dragOver .instructions.drop {
+    display: block;
+}
+
+.instructions.drop {
+    display: none;
+}
+
+.instructions {
+    text-align: center;
+}
+

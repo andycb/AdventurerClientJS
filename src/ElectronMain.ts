@@ -6,12 +6,12 @@ import * as url from "url";
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 600,
+    height: 450,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, "/preload.js"),
     },
-    width: 800,
+    width: 500,
   });
 
   // and load the index.html of the app.
@@ -21,9 +21,6 @@ function createWindow() {
       protocol: "file:",
       slashes: true
     }));
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
@@ -47,9 +44,3 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
-
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.
-
-
-
