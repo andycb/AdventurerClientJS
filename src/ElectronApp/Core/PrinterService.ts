@@ -102,7 +102,12 @@ export class PrinterService implements IPrinterService {
         var pathInfo = path.parse(filePath);
 
         var fileName = pathInfo.name;
-        if (pathInfo.ext.toLowerCase() != ".gx"){
+        var extension = pathInfo.ext.toLowerCase();
+        if (extension != ".g" && extension != ".gx" && extension != ".gcode"){
+            throw new Error("Invalid file type");
+        }
+
+        if (extension != ".gx"){
             fileName = fileName + ".g"
         }
         else{

@@ -19,6 +19,11 @@ function createWindow() {
         protocol: "file:",
         slashes: true
     }));
+    mainWindow.webContents.on('new-window', function (e, url) {
+        e.preventDefault();
+        console.log("Opening external - " + url);
+        require('electron').shell.openExternal(url);
+    });
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

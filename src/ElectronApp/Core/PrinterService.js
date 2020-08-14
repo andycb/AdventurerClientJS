@@ -133,7 +133,11 @@ var PrinterService = /** @class */ (function () {
         // Deal with .gcode files by stripping the extension and using .g. Leave gx files alone
         var pathInfo = path.parse(filePath);
         var fileName = pathInfo.name;
-        if (pathInfo.ext.toLowerCase() != ".gx") {
+        var extension = pathInfo.ext.toLowerCase();
+        if (extension != ".g" && extension != ".gx" && extension != ".gcode") {
+            throw new Error("Invalid file type");
+        }
+        if (extension != ".gx") {
             fileName = fileName + ".g";
         }
         else {

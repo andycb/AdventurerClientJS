@@ -10,26 +10,31 @@ import { ErrorLogger } from 'ElectronApp/Core/ErrorLogger';
 export class PrintComponent implements OnInit {
 
   public SendInProgress = false;
+  public Success: boolean;
   constructor(private printerService: PrinterServiceWrapperService) { }
 
   ngOnInit(): void {
   }
 
-  files: any = [];
+  public files: any = [];
+  public ErrorMessage: string;
 
   async uploadFile(event) {
     var path = event[0].path;
-    if (path){
 
+    if (path){
       try{
         this.SendInProgress = true;
+        this.Success = false;
+        this.ErrorMessage = null;
+
         await this.printerService.StoreFileAsync(path)
         await this.printerService.PrintFileAsync(event[0].name);
-        console.log("Done sending");
+        this.Success = true;
       }
       catch(e){
         ErrorLogger.NonFatalError(e);
-        debugger
+        this.ErrorMessage = "Failed to send file to printer."
       }
 
       this.SendInProgress = false;
