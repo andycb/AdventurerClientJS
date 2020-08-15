@@ -1,5 +1,5 @@
 {
-  "name": "adventurerclient",
+  "name": "dventurerclient",
   "version": "0.0.1",
   "description": "An app for controling flashforge printers",
   "author": "Andy Bradford",
@@ -41,6 +41,7 @@
     "@types/node": "^12.12.50",
     "codelyzer": "^6.0.0",
     "electron": "^9.1.0",
+    "electron-packager": "^15.0.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.0.0",
