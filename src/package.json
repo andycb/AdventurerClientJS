@@ -13,6 +13,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "pack": "tsc ElectronMain.ts && tsc Preload.ts && ng build --base-href ./ && electron-packager . --all",
     "electron": "tsc ElectronMain.ts && tsc Preload.ts && ng build --base-href ./ && electron ."
   },
   "private": true,
