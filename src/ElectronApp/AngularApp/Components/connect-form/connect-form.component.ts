@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PrinterServiceWrapperService } from "../../Services/printer-service-wrapper.service"
+import { PrinterService } from "../../Services/PrinterService"
 import { ErrorLogger } from "../../../Core/ErrorLogger"
 import { FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import { ErrorStateMatcher} from '@angular/material/core';
@@ -30,7 +30,7 @@ export class ConnectFormComponent implements OnInit {
     Validators.required
   ]);
 
-  constructor(private route: ActivatedRoute, private printerService: PrinterServiceWrapperService, private router: Router){
+  constructor(private route: ActivatedRoute, private printerService: PrinterService, private router: Router){
 
     this.printerService.ConnectionStateChanged.Register(isConnected => {
       // If we now how a connection, continue to our original destination

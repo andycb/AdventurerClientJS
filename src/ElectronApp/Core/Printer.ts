@@ -1,6 +1,6 @@
-var net = require('net');
-var fs = require('fs');
-const { crc32 } = require('crc');
+var net = window.require('net');
+var fs = window.require('fs');
+const { crc32 } = window.require('crc');
 
 import { PrinterResponseReader } from "./PrinterResponseReader"
 import { PrinterStatus } from "./Entities/PrinterStatus"

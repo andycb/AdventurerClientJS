@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrinterServiceWrapperService } from '../../Services/printer-service-wrapper.service';
+import { PrinterService } from '../../Services/PrinterService';
 import { ErrorLogger } from 'ElectronApp/Core/ErrorLogger';
 
 @Component({
@@ -11,7 +11,7 @@ export class PrintComponent implements OnInit {
 
   public SendInProgress = false;
   public Success: boolean;
-  constructor(private printerService: PrinterServiceWrapperService) { }
+  constructor(private printerService: PrinterService) { }
 
   ngOnInit(): void {
   }

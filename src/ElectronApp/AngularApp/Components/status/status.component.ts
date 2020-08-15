@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrinterServiceWrapperService } from "../../Services/printer-service-wrapper.service" 
+import { PrinterService } from "../../Services/PrinterService" 
 import { ErrorLogger } from 'ElectronApp/Core/ErrorLogger';
 
 @Component({
@@ -18,7 +18,7 @@ export class StatusComponent implements OnInit {
   Tool0Temp: string;
 
  
-  constructor(private printerService: PrinterServiceWrapperService) { }
+  constructor(private printerService: PrinterService) { }
 
   private async UpdateStatusText(){
     try{

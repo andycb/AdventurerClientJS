@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators} from '@angular/forms';
-import { PrinterServiceWrapperService } from '../../Services/printer-service-wrapper.service';
+import { PrinterService } from '../../Services/PrinterService';
 import { PrinterDebugMonitor, LoggedMessage, LoggedMessageDirection } from "../../../Core/Entities/PrinterDebugMonitor"
 
 @Component({
@@ -19,7 +19,7 @@ export class DebugComponent implements OnInit {
     Validators.required
   ]);
 
-  constructor(private printerService: PrinterServiceWrapperService) {
+  constructor(private printerService: PrinterService) {
     this.RegisterForDebugMessages();
   }
 

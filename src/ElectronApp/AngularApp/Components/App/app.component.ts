@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PrinterServiceWrapperService } from "../../Services/printer-service-wrapper.service"
+import { PrinterService } from "../../Services/PrinterService"
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'adventurerclient';
 
-  constructor(private printerService: PrinterServiceWrapperService, private router: Router){
+  constructor(private printerService: PrinterService, private router: Router){
     this.printerService = printerService;
 
     this.printerService.ConnectionStateChanged.Register((e) => this.OnPrinterStateChanged(e));

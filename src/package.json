@@ -1,11 +1,45 @@
 {
-  "name": "dventurerclient",
+  "name": "adventurerclient",
   "version": "0.0.1",
-  "description": "An app for controling flashforge printers",
+  "description": "An app for controling Flashforge printers",
   "author": "Andy Bradford",
   "license": "MIT",
   "repository": "https://github.com/andycb/AdventurerClientJS",
   "main": "ElectronMain.js",
+  "build": {
+    "appId": "com.andycb.adventurerclientjs",
+    "productName": "Adventurer Client",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "directories": {
+      "output": "distPackages"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 340,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,8 +47,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "pack": "tsc ElectronMain.ts && tsc Preload.ts && ng build --base-href ./ && electron-packager . --all",
-    "electron": "tsc ElectronMain.ts && tsc Preload.ts && ng build --base-href ./ && electron ."
+    "postinstall": "install-app-deps",
+    "electron": "tsc ElectronMain.ts && ng build --base-href ./ && electron .",
+    "distwin": "tsc ElectronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64",
+    "distmac": "tsc ElectronMain.ts && ng build --base-href ./ && electron-builder --mac --x64"
   },
   "private": true,
   "dependencies": {
@@ -42,6 +78,7 @@
     "@types/node": "^12.12.50",
     "codelyzer": "^6.0.0",
     "electron": "^9.1.0",
+    "electron-builder": "^22.8.0",
     "electron-packager": "^15.0.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
