@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PrinterServiceWrapperService } from "../../Services/printer-service-wrapper.service"
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,18 +10,15 @@ import { PrinterServiceWrapperService } from "../../Services/printer-service-wra
 export class AppComponent {
   title = 'adventurerclient';
 
-  private printerService: PrinterServiceWrapperService;
-
-
-  constructor(printerService: PrinterServiceWrapperService){
+  constructor(private printerService: PrinterServiceWrapperService, private router: Router){
     this.printerService = printerService;
 
     this.printerService.ConnectionStateChanged.Register((e) => this.OnPrinterStateChanged(e));
   }
 
   private OnPrinterStateChanged(connected: boolean) {
-    this.Isconnected = connected;
+    if (!connected){
+      this.router.navigate(['connect']);
+    }
   }
-
-  public Isconnected : boolean;
 }

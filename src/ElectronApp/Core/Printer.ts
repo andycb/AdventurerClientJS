@@ -64,13 +64,13 @@ export class Printer {
         this.printerAddress = ipAddress;
     }
 
-    public readonly PrinterDebugMonitor = new PrinterDebugMonitor();
+    public PrinterDebugMonitor: PrinterDebugMonitor;
 
     private SendToPrinter(data: string): void {
 
         data = data + "\n";
 
-        if (this.PrinterDebugMonitor != null){
+        if (this.PrinterDebugMonitor){
             this.PrinterDebugMonitor.LogDataToPrinter(data);
         }
 
@@ -105,7 +105,9 @@ export class Printer {
             });
 
             this.printerConnection.on('data', data => {
-                this.PrinterDebugMonitor.LogDataFromPriter(data)
+                if (this.PrinterDebugMonitor){
+                    this.PrinterDebugMonitor.LogDataFromPriter(data)
+                }
             });
             
             this.printerConnection.connect(8899, this.printerAddress, async () => {

@@ -11,14 +11,24 @@ import { PrinterDebugMonitor, LoggedMessage, LoggedMessageDirection } from "../.
 export class DebugComponent implements OnInit {
 
   public ResponseLines: Array<string> = [];
+  public DebugLoggingEnabled = false; //= new FormControl('', [ ]);
+
+  private isRegistered = false;
 
   PrinterCommand = new FormControl('', [
     Validators.required
   ]);
 
   constructor(private printerService: PrinterServiceWrapperService) {
+    this.RegisterForDebugMessages();
+  }
+
+  private RegisterForDebugMessages(): void{
     var dbgMonior = this.printerService.GetDebugMonitor();
-    if (dbgMonior != null){
+
+    if (dbgMonior != null && !this.isRegistered) {
+      this.isRegistered = true;
+    
       dbgMonior.NewMessage.Register(n => {
         this.ResponseLines.push(this.FormatLine(n));
       });
@@ -27,10 +37,15 @@ export class DebugComponent implements OnInit {
 
   ngOnInit(): void {
     var dbgMonior = this.printerService.GetDebugMonitor();
+    
     if (dbgMonior != null){
+      this.DebugLoggingEnabled = true;
       dbgMonior.GetLog().forEach(l => {
         this.ResponseLines.push(this.FormatLine(l));
       });
+    }
+    else {
+      //this.DebugLoggingEnabled = false;
     }
   }
 
@@ -48,4 +63,16 @@ export class DebugComponent implements OnInit {
     await this.printerService.SendDebugCommandAsync(this.PrinterCommand.value.trim());
   }
 
+  public DebugLoggingChanged(enabled: boolean){
+    //this.DebugLoggingEnabled = enabled;
+    if (enabled){
+      this.printerService.EnableDebugLogging();
+      this.RegisterForDebugMessages();
+    }
+    else {
+      this.printerService.DisableDebugLogging();
+      this.isRegistered = false;
+      this.ResponseLines = [];
+    }
+  }
 }

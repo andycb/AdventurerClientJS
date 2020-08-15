@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterServiceWrapperService } from "../../Services/printer-service-wrapper.service" 
 import { ErrorLogger } from 'ElectronApp/Core/ErrorLogger';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-status',
@@ -19,7 +18,7 @@ export class StatusComponent implements OnInit {
   Tool0Temp: string;
 
  
-  constructor(private printerService: PrinterServiceWrapperService, private router: Router) { }
+  constructor(private printerService: PrinterServiceWrapperService) { }
 
   private async UpdateStatusText(){
     try{
@@ -52,7 +51,6 @@ export class StatusComponent implements OnInit {
 
   dosconnect(){
     this.printerService.Disconnect();
-    this.router.navigate(['/']);
   }
 
 

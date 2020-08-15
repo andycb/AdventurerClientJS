@@ -1,5 +1,12 @@
+.debugControls{
+    margin: 20px;
+}
+
+.enableCheckbox{
+    margin-top: 10px;
+}
+
 .instructions {
-    font-size: 95%;
     font-weight: lighter;
 }
 
@@ -10,6 +17,7 @@
     padding: 20px;
     margin: 20px;
     overflow: scroll;
+    text-align: left;
 }
 
 .responce ul {

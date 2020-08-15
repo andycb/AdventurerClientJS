@@ -59,5 +59,13 @@ export class PrinterServiceWrapperService implements IPrinterService {
 
   public GetDebugMonitor() : PrinterDebugMonitor {
     return this.electronPrinterService.GetDebugMonitor();
-}
+  }
+
+  public EnableDebugLogging() : void {
+    this.electronPrinterService.EnableDebugLogging();
+  }
+
+  public DisableDebugLogging() : void {
+    this.electronPrinterService.DisableDebugLogging();
+  }
 }

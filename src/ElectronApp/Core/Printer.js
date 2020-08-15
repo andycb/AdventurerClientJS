@@ -42,7 +42,6 @@ var fs = require('fs');
 var crc32 = require('crc').crc32;
 var PrinterResponseReader_1 = require("./PrinterResponseReader");
 var MachineCommands_1 = require("./MachineCommands");
-var PrinterDebugMonitor_1 = require("./Entities/PrinterDebugMonitor");
 /// <summary>
 /// Represents the printer.
 /// </summary>
@@ -65,12 +64,11 @@ var Printer = /** @class */ (function () {
         /// The number of bytes sent to the printer in each packet.
         /// </summary>
         this.packetSizeBytes = 4096;
-        this.PrinterDebugMonitor = new PrinterDebugMonitor_1.PrinterDebugMonitor();
         this.printerAddress = ipAddress;
     }
     Printer.prototype.SendToPrinter = function (data) {
         data = data + "\n";
-        if (this.PrinterDebugMonitor != null) {
+        if (this.PrinterDebugMonitor) {
             this.PrinterDebugMonitor.LogDataToPrinter(data);
         }
         this.printerConnection.write(data);
@@ -101,7 +99,9 @@ var Printer = /** @class */ (function () {
                             _this.isConnected = false;
                         });
                         _this.printerConnection.on('data', function (data) {
-                            _this.PrinterDebugMonitor.LogDataFromPriter(data);
+                            if (_this.PrinterDebugMonitor) {
+                                _this.PrinterDebugMonitor.LogDataFromPriter(data);
+                            }
                         });
                         _this.printerConnection.connect(8899, _this.printerAddress, function () { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {

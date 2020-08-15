@@ -40,6 +40,7 @@ exports.PrinterService = void 0;
 var Printer_1 = require("./Printer");
 var ErrorLogger_1 = require("./ErrorLogger");
 var EventDispatcher_1 = require("./EventDispatcher");
+var PrinterDebugMonitor_1 = require("./Entities/PrinterDebugMonitor");
 var path = require('path');
 var PrinterService = /** @class */ (function () {
     function PrinterService() {
@@ -147,6 +148,14 @@ var PrinterService = /** @class */ (function () {
     };
     PrinterService.prototype.GetDebugMonitor = function () {
         return this.printer.PrinterDebugMonitor;
+    };
+    PrinterService.prototype.EnableDebugLogging = function () {
+        if (this.printer.PrinterDebugMonitor == null) {
+            this.printer.PrinterDebugMonitor = new PrinterDebugMonitor_1.PrinterDebugMonitor();
+        }
+    };
+    PrinterService.prototype.DisableDebugLogging = function () {
+        this.printer.PrinterDebugMonitor = null;
     };
     return PrinterService;
 }());

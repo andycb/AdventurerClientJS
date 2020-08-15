@@ -1,23 +1,27 @@
-<div class="loginForm">
-    <h2 class="instructions">Use this page to send G-Code commands to the printer and see the raw responce.</h2>
-  
+<div class="debugControls">
+    <span class="instructions">Use this page to inspect the communication between the app and printer. Only enable if you are confident fiddling with the raw printer commands.</span>
+    <br><br>
+    <mat-checkbox class="enableCheckbox" [(ngModel)]="DebugLoggingEnabled" (change)="DebugLoggingChanged($event.checked)">Enable debug logging</mat-checkbox>
+</div>
+
+<div *ngIf="DebugLoggingEnabled">
     <mat-form-field class="example-full-width">
-      <mat-label>Command</mat-label>
-      <input 
+        <mat-label>Command</mat-label>
+        <input 
         matInput [formControl]="PrinterCommand" 
         placeholder="M115">
-
+    
         <mat-error *ngIf="PrinterCommand.hasError('required')">
             Printer command <strong>required</strong>
-          </mat-error>
+            </mat-error>
     </mat-form-field>
-  
+    
     <br>
     <a mat-stroked-button (click)="sendCommand()">Send Command</a>
-
+    
     <div class="responce">
         <ul *ngFor="let line of ResponseLines">
             <li>{{line}}</li>
         </ul>
     </div>
-</div> 
+</div>

@@ -120,4 +120,14 @@ export class PrinterService implements IPrinterService {
     public GetDebugMonitor() : PrinterDebugMonitor {
         return this.printer.PrinterDebugMonitor;
     }
+
+    public EnableDebugLogging() : void {
+        if (this.printer.PrinterDebugMonitor == null) {
+            this.printer.PrinterDebugMonitor = new PrinterDebugMonitor();
+        }
+    }
+
+    public DisableDebugLogging() : void {
+        this.printer.PrinterDebugMonitor = null;
+    }
 }

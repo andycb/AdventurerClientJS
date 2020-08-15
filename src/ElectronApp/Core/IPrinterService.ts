@@ -18,4 +18,6 @@ export interface IPrinterService {
     GetFirmwareVersionAsync() : Promise<FirmwareVersionResponse>;
     GetTemperatureAsync() : Promise<TemperatureResponse>;
     GetDebugMonitor() : PrinterDebugMonitor;
+    EnableDebugLogging(): void;
+    DisableDebugLogging();
 }

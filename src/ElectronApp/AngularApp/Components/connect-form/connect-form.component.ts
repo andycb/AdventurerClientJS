@@ -61,5 +61,5 @@ export class ConnectFormComponent implements OnInit {
       this.isError = true;
       ErrorLogger.NonFatalError(e);
     }
-  } 
+  }
 }
