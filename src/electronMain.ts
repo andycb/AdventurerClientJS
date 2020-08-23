@@ -14,6 +14,8 @@ function createWindow(): void {
     width: 500,
   });
 
+  mainWindow.removeMenu();
+
   // and load the index.html of the app.
   mainWindow.loadURL(
     url.format({

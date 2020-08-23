@@ -36,8 +36,7 @@
       ]
     },
     "win": {
-      "target": "NSIS",
-      "icon": "build/icon.ico"
+      "target": "NSIS"
     }
   },
   "scripts": {
@@ -79,6 +78,7 @@
     "codelyzer": "^6.0.0",
     "electron": "^9.1.0",
     "electron-builder": "^22.8.0",
+    "electron-icon-maker": "0.0.5",
     "electron-packager": "^15.0.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
