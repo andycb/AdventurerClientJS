@@ -11,6 +11,7 @@ pool:
   
 name: 1.0.$(Date:yyMMdd)$(Rev:.r)
 
+steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
