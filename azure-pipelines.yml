@@ -34,9 +34,16 @@ steps:
   env:
     GH_TOKEN: $(GITHUB_TOKEN)
   displayName: 'Package electron for Windows'
+  
+- script: |
+    cd src
+    npm run distmac
+  env:
+    GH_TOKEN: $(GITHUB_TOKEN)
+  displayName: 'Package electron for Mac'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'src/distPackages/*.exe'
+    PathtoPublish: 'src/distPackages'
     ArtifactName: 'drop'
-    publishLocation: 'Container' 
+    publishLocation: 'Container'
