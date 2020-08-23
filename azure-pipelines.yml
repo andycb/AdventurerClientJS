@@ -7,15 +7,9 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'macOS-latest'
   
 name: 1.0.$(Date:yyMMdd)$(Rev:.r)
-
-steps:
-- script: |
-    cd src
-    echo $(Build.BuildNumber)
-  displayName: 'Version number test'
 
 - task: NodeTool@0
   inputs:
@@ -24,8 +18,7 @@ steps:
 
 - script: |
     cd src
-    echo $(Build.BuildNumber)
-    npm $(Build.BuildNumber)
+    npm --no-git-tag-version version $(Build.BuildNumber)
   displayName: 'Update Version Number'
 
 - script: |
