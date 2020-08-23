@@ -1,7 +1,7 @@
 # AdventurerClientJS
 A cross platform application for communicating with the FlashForge Adventurer and Monoprice Voxel 3D Printer.
 
-![alt text](docs/images/statusScreen.png "Screenshot of the app")
+<img src="docs/images/statusScreen.png" width="550">
 
 ## Building
 1) Install [NodeJS](https://nodejs.org)
