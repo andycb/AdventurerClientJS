@@ -9,7 +9,7 @@ trigger:
 pool:
   vmImage: 'macOS-latest'
   
-name: 1.0.$(Date:yyMMdd)$(Rev:.r)
+name: 1.0.$(Date:yyMMdd)$(Rev:r)
 
 steps:
 - task: NodeTool@0
@@ -19,6 +19,7 @@ steps:
 
 - script: |
     cd src
+    echo $(Build.BuildNumber)
     npm --no-git-tag-version version $(Build.BuildNumber)
   displayName: 'Update Version Number'
 
