@@ -14,6 +14,9 @@ import { DebugComponent } from './components/debug/debug.component';
 import { PrintComponent } from './components/print/print.component';
 import { DragDropDirective } from './ directives/dragDropDirective';
 
+/**
+ * The app module.
+ */
 @NgModule({
   declarations: [
     AppComponent,

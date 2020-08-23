@@ -7,25 +7,24 @@
       "projectType": "application",
       "schematics": {},
       "root": "",
-      "sourceRoot": "ElectronApp",
+      "sourceRoot": "electronApp",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
-            "index": "ElectronApp/index.html",
-            "main": "ElectronApp/AngularMain.ts",
-            "polyfills": "ElectronApp/polyfills.ts",
+            "index": "electronApp/index.html",
+            "main": "electronApp/angularMain.ts",
+            "polyfills": "electronApp/polyfills.ts",
             "tsConfig": "tsconfig.json",
             "aot": true,
             "assets": [
-              "ElectronApp/favicon.ico",
-              "ElectronApp/assets"
+              "electronApp/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "ElectronApp/styles.css"
+              "electronApp/styles.css"
             ],
             "scripts": []
           },
@@ -33,8 +32,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "ElectronApp/environments/environment.ts",
-                  "with": "ElectronApp/environments/environment.prod.ts"
+                  "replace": "electronApp/environments/environment.ts",
+                  "with": "electronApp/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -85,12 +84,12 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "ElectronApp/favicon.ico",
-              "ElectronApp/assets"
+              "electronApp/favicon.ico",
+              "electronApp/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "ElectronApp/styles.css"
+              "electronApp/styles.css"
             ],
             "scripts": []
           }

@@ -1,131 +1,148 @@
 import { Injectable } from '@angular/core';
-import { IPrinterService } from "../../Core/IPrinterService"
-import { PrinterStatus } from "../../Core/Entities/PrinterStatus"
-import { TemperatureResponse } from "../../Core/Entities/TemperatureResponse"
-import { FirmwareVersionResponse } from "../../Core/Entities/FirmwareVersionResponse"
-import { EventDispatcher } from "../../Core/EventDispatcher"
-import { PrinterDebugMonitor } from "../../Core/Entities/PrinterDebugMonitor"
-import { Printer } from "../../Core/Printer"
-import { ErrorLogger } from "../../Core/ErrorLogger"
+import { IPrinterService } from './iPrinterService';
+import { PrinterStatus, TemperatureResponse, FirmwareVersionResponse, PrinterDebugMonitor } from '../../printerSdk/entities';
+import { EventDispatcher } from '../../core/eventDispatcher';
+import { Printer } from '../../printerSdk/printer';
+import { ErrorLogger } from '../../core/errorLogger';
 
-var path = window.require('path');
+const path = window.require('path');
 
+/**
+ * Injectable Printer service for communicating with printers.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class PrinterService implements IPrinterService {
+    /**
+     * Indicates that a printer is currently connected.
+     */
+    private isConnected: boolean;
 
-private isConected: boolean;
-public GetIsConnected(): boolean {
-    return this.isConected;
-}
+    /**
+     * The current printer instance.
+     */
+    printer: Printer = null;
 
-public readonly ConnectionStateChanged = new EventDispatcher<boolean>();
+    /** @inheritdoc */
+    public readonly ConnectionStateChanged = new EventDispatcher<boolean>();
 
-printer: Printer = null;
+    /** @inheritdoc */
+    public GetIsConnected(): boolean {
+        return this.isConnected;
+    }
 
-private constructor(){
-    // Private constructor
-}
+    /** @inheritdoc */
+    public async ConnectAsync(printerAddress: string): Promise<any> {
+        this.printer = new Printer(printerAddress);
+        await this.printer.ConnectAsync();
 
-public async ConnectAsync(printerAddress: string) : Promise<any> {
-    this.printer = new Printer(printerAddress);
-    await this.printer.ConnectAsync();
-    this.isConected = true;
-    this.ConnectionStateChanged.Invoke(true);
+        this.isConnected = true;
+        this.ConnectionStateChanged.Invoke(true);
 
-    setInterval(async () => {
-        try {
-            await this.printer.GetPrinterStatusAsync();
+        // Poll the printer every 5 sections to keep the connection alive, otherwise the printer will close the connection.
+        setInterval(async () => {
+            try {
+                await this.printer.GetPrinterStatusAsync();
+            }
+            catch (e){
+                ErrorLogger.NonFatalError(e);
+            }
+        }, 5000);
+    }
+
+    /** @inheritdoc */
+    public Disconnect(){
+        this.printer.Disconnect();
+        this.printer = null;
+        this.isConnected = false;
+        this.ConnectionStateChanged.Invoke(false);
+    }
+
+    /** @inheritdoc */
+    public GetPrinterStatusAsync(): Promise<PrinterStatus>{
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
         }
-        catch(e){
-            ErrorLogger.NonFatalError(e);
+
+        return this.printer.GetPrinterStatusAsync();
+    }
+
+    /** @inheritdoc */
+    public PrintFileAsync(fileName: string): Promise<any>{
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
         }
-    }, 5000);
-}
 
-public Disconnect(){
-    this.printer.Disconnect();
-    this.printer = null;
-    this.isConected = false;
-    this.ConnectionStateChanged.Invoke(false);
-}
-
-public GetPrinterStatusAsync() : Promise<PrinterStatus>{
-    if (this.printer == null){
-        throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        return this.printer.PrintFileAsync(fileName);
     }
 
-    return this.printer.GetPrinterStatusAsync();
-}
+    /** @inheritdoc */
+    public SendDebugCommandAsync(command: string): Promise<void> {
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+        }
 
-public PrintFileAsync(fileName: string) : Promise<any>{
-    if (this.printer == null){
-        throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        return this.printer.SendDebugCommandAsync(command);
     }
 
-    return this.printer.PrintFileAsync(fileName);
-}
+    /** @inheritdoc */
+    public GetFirmwareVersionAsync(): Promise<FirmwareVersionResponse> {
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+        }
 
-SendDebugCommandAsync(command: string) : Promise<any> {
-    if (this.printer == null){
-        throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        return this.printer.GetFirmwareVersionAsync();
     }
 
-    return this.printer.SendDebugCommandAsync(command);
-}
+    /** @inheritdoc */
+    public GetTemperatureAsync(): Promise<TemperatureResponse> {
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+        }
 
-GetFirmwareVersionAsync() : Promise<FirmwareVersionResponse> {
-    if (this.printer == null){
-        throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        return this.printer.GetTemperatureAsync();
     }
 
-    return this.printer.GetFirmwareVersionAsync();
-}   
+    /** @inheritdoc */
+    public StoreFileAsync(filePath: string): Promise<void>{
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+        }
 
-GetTemperatureAsync(): Promise<TemperatureResponse> {
-    if (this.printer == null){
-        throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
+        // Deal with .gcode files by stripping the extension and using .g. Leave gx files alone
+        const pathInfo = path.parse(filePath);
+
+        let fileName = pathInfo.name;
+        const extension = pathInfo.ext.toLowerCase();
+        if (extension !== '.g' && extension !== '.gx' && extension !== '.gcode'){
+            throw new Error('Invalid file type');
+        }
+
+        if (extension !== '.gx'){
+            fileName = fileName + '.g';
+        }
+        else{
+            fileName = fileName + '.gx';
+        }
+
+        return this.printer.StoreFileAsync(filePath, fileName);
     }
 
-    return this.printer.GetTemperatureAsync();
-}
-
-public StoreFileAsync(filePath: string) : Promise<void>{
-    if (this.printer == null){
-        throw new Error("Cannot call this method before calling and awaiting ConnectAsnc()");
-    }
-    
-    // Deal with .gcode files by stripping the extension and using .g. Leave gx files alone
-    var pathInfo = path.parse(filePath);
-
-    var fileName = pathInfo.name;
-    var extension = pathInfo.ext.toLowerCase();
-    if (extension != ".g" && extension != ".gx" && extension != ".gcode"){
-        throw new Error("Invalid file type");
+    /** @inheritdoc */
+    public GetDebugMonitor(): PrinterDebugMonitor {
+        return this.printer.PrinterDebugMonitor;
     }
 
-    if (extension != ".gx"){
-        fileName = fileName + ".g"
+    /** @inheritdoc */
+    public EnableDebugLogging(): void {
+        if (this.printer.PrinterDebugMonitor == null) {
+            this.printer.PrinterDebugMonitor = new PrinterDebugMonitor();
+        }
     }
-    else{
-        fileName = fileName + ".gx"
+
+    /** @inheritdoc */
+    public DisableDebugLogging(): void {
+        this.printer.PrinterDebugMonitor = null;
     }
-    
-    return this.printer.StoreFileAsync(filePath, fileName);
-}
-
-public GetDebugMonitor() : PrinterDebugMonitor {
-    return this.printer.PrinterDebugMonitor;
-}
-
-public EnableDebugLogging() : void {
-    if (this.printer.PrinterDebugMonitor == null) {
-        this.printer.PrinterDebugMonitor = new PrinterDebugMonitor();
-    }
-}
-
-public DisableDebugLogging() : void {
-    this.printer.PrinterDebugMonitor = null;
-}
 }

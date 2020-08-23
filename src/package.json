@@ -5,7 +5,7 @@
   "author": "Andy Bradford",
   "license": "MIT",
   "repository": "https://github.com/andycb/AdventurerClientJS",
-  "main": "ElectronMain.js",
+  "main": "electronMain.js",
   "build": {
     "appId": "com.andycb.adventurerclientjs",
     "productName": "Adventurer Client",
@@ -48,9 +48,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "install-app-deps",
-    "electron": "tsc ElectronMain.ts && ng build --base-href ./ && electron .",
-    "distwin": "tsc ElectronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64",
-    "distmac": "tsc ElectronMain.ts && ng build --base-href ./ && electron-builder --mac --x64"
+    "electron": "tsc electronMain.ts && ng build --base-href ./ && electron .",
+    "distwin": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64",
+    "distmac": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --mac --x64"
   },
   "private": true,
   "dependencies": {

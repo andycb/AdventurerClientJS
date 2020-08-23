@@ -1,46 +1,91 @@
 import { Component, OnInit } from '@angular/core';
-import { PrinterService } from "../../Services/PrinterService" 
-import { ErrorLogger } from 'ElectronApp/Core/ErrorLogger';
+import { PrinterService } from '../../services/printerService';
+import { ErrorLogger } from 'electronApp/core/errorLogger';
 
+/**
+ * The printer status component for showing the printer status.
+ */
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.css']
 })
 export class StatusComponent implements OnInit {
-  PrinterStatus: string;
-  Endstop: string;
-  BuildVolume: string;
-  FirmwareVersion: string;
-  SerialNumber: string;
-  PrinterName: string;
-  BuildPlateTemp: string;
-  Tool0Temp: string;
+  /**
+   * Gets the printer status.
+   */
+  public PrinterStatus: string;
 
- 
+  /**
+   * Gets the endstop position.
+   */
+  public Endstop: string;
+
+  /**
+   * Gets the printer build volume.
+   */
+  public BuildVolume: string;
+
+  /**
+   * Gets the printer firmware version
+   */
+  public FirmwareVersion: string;
+
+  /**
+   * Gets the printer serial number.
+   */
+  public SerialNumber: string;
+
+  /**
+   * Gets the printer model name.
+   */
+  public PrinterName: string;
+
+  /**
+   * Gets the temperature (un celsius) of the build plate.
+   */
+  public BuildPlateTemp: string;
+
+  /**
+   * Gets the temperature (un celsius) of the extruder.
+   */
+  public Tool0Temp: string;
+
+  /**
+   * Initializes a new instance of the StatusComponent class.
+   * @param printerService The printer service.
+   */
   constructor(private printerService: PrinterService) { }
 
-  private async UpdateStatusText(){
+  /**
+   * Updates the status text.
+   */
+  private async UpdateStatusText(): Promise<void> {
     try{
-      var status = await this.printerService.GetPrinterStatusAsync();
+      const status = await this.printerService.GetPrinterStatusAsync();
       this.PrinterStatus = status.MachineStatus;
-      this.Endstop = status.Endstop.X.toString() + "," + status.Endstop.Y.toString() + "," + status.Endstop.Z.toString();
+      this.Endstop = status.Endstop.X.toString() + ',' + status.Endstop.Y.toString() + ',' + status.Endstop.Z.toString();
 
-      var firmwareInfo = await this.printerService.GetFirmwareVersionAsync();
+      const firmwareInfo = await this.printerService.GetFirmwareVersionAsync();
       this.FirmwareVersion = firmwareInfo.FirmwareVersion;
       this.SerialNumber = firmwareInfo.SerialNumber;
       this.PrinterName = firmwareInfo.MachineType;
-      this.BuildVolume = firmwareInfo.BuildVolume.X.toString() + "," + firmwareInfo.BuildVolume.Y.toString() + "," + firmwareInfo.BuildVolume.Z.toString();
+      this.BuildVolume = firmwareInfo.BuildVolume.X.toString()
+        + ',' + firmwareInfo.BuildVolume.Y.toString()
+        + ',' + firmwareInfo.BuildVolume.Z.toString();
 
-      var temp = await this.printerService.GetTemperatureAsync();
+      const temp = await this.printerService.GetTemperatureAsync();
       this.Tool0Temp = temp.Tool0Temp.toString();
       this.BuildPlateTemp = temp.BuildPlateTemp.toString();
     }
-    catch(e){
+    catch (e){
       ErrorLogger.NonFatalError(e);
     }
   }
 
+  /**
+   * Invoked when the Angular component is initialized.
+   */
   ngOnInit(): void {
     this.UpdateStatusText();
 
@@ -49,9 +94,10 @@ export class StatusComponent implements OnInit {
     }, 2000);
   }
 
-  dosconnect(){
+  /**
+   * Disconnects from the printer.
+   */
+  public Disconnect(): void{
     this.printerService.Disconnect();
   }
-
-
 }

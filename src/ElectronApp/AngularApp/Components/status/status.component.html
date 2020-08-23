@@ -1,91 +1,48 @@
-<!-- <p>
-    <span>Status: </span>
-    <span>{{PrinterStatus}}</span>
-    
-    <br>
-    <span>Version: </span>
-    <span>{{FirmwareVersion}}</span>
+<table class="statusTable">
+    <tr>
+        <th>Status</th>
+        <td>{{PrinterStatus}}</td>
+    </tr>
 
-    <br>
-    <span>Serial Number: </span>
-    <span>{{SerialNumber}}</span>
+    <tr>
+        <th>Version</th>
+        <td>{{FirmwareVersion}}</td>
+    </tr>
 
-    <br>
-    <span>Model: </span>
-    <span>{{PrinterName}}</span>
+    <tr>
+        <th>Serial Number</th>
+        <td>{{SerialNumber}}</td>
+    </tr>
 
-    <br>
-    <span>Build Volume: </span>
-    <span>{{BuildVolumeX}}</span>
-    <span>,</span>
-    <span>{{BuildVolumeY}}</span>
-    <span>,</span>
-    <span>{{BuildVolumeZ}}</span>
+    <tr>
+        <th>Model</th>
+        <td>{{PrinterName}}</td>
+    </tr>
 
-    <br>
-    <span>Endstop: </span>
-    <span>{{EndstopX}}</span>
-    <span>,</span>
-    <span>{{EndstopY}}</span>
-    <span>,</span>
-    <span>{{EndstopZ}}</span>
+    <tr>
+        <th>Build Volume</th>
+        <td>{{BuildVolume}}</td>
+    </tr>
 
-    <br>
-    <span>Tool Temp: </span>
-    <span>{{Tool0Temp}}C</span>
+    <tr>
+        <th>Endstop</th>
+        <td>{{Endstop}}</td>
+    </tr>
 
-    <br>
-    <span>Build Plate Temp: </span>
-    <span>{{BuildPlateTemp}}C</span>
+    <tr>
+        <th>Extruder temperature</th>
+        <td>{{Tool0Temp}}</td>
+    </tr>
 
-    <a mat-stroked-button (click)="dosconnect()">Disconnect</a> -->
+    <tr>
+        <th>Build plate temperature</th>
+        <td>{{BuildPlateTemp}}</td>
+    </tr>
 
-    <table class="statusTable">
-        <tr>
-            <th>Status</th>
-            <td>{{PrinterStatus}}</td>
-        </tr>
-
-        <tr>
-            <th>Version</th>
-            <td>{{FirmwareVersion}}</td>
-        </tr>
-
-        <tr>
-            <th>Serial Number</th>
-            <td>{{SerialNumber}}</td>
-        </tr>
-
-        <tr>
-            <th>Model</th>
-            <td>{{PrinterName}}</td>
-        </tr>
-
-        <tr>
-            <th>Build Volume</th>
-            <td>{{BuildVolume}}</td>
-        </tr>
-
-        <tr>
-            <th>Endstop</th>
-            <td>{{Endstop}}</td>
-        </tr>
-
-
-        <tr>
-            <th>Extruder temperature</th>
-            <td>{{Tool0Temp}}</td>
-        </tr>
-
-        <tr>
-            <th>Build plate temperature</th>
-            <td>{{BuildPlateTemp}}</td>
-        </tr>
-
-        <tr>
-            <th></th>
-            <td>
-                <a mat-stroked-button (click)="dosconnect()">Disconnect</a> 
-            </td>
-        </tr>
-    </table>
+    <tr>
+        <th></th>
+        <td>
+            <a mat-stroked-button (click)="Disconnect()">Disconnect</a> 
+        </td>
+    </tr>
+</table>

@@ -3,7 +3,7 @@
 </ng-container>
 
 <ng-template #ready>
-  <div #ready class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+  <div #ready class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
     <span *ngIf="ErrorMessage" class="error">{{ErrorMessage}}</span>
     <span *ngIf="Success" class="success">File transferred successfully 🙂</span>
       <span class="instructions drag">To print a .gx .gcode or .g file, drag it here or click to pick.</span>

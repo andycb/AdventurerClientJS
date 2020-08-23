@@ -1,12 +1,21 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PrinterService } from "../../Services/PrinterService"
-import { ErrorLogger } from "../../../Core/ErrorLogger"
+import { PrinterService } from '../../services/printerService';
+import { ErrorLogger } from '../../../core/errorLogger';
 import { FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import { ErrorStateMatcher} from '@angular/material/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
+/**
+ * Error matcher for teh printer address.
+ */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+
+  /**
+   * Checks if a control is in an error state.
+   * @param control The control to check.
+   * @param form The form the control is in.
+   */
+  public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
@@ -21,15 +30,34 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./connect-form.component.css']
 })
 export class ConnectFormComponent implements OnInit {
-
+  /**
+   * Gets a value indicating that the error message should be shown.
+   */
   public isError: boolean;
-  private returnUrl: string;
-  matcher = new MyErrorStateMatcher();
 
+  /**
+   * The URL that the user was attempting to navigate to when directed here.
+   */
+  private returnUrl: string;
+
+  /**
+   * Gets the matcher instance for this form.
+   */
+  public matcher = new MyErrorStateMatcher();
+
+  /**
+   * Gets the printer address form.
+   */
   PrinterAddress = new FormControl('', [
     Validators.required
   ]);
 
+  /**
+   * Initializes a new instance of the ConnectFormComponent.
+   * @param route The current Angular rout.
+   * @param printerService The printer service.
+   * @param router The Angular router.
+   */
   constructor(private route: ActivatedRoute, private printerService: PrinterService, private router: Router){
 
     this.printerService.ConnectionStateChanged.Register(isConnected => {
@@ -40,24 +68,27 @@ export class ConnectFormComponent implements OnInit {
     });
   }
 
+  /**
+   * Invoked when the Angular component is initialized.
+   */
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.returnUrl = params['returnUrl'] as string;
+      this.returnUrl = params.returnUrl as string;
     });
   }
 
   /**
    * Invoked when the connect button is pressed
    */
-  public async connect(){
-    if (this.PrinterAddress.value.trim().length == 0){
+  public async connect(): Promise<unknown> {
+    if (this.PrinterAddress.value.trim().length === 0) {
       return;
     }
 
     try{
       await this.printerService.ConnectAsync(this.PrinterAddress.value);
     }
-    catch(e) {
+    catch (e) {
       this.isError = true;
       ErrorLogger.NonFatalError(e);
     }

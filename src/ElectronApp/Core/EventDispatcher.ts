@@ -1,24 +1,45 @@
 type Handler<E> = (event: E) => void;
 
-export class EventDispatcher<E> { 
+/**
+ * Very lightweight dispatcher for registering and invoking events.
+ */
+export class EventDispatcher<E> {
+    /**
+     * The handlers that are currently registered.
+     */
     private handlers: Array<Handler<E>>;
 
-    constructor () {
+    /**
+     * Initializes a new instance of the EventDispatcher class.
+     */
+    constructor() {
         this.handlers = new Array<Handler<E>>();
     }
 
-    public Invoke(event: E) { 
+    /**
+     * Raise the event to notify all subscribers of new data.
+     * @param event The event data.
+     */
+    public Invoke(event: E): void {
         this.handlers.forEach(h => {
             h(event);
         });
     }
 
-    public Register(handler: Handler<E>) { 
+    /**
+     * Register for new events.
+     * @param handler Thee vent handler.
+     */
+    public Register(handler: Handler<E>): void {
         this.handlers.push(handler);
     }
 
-    public Unregister(handler: Handler<E>) {
-        var index = this.handlers.indexOf(handler);
-        this.handlers.splice(index,1);
+    /**
+     * Unregister a handler.
+     * @param handler The handler.
+     */
+    public Unregister(handler: Handler<E>): void {
+        const index = this.handlers.indexOf(handler);
+        this.handlers.splice(index, 1);
     }
 }

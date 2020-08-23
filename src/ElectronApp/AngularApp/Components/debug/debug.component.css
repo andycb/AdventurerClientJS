@@ -10,7 +10,7 @@
     font-weight: lighter;
 }
 
-.responce {
+.response {
     font-size: 90%;
     font-family: 'Courier New', Courier, monospace;
     background: #ccc;
@@ -20,6 +20,6 @@
     text-align: left;
 }
 
-.responce ul {
+.response ul {
     list-style-type: none;
 }

@@ -1,4 +1,4 @@
-.uploadfilecontainer {
+.uploadFileContainer {
     height: 200px;
     margin: 20px;
     border: 2px dashed #6041b0;
@@ -22,17 +22,17 @@
     padding: 20px;
 }
 
-.uploadfilecontainer.dragOver,
-.uploadfilecontainer:hover {
+.uploadFileContainer.dragOver,
+.uploadFileContainer:hover {
     cursor: pointer;
     background-color: #6041b044;
 }
 
-.uploadfilecontainer.dragOver .instructions.drag {
+.uploadFileContainer.dragOver .instructions.drag {
     display: none;
 }
 
-.uploadfilecontainer.dragOver .instructions.drop {
+.uploadFileContainer.dragOver .instructions.drop {
     display: block;
 }
 
@@ -44,14 +44,14 @@
     text-align: center;
 }
 
-.uploadfilecontainer .error {
+.uploadFileContainer .error {
     color: red;
     font-weight: lighter;
     display: block;
     margin-bottom: 10px;
 }
 
-.uploadfilecontainer .success {
+.uploadFileContainer .success {
     color: green;
     font-weight: lighter;
     display: block;

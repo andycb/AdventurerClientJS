@@ -17,8 +17,8 @@
     ],
   },
 "files": [
-  "ElectronApp/AngularMain.ts",
-  "ElectronApp/polyfills.ts",
+  "electronApp/angularMain.ts",
+  "electronApp/polyfills.ts",
 ],
 "include": [
   "ElectronApp/**/*.d.ts",
