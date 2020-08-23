@@ -8,7 +8,7 @@ A cross platform application for communicating with the FlashForge Adventurer an
 1) Run `npm run electron`
 
 ## Running
-Windows and Mac builds are available in [releases](https://github.com/andycb/AdventurerClienttJS/releases). Note, the builds are not signed, so will generate an OS warning when first run.
+Windows and Mac builds are available in [releases](https://github.com/andycb/AdventurerClientJS/releases). Note, the builds are not signed, so will generate an OS warning when first run.
 
 ## TODO
 - ⏺ Support for more functions
