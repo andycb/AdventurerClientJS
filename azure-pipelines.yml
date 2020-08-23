@@ -8,8 +8,15 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
+  
+name: 1.0.$(Date:yyMMdd)$(Rev:.r)
 
 steps:
+- script: |
+    cd src
+    echo $(Build.BuildNumber)
+  displayName: 'Version number test'
+
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
@@ -17,8 +24,8 @@ steps:
 
 - script: |
     cd src
-    #echo 1.0.$(Date:yyMMdd)$(Rev:.r)
-    #npm version 1.0.$(Date:yyMMdd)$(Rev:.r)
+    echo $(Build.BuildNumber)
+    npm $(Build.BuildNumber)
   displayName: 'Update Version Number'
 
 - script: |
