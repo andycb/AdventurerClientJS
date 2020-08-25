@@ -1,6 +1,6 @@
 trigger:
 - master
-name: 1.0.$(Date:yyMMdd)$(Rev:r)
+name: 1.0.$[counter(my-counter, 100)]
 
 jobs:
 - job: WindowsBuilds
@@ -30,6 +30,13 @@ jobs:
     env:
       GH_TOKEN: $(GITHUB_TOKEN)
     displayName: 'Package electron for Windows'
+
+  - script: |
+      cd src
+      npm run distlinux
+    env:
+      GH_TOKEN: $(GITHUB_TOKEN)
+    displayName: 'Package electron for Linux'
 
   - task: CopyFiles@2
     inputs:
