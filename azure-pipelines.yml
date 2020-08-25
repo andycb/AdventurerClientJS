@@ -1,7 +1,12 @@
 trigger:
 - master
 
-name: 1.0.$[counter("revision", 100)]
+variables:
+  major: 1
+  minor: 0
+  revision: $[counter(variables['major'], 100)]
+
+name: $(major).$(minor).$(revision)
 
 jobs:
 - job: WindowsBuilds
