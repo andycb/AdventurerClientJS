@@ -12,8 +12,7 @@
     "artifactName": "AdventurerClient-${os}${arch}.${ext}",
     "mac": {
       "target": [
-        "dmg",
-        "mas"
+        "dmg"
       ],
       "category": "public.app-category.utilities"
     },
@@ -42,7 +41,7 @@
     },
     "win": {
       "target": [
-        "nsis", 
+        "nsis",
         "appx"
       ]
     },
@@ -50,9 +49,9 @@
       "backgroundColor": "#6041b0",
       "publisher": "CN=0E414509-FDE4-4669-86D3-4B5F55E69BF3",
       "showNameOnTiles": "true",
-      "identityName": "45329AndyBradford.AdventurerClient", 
-      "publisherDisplayName": "Andy Bradford", 
-      "applicationId": "AndyBradford.AdventurerClient" 
+      "identityName": "45329AndyBradford.AdventurerClient",
+      "publisherDisplayName": "Andy Bradford",
+      "applicationId": "AndyBradford.AdventurerClient"
     }
   },
   "scripts": {
@@ -64,9 +63,9 @@
     "e2e": "ng e2e",
     "postinstall": "install-app-deps",
     "electron": "tsc electronMain.ts && ng build --base-href ./ && electron .",
-    "distwin": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64",
-    "distmac": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --mac --x64",
-    "distlinux": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --linux --ia32 --armv7l --arm64"
+    "distwin": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64 --publish always",
+    "distmac": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --mac --x64 --publish always",
+    "distlinux": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --linux --ia32 --armv7l --arm64 --publish always"
   },
   "private": true,
   "dependencies": {
