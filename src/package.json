@@ -9,7 +9,12 @@
   "build": {
     "appId": "com.andycb.adventurerclientjs",
     "productName": "Adventurer Client",
+    "artifactName": "AdventurerClient-${os}${arch}.${ext}",
     "mac": {
+      "target": [
+        "dmg",
+        "mas"
+      ],
       "category": "public.app-category.utilities"
     },
     "directories": {
@@ -36,7 +41,18 @@
       ]
     },
     "win": {
-      "target": "NSIS"
+      "target": [
+        "nsis", 
+        "appx"
+      ]
+    },
+    "appx": {
+      "backgroundColor": "#6041b0",
+      "publisher": "CN=0E414509-FDE4-4669-86D3-4B5F55E69BF3",
+      "showNameOnTiles": "true",
+      "identityName": "45329AndyBradford.AdventurerClient", 
+      "publisherDisplayName": "Andy Bradford", 
+      "applicationId": "AndyBradford.AdventurerClient" 
     }
   },
   "scripts": {
