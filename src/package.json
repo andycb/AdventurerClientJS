@@ -66,7 +66,7 @@
     "electron": "tsc electronMain.ts && ng build --base-href ./ && electron .",
     "distwin": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64",
     "distmac": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --mac --x64",
-    "distlinux": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --linux -ia32 --armv7l --arm64"
+    "distlinux": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --linux --ia32 --armv7l --arm64"
   },
   "private": true,
   "dependencies": {
