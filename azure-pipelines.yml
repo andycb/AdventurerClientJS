@@ -1,49 +1,91 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - master
-
-pool:
-  vmImage: 'macOS-latest'
-  
 name: 1.0.$(Date:yyMMdd)$(Rev:r)
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+jobs:
+- job: WindowsBuilds
+  pool:
+    vmImage: 'windows-latest'
+    
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
 
-- script: |
-    cd src
-    echo $(Build.BuildNumber)
-    npm --no-git-tag-version version $(Build.BuildNumber)
-  displayName: 'Update Version Number'
+  - script: |
+      cd src
+      echo $(Build.BuildNumber)
+      npm --no-git-tag-version version $(Build.BuildNumber)
+    displayName: 'Update Version Number'
 
-- script: |
-    cd src
-    npm install
-  displayName: 'Install dependencies'
-  
-- script: |
-    cd src
-    npm run distwin
-  env:
-    GH_TOKEN: $(GITHUB_TOKEN)
-  displayName: 'Package electron for Windows'
-  
-- script: |
-    cd src
-    npm run distmac
-  env:
-    GH_TOKEN: $(GITHUB_TOKEN)
-  displayName: 'Package electron for Mac'
+  - script: |
+      cd src
+      npm install
+    displayName: 'Install dependencies'
+    
+  - script: |
+      cd src
+      npm run distwin
+    env:
+      GH_TOKEN: $(GITHUB_TOKEN)
+    displayName: 'Package electron for Windows'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'src/distPackages'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'src/distPackages'
+      Contents: |
+        AdventurerClient-winia32.appx
+        AdventurerClient-winx64.appx
+        AdventurerClient-win
+      TargetFolder: 'drop'
+      CleanTargetFolder: true
+      preserveTimestamp: true
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: 'drop'
+      ArtifactName: 'drop'
+
+- job: MacBuilds
+  pool:
+    vmImage: 'macOS-latest'
+    
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      cd src
+      echo $(Build.BuildNumber)
+      npm --no-git-tag-version version $(Build.BuildNumber)
+    displayName: 'Update Version Number'
+
+  - script: |
+      cd src
+      npm install
+    displayName: 'Install dependencies'
+    
+  - script: |
+      cd src
+      npm run distmac
+    env:
+      GH_TOKEN: $(GITHUB_TOKEN)
+    displayName: 'Package electron for Mac'
+    
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'src/distPackages'
+      Contents: |
+        AdventurerClient-macosx64.dmg
+      TargetFolder: 'drop'
+      CleanTargetFolder: true
+      preserveTimestamp: true
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: 'drop'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
