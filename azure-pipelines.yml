@@ -1,6 +1,7 @@
 trigger:
 - master
-name: 1.0.$[counter(my-counter, 100)]
+
+name: 1.0.$[counter("revision", 100)]
 
 jobs:
 - job: WindowsBuilds
