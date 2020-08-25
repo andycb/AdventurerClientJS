@@ -51,6 +51,12 @@ jobs:
         AdventurerClient-winia32.appx
         AdventurerClient-winx64.appx
         AdventurerClient-win
+        AdventurerClient-linuxia32.AppImage
+        AdventurerClient-linuxia32.deb
+        AdventurerClient-linuxarm64.AppImage
+        AdventurerClient-linuxarm64.deb
+        AdventurerClient-linuxarmv7l.AppImage
+        AdventurerClient-linuxarmv7l.deb
       TargetFolder: 'drop'
       CleanTargetFolder: true
       preserveTimestamp: true
@@ -92,7 +98,7 @@ jobs:
     inputs:
       SourceFolder: 'src/distPackages'
       Contents: |
-        AdventurerClient-macosx64.dmg
+        AdventurerClient-mac.dmg
       TargetFolder: 'drop'
       CleanTargetFolder: true
       preserveTimestamp: true
