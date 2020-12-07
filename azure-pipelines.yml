@@ -3,7 +3,7 @@ trigger:
 
 variables:
   major: 1
-  minor: 0
+  minor: 1
   revision: $[counter(variables['major'], 100)]
 
 name: $(major).$(minor).$(revision)
