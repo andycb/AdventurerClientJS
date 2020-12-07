@@ -3,6 +3,7 @@ const fs = window.require('fs');
 const { crc32 } = window.require('crc');
 
 import { PrinterResponseReader } from './printerResponseReader';
+import { PrinterCamera } from './printerCamera'
 import { PrinterStatus, FirmwareVersionResponse, TemperatureResponse, IPrinterResponse, PrinterDebugMonitor } from './entities';
 import { MachineCommands } from './machineCommands';
 
@@ -41,6 +42,11 @@ export class Printer {
     public PrinterDebugMonitor: PrinterDebugMonitor;
 
     /**
+     * Gets the printer's camera.
+     */
+    public PrinterCamera: PrinterCamera;
+
+    /**
      * The number of bytes sent to the printer in each packet.
      */
     private readonly packetSizeBytes = 4096;
@@ -51,6 +57,7 @@ export class Printer {
      */
     public constructor(ipAddress: string) {
         this.printerAddress = ipAddress;
+        this.PrinterCamera = new PrinterCamera(ipAddress);
     }
 
     /**

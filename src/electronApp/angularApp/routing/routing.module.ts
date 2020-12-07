@@ -7,6 +7,7 @@ import { AboutComponent } from '../components/about/about.component';
 import { ConnectedGuard } from './connectedGuard';
 import { DebugComponent } from '../components/debug/debug.component'
 import { PrintComponent } from '../components/print/print.component'
+import { CameraComponent } from '../components/camera/camera.component'
 
 /**
  * The app routes.
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'debug', component: DebugComponent, canActivate: [ConnectedGuard]},
   { path: 'print', component: PrintComponent, canActivate: [ConnectedGuard]},
+  { path: 'camera', component: CameraComponent, canActivate: [ConnectedGuard]},
   { path: '', redirectTo: '/status', pathMatch: 'full' }
 ];
 

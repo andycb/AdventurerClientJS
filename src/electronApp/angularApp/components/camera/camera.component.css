@@ -1,0 +1,5 @@
+.cameraFeed {
+    max-width: calc(100% - 40px);
+    max-height: calc(100vh - 100px);
+    margin: 20px;
+}

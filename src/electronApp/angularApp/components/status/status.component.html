@@ -40,6 +40,19 @@
     </tr>
 
     <tr>
+        <th>Camera</th>
+
+        <div *ngIf="CameraAvailable; then cameraAvailableBlock else cameraNotAvailableBlock"></div>
+        <ng-template #cameraAvailableBlock>
+            <td><a [routerLink]="'/camera'">View feed</a></td>
+        </ng-template>
+
+        <ng-template #cameraNotAvailableBlock>
+            <td>Not Available (<a target="_blank" href='https://github.com/andycb/AdventurerClientJS/wiki/Using-The-Printer-Camera'>Help</a>)</td>
+        </ng-template>
+    </tr>
+
+    <tr>
         <th></th>
         <td>
             <a mat-stroked-button (click)="Disconnect()">Disconnect</a> 

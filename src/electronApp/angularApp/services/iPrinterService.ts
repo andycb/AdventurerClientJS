@@ -61,6 +61,16 @@ export interface IPrinterService {
      */
     GetTemperatureAsync(): Promise<TemperatureResponse>;
 
+    /**
+     * Gets a value indicating if the printer camera is enabled.
+     */
+    GetIsCameraEnabled(): Promise<boolean>;
+
+    /**
+     * Gets the address to stream the camera video.
+     */
+    GetCameraVideoStreamAddress(): string;
+
     /***
      * Gets the current debug monitor.
      */
@@ -72,7 +82,7 @@ export interface IPrinterService {
     EnableDebugLogging(): void;
 
     /**
-     * Disabled traffic logging.
+     * Disable traffic logging.
      */
     DisableDebugLogging(): void;
 }
