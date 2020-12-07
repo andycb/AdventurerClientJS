@@ -37,12 +37,13 @@ jobs:
       GH_TOKEN: $(GITHUB_TOKEN)
     displayName: 'Package electron for Windows'
 
-  - script: |
-      cd src
-      npm run distlinux
-    env:
-      GH_TOKEN: $(GITHUB_TOKEN)
-    displayName: 'Package electron for Linux'
+# Buuilding for Linux in the pipeline is having some issues at the moment
+  #- script: |
+  #    cd src
+  #    npm run distlinux
+  #  env:
+  #    GH_TOKEN: $(GITHUB_TOKEN)
+  #  displayName: 'Package electron for Linux'
 
   - task: CopyFiles@2
     inputs:
@@ -51,12 +52,14 @@ jobs:
         AdventurerClient-winia32.appx
         AdventurerClient-winx64.appx
         AdventurerClient-win
-        AdventurerClient-linuxia32.AppImage
-        AdventurerClient-linuxia32.deb
-        AdventurerClient-linuxarm64.AppImage
-        AdventurerClient-linuxarm64.deb
-        AdventurerClient-linuxarmv7l.AppImage
-        AdventurerClient-linuxarmv7l.deb
+        
+        # Buuilding for Linux in the pipeline is having some issues at the moment
+        #AdventurerClient-linuxia32.AppImage
+        #AdventurerClient-linuxia32.deb
+        #AdventurerClient-linuxarm64.AppImage
+        #AdventurerClient-linuxarm64.deb
+        #AdventurerClient-linuxarmv7l.AppImage
+        #AdventurerClient-linuxarmv7l.deb
       TargetFolder: 'drop'
       CleanTargetFolder: true
       preserveTimestamp: true
