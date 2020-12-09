@@ -6,7 +6,7 @@ import * as url from 'url';
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 450,
+    height: 470,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

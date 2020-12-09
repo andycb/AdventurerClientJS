@@ -130,6 +130,24 @@ export class PrinterService implements IPrinterService {
     }
 
     /** @inheritdoc */
+    GetIsCameraEnabled(): Promise<boolean> {
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+        }
+
+        return this.printer.PrinterCamera.IsEnabled();
+    }
+
+    /** @inheritdoc */
+    GetCameraVideoStreamAddress(): string {
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+        }
+
+        return this.printer.PrinterCamera.GetStreamAddress();
+    }
+
+    /** @inheritdoc */
     public GetDebugMonitor(): PrinterDebugMonitor {
         return this.printer.PrinterDebugMonitor;
     }

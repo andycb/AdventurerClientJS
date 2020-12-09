@@ -52,6 +52,11 @@ export class StatusComponent implements OnInit {
   public Tool0Temp: string;
 
   /**
+   * Indicates that the printer camera is available.
+   */
+  public CameraAvailable: boolean;
+
+  /**
    * Initializes a new instance of the StatusComponent class.
    * @param printerService The printer service.
    */
@@ -77,6 +82,8 @@ export class StatusComponent implements OnInit {
       const temp = await this.printerService.GetTemperatureAsync();
       this.Tool0Temp = temp.Tool0Temp.toString();
       this.BuildPlateTemp = temp.BuildPlateTemp.toString();
+
+      this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
     }
     catch (e){
       ErrorLogger.NonFatalError(e);

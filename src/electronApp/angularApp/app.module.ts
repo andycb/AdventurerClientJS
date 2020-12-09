@@ -13,6 +13,7 @@ import { StatusComponent } from './components/status/status.component';
 import { DebugComponent } from './components/debug/debug.component';
 import { PrintComponent } from './components/print/print.component';
 import { DragDropDirective } from './ directives/dragDropDirective';
+import { CameraComponent } from './components/camera/camera.component';
 
 /**
  * The app module.
@@ -26,7 +27,8 @@ import { DragDropDirective } from './ directives/dragDropDirective';
     StatusComponent,
     DebugComponent,
     PrintComponent,
-    DragDropDirective
+    DragDropDirective,
+    CameraComponent
   ],
   imports: [
     BrowserModule,
