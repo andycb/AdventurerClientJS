@@ -1,1 +1,11 @@
-<img class="cameraFeed" src={{StreamAddress}} />
+<div class="cameraContainer">
+    <div *ngIf="CameraAvailable; then cameraAvailableBlock else cameraNotAvailableBlock"></div>
+    <ng-template #cameraAvailableBlock>
+        <img class="cameraFeed" src={{StreamAddress}} />
+    </ng-template>
+    
+    <ng-template #cameraNotAvailableBlock>
+        <p class="error">Lost connection to printer camera (<a target="_blank" href='https://github.com/andycb/AdventurerClientJS/wiki/Using-The-Printer-Camera'>Help</a>)</p>
+        <a mat-stroked-button [routerLink]="'/status'">Printer Status</a> 
+    </ng-template>    
+</div>

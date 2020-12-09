@@ -1,5 +1,19 @@
-.cameraFeed {
+.cameraContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.cameraContainer .cameraFeed {
     max-width: calc(100% - 40px);
     max-height: calc(100vh - 100px);
+    margin: 20px;
+}
+
+.cameraContainer .error {
+    color: red;
+    font-weight: lighter;
+    display: block;
     margin: 20px;
 }
