@@ -52,7 +52,7 @@ export class StatusComponent implements OnInit {
   public Tool0Temp: string;
 
   /**
-   * GIndicated that the printer camera is available.
+   * Indicates that the printer camera is available.
    */
   public CameraAvailable: boolean;
 
