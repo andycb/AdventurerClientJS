@@ -10,6 +10,12 @@ export interface IPrinterService {
      * Invoked when the printer connection state changes.
      */
     ConnectionStateChanged: EventDispatcher<boolean>;
+
+    /**
+     * Invoked when there is an error communicating with the printer.
+     */
+    ConnectionError: EventDispatcher<Error>;
+
    /**
     * Gets a value indicating if the client is currently connected to a printer.
     */
@@ -25,6 +31,11 @@ export interface IPrinterService {
      * Disconnects from the current printer.
      */
     Disconnect(): void;
+
+    /**
+     * Resets the connection and attempts to reconnect to the printer.
+     */
+    ReconnectAsync(): Promise<any>;
 
     /**
      * Requests the current status from the printer.

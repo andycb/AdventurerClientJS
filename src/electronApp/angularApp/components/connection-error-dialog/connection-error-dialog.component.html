@@ -1,0 +1,12 @@
+<div class="connectionErrorContainer">
+    <h1 mat-dialog-title>Connection Lost</h1>
+
+    <mat-spinner *ngIf="IsTryingReconnect" class="reconnectSpinner" diameter="15"></mat-spinner>
+
+    <div mat-dialog-content>The connection to the printer was lost.</div>
+    
+    <mat-dialog-actions align="end">
+        <button disabled={{IsTryingReconnect}} (click)="Cancel()" mat-button mat-dialog-close>Cancel</button>
+        <button disabled={{IsTryingReconnect}} (click)="Reconnect()" mat-button cdkFocusInitial>Reconnect</button>
+    </mat-dialog-actions>
+</div>

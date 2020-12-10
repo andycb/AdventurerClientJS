@@ -14,6 +14,7 @@ import { DebugComponent } from './components/debug/debug.component';
 import { PrintComponent } from './components/print/print.component';
 import { DragDropDirective } from './ directives/dragDropDirective';
 import { CameraComponent } from './components/camera/camera.component';
+import { ConnectionErrorDialogComponent } from './components/connection-error-dialog/connection-error-dialog.component';
 
 /**
  * The app module.
@@ -28,7 +29,8 @@ import { CameraComponent } from './components/camera/camera.component';
     DebugComponent,
     PrintComponent,
     DragDropDirective,
-    CameraComponent
+    CameraComponent,
+    ConnectionErrorDialogComponent
   ],
   imports: [
     BrowserModule,
