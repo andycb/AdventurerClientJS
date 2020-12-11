@@ -9,6 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table'; 
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDialogModule} from '@angular/material/dialog';
 
 /**
  * Modulus containing the requires Angular material modules.
@@ -26,7 +27,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatInputModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
   exports: [
     MatSidenavModule,
@@ -37,7 +39,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatInputModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ]
 })
 export class MaterialModule { }

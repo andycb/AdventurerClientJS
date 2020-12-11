@@ -24,8 +24,16 @@ export class PrinterService implements IPrinterService {
      */
     printer: Printer = null;
 
+    /**
+     * The interval for the heartbeat.
+     */
+    heartbeatInterval: NodeJS.Timeout;
+
     /** @inheritdoc */
     public readonly ConnectionStateChanged = new EventDispatcher<boolean>();
+
+    /** @inheritdoc */
+    public readonly ConnectionError = new EventDispatcher<Error>();
 
     /** @inheritdoc */
     public GetIsConnected(): boolean {
@@ -41,22 +49,35 @@ export class PrinterService implements IPrinterService {
         this.ConnectionStateChanged.Invoke(true);
 
         // Poll the printer every 5 sections to keep the connection alive, otherwise the printer will close the connection.
-        setInterval(async () => {
+        this.heartbeatInterval = setInterval(async () => {
             try {
                 await this.printer.GetPrinterStatusAsync();
             }
             catch (e){
+                this.ConnectionError.Invoke(e);
                 ErrorLogger.NonFatalError(e);
+                if (this.heartbeatInterval){
+                    clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = null;
+                }
             }
         }, 5000);
     }
 
     /** @inheritdoc */
     public Disconnect(){
-        this.printer.Disconnect();
-        this.printer = null;
-        this.isConnected = false;
-        this.ConnectionStateChanged.Invoke(false);
+        this.DisconnectInternal(true);
+    }
+
+    /** @inheritdoc */
+    public async ReconnectAsync(): Promise<any> {
+        if (this.printer == null){
+            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+        }
+
+        const address = this.printer.printerAddress;
+        this.DisconnectInternal(false);
+        await this.ConnectAsync(address);
     }
 
     /** @inheritdoc */
@@ -162,5 +183,24 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public DisableDebugLogging(): void {
         this.printer.PrinterDebugMonitor = null;
+    }
+
+    /**
+     * Disconnects from the current printer.
+     * @param raiseEvents Indicates is connection state changed events should be raised.
+     */
+    private DisconnectInternal(raiseEvents: boolean){
+        this.printer.Disconnect();
+        this.printer = null;
+        this.isConnected = false;
+        
+        if (this.heartbeatInterval){
+            clearInterval(this.heartbeatInterval);
+            this.heartbeatInterval = null;
+        }
+
+        if (raiseEvents) {
+            this.ConnectionStateChanged.Invoke(false);
+        }
     }
 }
