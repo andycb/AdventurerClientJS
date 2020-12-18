@@ -1,0 +1,19 @@
+@import '~@angular/material/theming';
+
+@mixin app-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .primaryColor {
+    color: mat-color($primary);
+  }
+
+  .accentColor {
+    color: mat-color($accent);
+  }
+
+  .warningColor {
+    color: mat-color($warn);
+  }
+}
