@@ -22,3 +22,9 @@
 .response ul {
     list-style-type: none;
 }
+
+@media (prefers-color-scheme: dark) {
+    .response {
+        background: #222;
+    }
+}

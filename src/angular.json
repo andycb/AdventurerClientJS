@@ -23,8 +23,7 @@
               "electronApp/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "electronApp/styles.css"
+              "electronApp/styles.scss"
             ],
             "scripts": []
           },
@@ -88,8 +87,7 @@
               "electronApp/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "electronApp/styles.css"
+              "electronApp/styles.scss"
             ],
             "scripts": []
           }
@@ -122,5 +120,10 @@
       }
     }
   },
-  "defaultProject": "adventurerclient"
+  "defaultProject": "adventurerclient",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

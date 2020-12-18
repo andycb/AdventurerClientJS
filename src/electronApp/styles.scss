@@ -1,0 +1,53 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$mat-theme-ignore-duplication-warnings: true;
+
+// Define the light theme
+$light-primary: mat-palette($mat-deep-purple);
+$light-accent:  mat-palette($mat-deep-purple, A200, A100, A400);
+$light-theme:   mat-light-theme((
+  color: (
+    primary: $light-primary,
+    accent: $light-accent
+  )
+));
+
+// Define dark theme
+$dark-primary: mat-palette($mat-amber, 900);
+$dark-accent:  mat-palette($mat-amber, A200, A100, A400);
+$dark-warn:    mat-palette($mat-deep-orange);
+$dark-theme:   mat-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent,
+    warn: $dark-warn,
+  )
+));
+
+// Apply theme the app component
+@import './angularApp/components/app/app-theme.scss';
+
+@media (prefers-color-scheme: light) {
+  @include angular-material-theme($light-theme);
+  @include app-theme($light-theme);
+}
+
+@media (prefers-color-scheme: dark) {
+  @include angular-material-theme($dark-theme);
+  @include app-theme($dark-theme);
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: center;
+  font-size: 90%;
+}
+
+html, body {
+  height: 100%; 
+}
+
+body {
+  margin: 0;
+}

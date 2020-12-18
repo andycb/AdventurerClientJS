@@ -1,0 +1,10 @@
+.AppTopBar {
+    background: #673ab7;
+    color: White;
+}
+
+@media (prefers-color-scheme: dark) {
+    .AppTopBar {
+        background: #372852;
+    }
+}
