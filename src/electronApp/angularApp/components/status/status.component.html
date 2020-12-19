@@ -42,14 +42,18 @@
     <tr>
         <th>Camera</th>
 
-        <div *ngIf="CameraAvailable; then cameraAvailableBlock else cameraNotAvailableBlock"></div>
-        <ng-template #cameraAvailableBlock>
-            <td><a [routerLink]="'/camera'">View feed</a></td>
-        </ng-template>
-
-        <ng-template #cameraNotAvailableBlock>
-            <td>Not Available (<a class="accentColor" target="_blank" href='https://github.com/andycb/AdventurerClientJS/wiki/Using-The-Printer-Camera'>Help</a>)</td>
-        </ng-template>
+        <td>
+            <div *ngIf="CameraStateLoaded">
+                <div *ngIf="CameraAvailable; then cameraAvailableBlock else cameraNotAvailableBlock"></div>
+                <ng-template #cameraAvailableBlock>
+                    <a class="accentColor" [routerLink]="'/camera'">View feed</a>
+                </ng-template>
+        
+                <ng-template #cameraNotAvailableBlock>
+                    Not Available (<a class="accentColor" target="_blank" href='https://github.com/andycb/AdventurerClientJS/wiki/Using-The-Printer-Camera'>Help</a>)
+                </ng-template>
+            </div>
+        </td>
     </tr>
 
     <tr>
