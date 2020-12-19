@@ -6,9 +6,11 @@
 .statusTable th {
     text-align: right;
     padding: 5px;
+    width: 50%;
 }
 
 .statusTable td {
     text-align: left;
     padding: 5px;
+    width: 50%;
 }

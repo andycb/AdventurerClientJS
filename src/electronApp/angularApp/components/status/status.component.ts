@@ -57,6 +57,16 @@ export class StatusComponent implements OnInit {
   public CameraAvailable: boolean;
 
   /**
+   * Indicates that state of teh camera is loaded.
+   */
+  public CameraStateLoaded: boolean;
+
+  /**
+   * The refresh interval for refreshing the data.
+   */
+  private refreshInterval: NodeJS.Timeout;
+
+  /**
    * Initializes a new instance of the StatusComponent class.
    * @param printerService The printer service.
    */
@@ -84,6 +94,7 @@ export class StatusComponent implements OnInit {
       this.BuildPlateTemp = temp.BuildPlateTemp.toString();
 
       this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
+      this.CameraStateLoaded = true;
     }
     catch (e){
       ErrorLogger.NonFatalError(e);
@@ -96,7 +107,7 @@ export class StatusComponent implements OnInit {
   ngOnInit(): void {
     this.UpdateStatusText();
 
-    setInterval(() => {
+    this.refreshInterval = setInterval(() => {
       this.UpdateStatusText();
     }, 2000);
   }
@@ -106,5 +117,15 @@ export class StatusComponent implements OnInit {
    */
   public Disconnect(): void{
     this.printerService.Disconnect();
+  }
+
+  /**
+  * Invoked when the Angular component is destroyed.
+  */
+  ngOnDestroy(): void  {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+      this.refreshInterval = null;
+    }
   }
 }
