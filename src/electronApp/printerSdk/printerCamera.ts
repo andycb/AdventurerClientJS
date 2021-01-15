@@ -21,16 +21,27 @@ export class PrinterCamera {
     public IsEnabled(): Promise<boolean> {
         const checkCamera = (a) => {
             const request = new XMLHttpRequest();
-
-            request.onload = () => {
-                a(true);
+            request.timeout = 2000;
+            
+            // Some printers only support streaming, so use the stream feed to check if the camera works
+            // this means that we don't want to check for a full load, as the data is streaming and will never complete. 
+            // So instead wait for the first chunk of data to show it works, then abort the connection.
+            request.onreadystatechange = () => {
+                if (request.readyState == XMLHttpRequest.LOADING) {
+                    a(true);
+                    request.abort();
+                }
             };
 
             request.onerror = () => {
                 a(false);
             };
 
-            request.open('GET', this.GetRootAddress());
+            request.ontimeout = () => {
+                a(false);
+            };
+
+            request.open('GET', this.GetStreamAddress());
             request.send();
         };
 
