@@ -22,11 +22,6 @@ export class CameraComponent implements OnInit {
   public CameraAvailable: boolean = true;
 
   /**
-   * The check interval timeout for testing the camera connection.
-   */
-  private checkInterval: NodeJS.Timeout;
-
-  /**
    * Initializes a new instance of the CameraComponent class.
    * @param printerService The printer service.
    */
@@ -38,20 +33,22 @@ export class CameraComponent implements OnInit {
   * Invoked when the Angular component is initialized.
   */
   ngOnInit(): void {
-    // Depending on the printer settings, the camera may become unavailable when printing finished, 
-    // so set a timer to check for this and show a message if the camera is unavailable
-    this.checkInterval = setInterval(async () => {
-      this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
-    }, 1000);
+
   }
 
   /**
   * Invoked when the Angular component is destroyed.
   */
   ngOnDestroy(): void  {
-    if (this.checkInterval) {
-      clearInterval(this.checkInterval);
-      this.checkInterval = null;
-    }
+
+  }
+
+  /**
+  * Invoked when the camera feed fails.
+  */
+  cameraError(): void {
+    // Depending on the printer settings, the camera may become unavailable when printing finished, 
+    // so show a message if the camera feed stops.
+    this.CameraAvailable = false;
   }
 }

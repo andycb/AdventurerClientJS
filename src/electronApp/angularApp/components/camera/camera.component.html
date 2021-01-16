@@ -1,7 +1,7 @@
 <div class="cameraContainer">
     <div *ngIf="CameraAvailable; then cameraAvailableBlock else cameraNotAvailableBlock"></div>
     <ng-template #cameraAvailableBlock>
-        <img class="cameraFeed" src={{StreamAddress}} />
+        <img (error)="cameraError()" class="cameraFeed" src={{StreamAddress}} />
     </ng-template>
     
     <ng-template #cameraNotAvailableBlock>
