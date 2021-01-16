@@ -14,7 +14,7 @@ export class CameraComponent implements OnInit {
   /**
    * Gets the address of teh camera stream.
    */
-  public readonly StreamAddress: string;
+  public StreamAddress: string;
 
   /**
    * Gets a value indicating that teh camera is available.
@@ -40,7 +40,7 @@ export class CameraComponent implements OnInit {
   * Invoked when the Angular component is destroyed.
   */
   ngOnDestroy(): void  {
-
+    this.StreamAddress = null;
   }
 
   /**
