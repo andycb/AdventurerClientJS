@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
-
 /**
  * Component for viewing the printer camera feed.
  */
@@ -14,7 +13,7 @@ export class CameraComponent implements OnInit {
   /**
    * Gets the address of teh camera stream.
    */
-  public readonly StreamAddress: string;
+  public StreamAddress: string;
 
   /**
    * Gets a value indicating that teh camera is available.
@@ -25,6 +24,8 @@ export class CameraComponent implements OnInit {
    * The check interval timeout for testing the camera connection.
    */
   private checkInterval: NodeJS.Timeout;
+
+  @ViewChild('ImageElement') private imageElement: ElementRef;
 
   /**
    * Initializes a new instance of the CameraComponent class.
@@ -42,13 +43,19 @@ export class CameraComponent implements OnInit {
     // so set a timer to check for this and show a message if the camera is unavailable
     this.checkInterval = setInterval(async () => {
       this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
-    }, 1000);
+    }, 5000);
   }
 
   /**
   * Invoked when the Angular component is destroyed.
   */
   ngOnDestroy(): void  {
+
+    // A bug in Chromium means that the img element will hold the connection to the
+    // mjpg stream forever, so call stop on the window to shut down all connections.
+    window.stop();
+
+
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
       this.checkInterval = null;
