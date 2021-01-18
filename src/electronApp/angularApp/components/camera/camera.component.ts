@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
-
 /**
  * Component for viewing the printer camera feed.
  */
@@ -26,6 +25,8 @@ export class CameraComponent implements OnInit {
    */
   private checkInterval: NodeJS.Timeout;
 
+  @ViewChild('ImageElement') private imageElement: ElementRef;
+
   /**
    * Initializes a new instance of the CameraComponent class.
    * @param printerService The printer service.
@@ -49,7 +50,11 @@ export class CameraComponent implements OnInit {
   * Invoked when the Angular component is destroyed.
   */
   ngOnDestroy(): void  {
-    this.StreamAddress = "";
+
+    // A bug in Chromium means that the img element will hold the connection to the
+    // mjpg stream forever, so call stop on the window to shut down all connections.
+    window.stop();
+
 
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
