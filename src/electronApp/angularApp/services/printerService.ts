@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IPrinterService } from './iPrinterService';
-import { PrinterStatus, TemperatureResponse, FirmwareVersionResponse, PrinterDebugMonitor } from '../../printerSdk/entities';
-import { EventDispatcher } from '../../core/eventDispatcher';
+import { PrinterStatus, TemperatureResponse, FirmwareVersionResponse, PrinterDebugMonitor,  } from '../../printerSdk/entities';
 import { Printer } from '../../printerSdk/printer';
-import { ErrorLogger } from '../../core/errorLogger';
 import { PrinterCamera } from '../../printerSdk/printerCamera'
+import { ErrorLogger, PromiseWithProgress, EventDispatcher } from '../../core';
 
 const path = window.require('path');
 
@@ -154,7 +153,7 @@ export class PrinterService implements IPrinterService {
     }
 
     /** @inheritdoc */
-    public StoreFileAsync(filePath: string): Promise<void> {
+    public StoreFileAsync(filePath: string): PromiseWithProgress<void>{ 
         if (this.printer == null) {
             throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
         }

@@ -47,6 +47,9 @@ export class DragDropDirective {
     evt.preventDefault();
     evt.stopPropagation();
 
+      // Remove CSS class from element
+      this.elementClass = '';
+
     const files = evt.dataTransfer.files;
     if (files.length > 0) {
       // If multiple files were dropped, use only the first

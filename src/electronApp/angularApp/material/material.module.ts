@@ -10,6 +10,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table'; 
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 /**
  * Modulus containing the requires Angular material modules.
@@ -26,6 +27,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatTableModule,
     MatCheckboxModule,
     MatDialogModule
@@ -38,6 +40,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatTableModule,
     MatCheckboxModule,
     MatDialogModule

@@ -1,21 +1,7 @@
-<ng-container
-  *ngIf="SendInProgress; then sending; else ready">
-</ng-container>
-
-<ng-template #ready>
-  <div #ready class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
-    <span *ngIf="ErrorMessage" class="error warningColor">{{ErrorMessage}}</span>
-    <span *ngIf="Success" class="success">File transferred successfully 🙂</span>
-      <span class="instructions drag">To print a .gx .gcode or .g file, drag it here or click to pick.</span>
-      <span class="instructions drop">Drop file here to print it.</span>
-      <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
-    </div>
-</ng-template>
-
-<ng-template #sending>
-  <div #sending class="sendInProgress">
-    <mat-spinner diameter="50"></mat-spinner>
-    <br>
-    <span>Transferring file to printer</span>
-  </div>
-</ng-template>
+<div class="uploadFileContainer" (click)="fileInput.click()" appDragDrop (FileDropped)="uploadFile($event)">
+  <span *ngIf="ErrorMessage" class="error warningColor">{{ErrorMessage}}</span>
+  <span *ngIf="Success" class="success">File transferred successfully 🙂</span>
+    <span class="instructions drag">To print a .gx .gcode or .g file, drag it here or click to pick.</span>
+    <span class="instructions drop">Drop file here to print it.</span>
+    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+</div>
