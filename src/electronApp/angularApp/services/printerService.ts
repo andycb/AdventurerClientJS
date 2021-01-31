@@ -4,6 +4,7 @@ import { PrinterStatus, TemperatureResponse, FirmwareVersionResponse, PrinterDeb
 import { EventDispatcher } from '../../core/eventDispatcher';
 import { Printer } from '../../printerSdk/printer';
 import { ErrorLogger } from '../../core/errorLogger';
+import { PrinterCamera } from '../../printerSdk/printerCamera'
 
 const path = window.require('path');
 
@@ -151,12 +152,12 @@ export class PrinterService implements IPrinterService {
     }
 
     /** @inheritdoc */
-    GetIsCameraEnabled(): Promise<boolean> {
+    GetCamera(): PrinterCamera {
         if (this.printer == null){
             throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
         }
 
-        return this.printer.PrinterCamera.IsEnabled();
+        return this.printer.PrinterCamera;
     }
 
     /** @inheritdoc */
