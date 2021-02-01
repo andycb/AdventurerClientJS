@@ -16,9 +16,9 @@ export interface IPrinterService {
      */
     ConnectionError: EventDispatcher<Error>;
 
-   /**
-    * Gets a value indicating if the client is currently connected to a printer.
-    */
+    /**
+     * Gets a value indicating if the client is currently connected to a printer.
+     */
     GetIsConnected(): boolean;
 
     /**
@@ -31,6 +31,22 @@ export interface IPrinterService {
      * Disconnects from the current printer.
      */
     Disconnect(): void;
+
+    /**
+     * Stops the printing.
+     */
+    StopPrinting(): void;
+
+    /**
+     * Pauses the printing.
+     */
+    PausePrinting(): void;
+
+    /**
+     * Resumes the printing.
+     */
+    ResumePrinting(): void;
+
 
     /**
      * Resets the connection and attempts to reconnect to the printer.

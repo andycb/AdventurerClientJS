@@ -5,6 +5,11 @@
     </tr>
 
     <tr>
+        <th>MoveMode</th>
+        <td>{{MoveMode}}</td>
+    </tr>
+
+    <tr>
         <th>Version</th>
         <td>{{FirmwareVersion}}</td>
     </tr>
@@ -48,7 +53,7 @@
                 <ng-template #cameraAvailableBlock>
                     <a class="accentColor" [routerLink]="'/camera'">View feed</a>
                 </ng-template>
-        
+
                 <ng-template #cameraNotAvailableBlock>
                     Not Available (<a class="accentColor" target="_blank" href='https://github.com/andycb/AdventurerClientJS/wiki/Using-The-Printer-Camera'>Help</a>)
                 </ng-template>
@@ -57,9 +62,35 @@
     </tr>
 
     <tr>
+        <th>Control</th>
+        <td>
+            <div *ngIf="IsPrinting; else notPrinting" class="button-row">
+                <div *ngIf="PrintStateLoaded">
+                    <div *ngIf="PrintPaused; then printPausedBlock else printRunningBlock"></div>
+                    <ng-template #printPausedBlock>
+                        <a mat-flat-button (click)="ResumePrinting()">
+                            <mat-icon aria-label="Resume Print">play_arrow</mat-icon>
+                        </a>
+                    </ng-template>
+
+                    <ng-template #printRunningBlock>
+                        <a mat-flat-button (click)="PausePrinting()">
+                            <mat-icon aria-label="Pause Print">pause</mat-icon>
+                        </a>
+                    </ng-template>
+                </div>
+                <a mat-flat-button (click)="StopPrinting()">
+                    <mat-icon aria-label="Stop Print">stop</mat-icon>
+                </a>
+            </div>
+            <ng-template #notPrinting><a mat-button [routerLink]="'/print'">Print File</a></ng-template>
+        </td>
+    </tr>
+
+    <tr>
         <th></th>
         <td>
-            <a mat-stroked-button (click)="Disconnect()">Disconnect</a> 
+            <a mat-stroked-button (click)="Disconnect()">Disconnect</a>
         </td>
     </tr>
 </table>

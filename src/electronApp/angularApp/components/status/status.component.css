@@ -1,5 +1,5 @@
 .statusTable {
-    display:inline-block;
+    display: inline-block;
     margin: 20px;
 }
 
@@ -13,4 +13,10 @@
     text-align: left;
     padding: 5px;
     width: 50%;
+}
+
+.button-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }

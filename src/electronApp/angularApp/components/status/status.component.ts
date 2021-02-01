@@ -17,6 +17,11 @@ export class StatusComponent implements OnInit {
   public PrinterStatus: string;
 
   /**
+   * Gets the printer mode.
+   */
+  public MoveMode: string;
+
+  /**
    * Gets the endstop position.
    */
   public Endstop: string;
@@ -57,9 +62,24 @@ export class StatusComponent implements OnInit {
   public CameraAvailable: boolean;
 
   /**
-   * Indicates that state of teh camera is loaded.
+   * Indicates that the printer is paused.
+   */
+  public PrintPaused: boolean;
+
+  /**
+   * Indicates that state of the camera is loaded.
    */
   public CameraStateLoaded: boolean;
+
+  /**
+    * Indicates that the state of the print is loaded.
+    */
+  public PrintStateLoaded: boolean;
+
+  /**
+   * The printer is printing.
+   */
+  public IsPrinting: boolean;
 
   /**
    * The refresh interval for refreshing the data.
@@ -76,9 +96,10 @@ export class StatusComponent implements OnInit {
    * Updates the status text.
    */
   private async UpdateStatusText(): Promise<void> {
-    try{
+    try {
       const status = await this.printerService.GetPrinterStatusAsync();
       this.PrinterStatus = status.MachineStatus;
+      this.MoveMode = status.MoveMode;
       this.Endstop = status.Endstop.X.toString() + ',' + status.Endstop.Y.toString() + ',' + status.Endstop.Z.toString();
 
       const firmwareInfo = await this.printerService.GetFirmwareVersionAsync();
@@ -95,8 +116,17 @@ export class StatusComponent implements OnInit {
 
       this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
       this.CameraStateLoaded = true;
+
+      this.PrintPaused = await this.printerService.GetIsPrintPaused();
+      if (this.PrinterStatus == "BUILDING_FROM_SD") {
+        this.IsPrinting = true;
+      }
+      else {
+        this.IsPrinting = false;
+      }
+      this.PrintStateLoaded = true;
     }
-    catch (e){
+    catch (e) {
       ErrorLogger.NonFatalError(e);
     }
   }
@@ -115,14 +145,33 @@ export class StatusComponent implements OnInit {
   /**
    * Disconnects from the printer.
    */
-  public Disconnect(): void{
+  public Disconnect(): void {
     this.printerService.Disconnect();
+  }
+
+  /**
+    * Stops the printing.
+    */
+  public StopPrinting(): void {
+    this.printerService.StopPrinting();
+  }
+  /**
+   * Pauses the printing.
+   */
+  public PausePrinting(): void {
+    this.printerService.PausePrinting();
+  }
+  /**
+   * Resumes the printing.
+   */
+  public ResumePrinting(): void {
+    this.printerService.ResumePrinting();
   }
 
   /**
   * Invoked when the Angular component is destroyed.
   */
-  ngOnDestroy(): void  {
+  ngOnDestroy(): void {
     if (this.refreshInterval) {
       clearInterval(this.refreshInterval);
       this.refreshInterval = null;
