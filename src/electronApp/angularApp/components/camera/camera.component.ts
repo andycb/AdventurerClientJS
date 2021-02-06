@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
+import { CameraState } from '../../../printerSdk/printerCamera'
+
 /**
  * Component for viewing the printer camera feed.
  */
@@ -21,10 +23,8 @@ export class CameraComponent implements OnInit {
   public CameraAvailable: boolean = true;
 
   /**
-   * The check interval timeout for testing the camera connection.
+   * Reference to the image element in the view.
    */
-  private checkInterval: NodeJS.Timeout;
-
   @ViewChild('ImageElement') private imageElement: ElementRef;
 
   /**
@@ -32,7 +32,6 @@ export class CameraComponent implements OnInit {
    * @param printerService The printer service.
    */
   constructor(private printerService: PrinterService) {
-    this.StreamAddress = printerService.GetCameraVideoStreamAddress();
   }
 
   /**
@@ -40,25 +39,36 @@ export class CameraComponent implements OnInit {
   */
   ngOnInit(): void {
     // Depending on the printer settings, the camera may become unavailable when printing finished, 
-    // so set a timer to check for this and show a message if the camera is unavailable
-    this.checkInterval = setInterval(async () => {
-      this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
-    }, 5000);
+    // so subscribe to changes in the camera state.
+    this.printerService.GetCamera().NewFrame.Register(this.OnNewFrame, this)
+    this.printerService.GetCamera().CameraStateChanged.Register(this.OnCameraStateChanged, this);
+  }
+
+  /**
+   * Invoked when a new video frame is available from the camera.
+   * @param frame The bas64 encoded video frame.
+   */
+  private OnNewFrame(frame: string) {
+    if (this.imageElement && this.imageElement.nativeElement) {
+      // The camera provides multiple frames per second, so to get good performance bypass
+      // Angular's change detection and set the frame directly.
+      this.imageElement.nativeElement.src = frame;
+    }
+  }
+
+  /**
+   * Invoked when the camera's availability changes.
+   * @param cameraState The new status of the camera.
+   */
+  private OnCameraStateChanged(cameraState: CameraState) {
+    this.CameraAvailable = cameraState == CameraState.Available;
   }
 
   /**
   * Invoked when the Angular component is destroyed.
   */
   ngOnDestroy(): void  {
-
-    // A bug in Chromium means that the img element will hold the connection to the
-    // mjpg stream forever, so call stop on the window to shut down all connections.
-    window.stop();
-
-
-    if (this.checkInterval) {
-      clearInterval(this.checkInterval);
-      this.checkInterval = null;
-    }
+    this.printerService.GetCamera().NewFrame.Unregister(this.OnNewFrame)
+    this.printerService.GetCamera().CameraStateChanged.Unregister(this.OnCameraStateChanged);
   }
 }

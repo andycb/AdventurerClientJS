@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
 import { ErrorLogger } from 'electronApp/core/errorLogger';
+import { CameraState } from '../../../printerSdk/printerCamera'
 
 /**
  * The printer status component for showing the printer status.
@@ -93,8 +94,9 @@ export class StatusComponent implements OnInit {
       this.Tool0Temp = temp.Tool0Temp.toString();
       this.BuildPlateTemp = temp.BuildPlateTemp.toString();
 
-      this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
-      this.CameraStateLoaded = true;
+      const cameraState = this.printerService.GetCamera().CameraState;
+      this.CameraAvailable = cameraState == CameraState.Available;
+      this.CameraStateLoaded = cameraState != CameraState.Unknown;
     }
     catch (e){
       ErrorLogger.NonFatalError(e);

@@ -112,6 +112,7 @@ export class Printer {
             this.printerConnection.connect(8899, this.printerAddress, async () => {
                 this.responseReader = new PrinterResponseReader(this.printerConnection);
                 this.isConnected = true;
+                this.PrinterCamera.ConnectCamera();
 
                 await this.GetPrinterStatusAsync();
                 a();
@@ -124,6 +125,7 @@ export class Printer {
      */
     Disconnect(): void {
         this.printerConnection.destroy();
+        this.PrinterCamera.DisconnectCamera();
     }
 
     /**
