@@ -35,17 +35,17 @@ export interface IPrinterService {
     /**
      * Stops the printing.
      */
-    StopPrinting(): void;
+    StopPrintingAsync(): Promise<void>;
 
     /**
      * Pauses the printing.
      */
-    PausePrinting(): void;
+    PausePrintingAsync(): Promise<void>;
 
     /**
      * Resumes the printing.
      */
-    ResumePrinting(): void;
+    ResumePrintingAsync(): Promise<void>;
 
 
     /**

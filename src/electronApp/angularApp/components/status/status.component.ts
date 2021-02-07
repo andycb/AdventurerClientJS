@@ -153,19 +153,19 @@ export class StatusComponent implements OnInit {
     * Stops the printing.
     */
   public StopPrinting(): void {
-    this.printerService.StopPrinting();
+    this.printerService.StopPrintingAsync();
   }
   /**
    * Pauses the printing.
    */
   public PausePrinting(): void {
-    this.printerService.PausePrinting();
+    this.printerService.PausePrintingAsync();
   }
   /**
    * Resumes the printing.
    */
   public ResumePrinting(): void {
-    this.printerService.ResumePrinting();
+    this.printerService.ResumePrintingAsync();
   }
 
   /**

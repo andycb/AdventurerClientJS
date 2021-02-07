@@ -70,7 +70,7 @@ export class PrinterService implements IPrinterService {
     }
 
     /** @inheritdoc */
-    public StopPrinting(): Promise<void> {
+    public StopPrintingAsync(): Promise<void> {
         if (this.printer == null) {
             throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
         }
@@ -79,7 +79,7 @@ export class PrinterService implements IPrinterService {
     }
 
     /** @inheritdoc */
-    public PausePrinting(): Promise<void> {
+    public PausePrintingAsync(): Promise<void> {
         if (this.printer == null) {
             throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
         }
@@ -88,7 +88,7 @@ export class PrinterService implements IPrinterService {
     }
 
     /** @inheritdoc */
-    public ResumePrinting(): Promise<void> {
+    public ResumePrintingAsync(): Promise<void> {
         if (this.printer == null) {
             throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
         }
