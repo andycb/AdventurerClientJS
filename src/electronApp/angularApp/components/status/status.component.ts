@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
 import { ErrorLogger } from 'electronApp/core/errorLogger';
+import { StoprPrintingConfirmationDialogComponent } from "../stopr-printing-confirmation-dialog/stopr-printing-confirmation-dialog.component";
+import { MatDialog } from '@angular/material/dialog';
 
 /**
  * The printer status component for showing the printer status.
@@ -90,7 +92,7 @@ export class StatusComponent implements OnInit {
    * Initializes a new instance of the StatusComponent class.
    * @param printerService The printer service.
    */
-  constructor(private printerService: PrinterService) { }
+  constructor(private printerService: PrinterService, private dialog: MatDialog) { }
 
   /**
    * Updates the status text.
@@ -154,10 +156,12 @@ export class StatusComponent implements OnInit {
   }
 
   /**
-    * Stops the printing.
+    * Opens the confirmation dialog to stop printing.
     */
-  public StopPrinting(): void {
-    this.printerService.StopPrintingAsync();
+  public OpenStopPrintingDialog(): void {
+    // Open the confirmation dialog and prevent soft dismissing
+    const diafRef = this.dialog.open(StoprPrintingConfirmationDialogComponent);
+    diafRef.disableClose = true;
   }
   /**
    * Pauses the printing.

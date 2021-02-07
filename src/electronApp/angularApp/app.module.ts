@@ -15,6 +15,7 @@ import { PrintComponent } from './components/print/print.component';
 import { DragDropDirective } from './ directives/dragDropDirective';
 import { CameraComponent } from './components/camera/camera.component';
 import { ConnectionErrorDialogComponent } from './components/connection-error-dialog/connection-error-dialog.component';
+import { StoprPrintingConfirmationDialogComponent } from './components/stopr-printing-confirmation-dialog/stopr-printing-confirmation-dialog.component';
 
 /**
  * The app module.
@@ -30,7 +31,8 @@ import { ConnectionErrorDialogComponent } from './components/connection-error-di
     PrintComponent,
     DragDropDirective,
     CameraComponent,
-    ConnectionErrorDialogComponent
+    ConnectionErrorDialogComponent,
+    StoprPrintingConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
