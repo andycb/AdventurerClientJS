@@ -91,6 +91,7 @@ export class StatusComponent implements OnInit {
   /**
    * Initializes a new instance of the StatusComponent class.
    * @param printerService The printer service.
+   * @param dialog The Angular-Material dialog.
    */
   constructor(private printerService: PrinterService, private dialog: MatDialog) { }
 

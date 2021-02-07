@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterService } from '../../services/printerService'
-import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
