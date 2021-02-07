@@ -64,26 +64,25 @@
     <tr>
         <th>Control</th>
         <td>
-            <div *ngIf="IsPrinting; else notPrinting" class="button-row">
+            <div class="button-row">
                 <div *ngIf="PrintStateLoaded">
                     <div *ngIf="PrintPaused; then printPausedBlock else printRunningBlock"></div>
                     <ng-template #printPausedBlock>
-                        <a mat-flat-button (click)="ResumePrinting()">
+                        <button disabled={{!IsPrinting}} mat-flat-button (click)="ResumePrinting()">
                             <mat-icon aria-label="Resume Print">play_arrow</mat-icon>
-                        </a>
+                        </button>
                     </ng-template>
 
                     <ng-template #printRunningBlock>
-                        <a mat-flat-button (click)="PausePrinting()">
+                        <button disabled={{!IsPrinting}} mat-flat-button (click)="PausePrinting()">
                             <mat-icon aria-label="Pause Print">pause</mat-icon>
-                        </a>
+                        </button>
                     </ng-template>
                 </div>
-                <a mat-flat-button (click)="OpenStopPrintingDialog()">
+                <button disabled={{!IsPrinting}} mat-flat-button (click)="OpenStopPrintingDialog()">
                     <mat-icon aria-label="Stop Print">stop</mat-icon>
-                </a>
+                </button>
             </div>
-            <ng-template #notPrinting><a mat-button [routerLink]="'/print'">Print File</a></ng-template>
         </td>
     </tr>
 
