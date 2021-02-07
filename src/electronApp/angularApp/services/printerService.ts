@@ -187,20 +187,6 @@ export class PrinterService implements IPrinterService {
     }
 
     /** @inheritdoc */
-    async GetIsPrintPaused(): Promise<boolean> {
-        if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
-        }
-
-        const status = await this.GetPrinterStatusAsync();
-        if (status.MoveMode == "PAUSED") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /** @inheritdoc */
     GetCameraVideoStreamAddress(): string {
         if (this.printer == null) {
             throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');

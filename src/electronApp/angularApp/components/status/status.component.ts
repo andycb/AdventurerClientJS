@@ -117,7 +117,11 @@ export class StatusComponent implements OnInit {
       this.CameraAvailable = await this.printerService.GetIsCameraEnabled();
       this.CameraStateLoaded = true;
 
-      this.PrintPaused = await this.printerService.GetIsPrintPaused();
+      if (status.MoveMode == "PAUSED") {
+        this.PrintPaused = true;
+      } else {
+        this.PrintPaused = false;
+      }
       if (this.PrinterStatus == "BUILDING_FROM_SD") {
         this.IsPrinting = true;
       }
