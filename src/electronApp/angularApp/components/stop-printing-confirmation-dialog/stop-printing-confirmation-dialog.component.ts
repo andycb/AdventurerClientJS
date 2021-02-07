@@ -4,8 +4,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-stopr-printing-confirmation-dialog',
-  templateUrl: './stopr-printing-confirmation-dialog.component.html',
-  styleUrls: ['./stopr-printing-confirmation-dialog.component.css']
+  templateUrl: './stop-printing-confirmation-dialog.component.html',
+  styleUrls: ['./stop-printing-confirmation-dialog.component.css']
 })
 export class StoprPrintingConfirmationDialogComponent implements OnInit {
 

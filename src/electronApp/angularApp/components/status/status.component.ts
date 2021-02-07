@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
 import { ErrorLogger } from 'electronApp/core/errorLogger';
-import { StoprPrintingConfirmationDialogComponent } from "../stopr-printing-confirmation-dialog/stopr-printing-confirmation-dialog.component";
+import { StoprPrintingConfirmationDialogComponent } from "../stop-printing-confirmation-dialog/stop-printing-confirmation-dialog.component";
 import { MatDialog } from '@angular/material/dialog';
 
 /**
