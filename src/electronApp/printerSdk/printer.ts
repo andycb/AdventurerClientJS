@@ -68,7 +68,7 @@ export class Printer {
 
         data = data + '\n';
 
-        if (this.PrinterDebugMonitor){
+        if (this.PrinterDebugMonitor) {
             this.PrinterDebugMonitor.LogDataToPrinter(data);
         }
 
@@ -81,7 +81,7 @@ export class Printer {
      */
     private SendBufferToPrinter(data: Buffer): void {
 
-        if (this.PrinterDebugMonitor != null){
+        if (this.PrinterDebugMonitor != null) {
             this.PrinterDebugMonitor.LogDataToPrinter(data.toString());
         }
 
@@ -104,7 +104,7 @@ export class Printer {
             });
 
             this.printerConnection.on('data', data => {
-                if (this.PrinterDebugMonitor){
+                if (this.PrinterDebugMonitor) {
                     this.PrinterDebugMonitor.LogDataFromPrinter(data);
                 }
             });
@@ -126,6 +126,42 @@ export class Printer {
     Disconnect(): void {
         this.printerConnection.destroy();
         this.PrinterCamera.DisconnectCamera();
+    }
+
+    /**
+     * Stops the printing.
+     */
+    StopPrintingAsync(): Promise<void> {
+        this.ValidatePrinterReady();
+        const message = '~' + MachineCommands.StopPrinting;
+        this.SendToPrinter(message);
+
+        // Get its answer
+        return this.WaitForPrinterAck(MachineCommands.StopPrinting);
+    }
+
+    /**
+     * Pause the printing.
+     */
+    PausePrintingAsync(): Promise<void> {
+        this.ValidatePrinterReady();
+        const message = '~' + MachineCommands.PausePrinting;
+        this.SendToPrinter(message);
+
+        // Get its answer
+        return this.WaitForPrinterAck(MachineCommands.PausePrinting);
+    }
+
+    /**
+     * Resume the printing.
+     */
+    ResumePrintingAsync(): Promise<void> {
+        this.ValidatePrinterReady();
+        const message = '~' + MachineCommands.ResumePrinting;
+        this.SendToPrinter(message);
+
+        // Get its answer
+        return this.WaitForPrinterAck(MachineCommands.ResumePrinting);
     }
 
     /**
@@ -181,8 +217,7 @@ export class Printer {
      * Instructs the printer to print a file already stored in its internal storage.
      * @param fileName The file name (including extension) of the file to print.
      */
-    PrintFileAsync(fileName: string): Promise<void>
-    {
+    PrintFileAsync(fileName: string): Promise<void> {
         this.ValidatePrinterReady();
         const message = '~' + MachineCommands.PrintFileFromSd + ' 0:/user/' + fileName;
         this.SendToPrinter(message);
@@ -201,7 +236,7 @@ export class Printer {
         // Load the file from disk
         const modelBytes = await new Promise<Buffer>((a, r) => {
             fs.readFile(filePath, (error: any, data: any) => {
-                if (error){
+                if (error) {
                     r(error);
                 }
 
@@ -216,22 +251,19 @@ export class Printer {
 
         let count = 0;
         let offset = 0;
-        while (offset < modelBytes.length)
-        {
+        while (offset < modelBytes.length) {
             let crc: number;
             let packet: Buffer;
 
             let dataSize = 0;
-            if (offset + this.packetSizeBytes < modelBytes.length)
-            {
+            if (offset + this.packetSizeBytes < modelBytes.length) {
                 packet = modelBytes.subarray(offset, offset + this.packetSizeBytes);
 
                 const crcResult = crc32(packet);
                 crc = crcResult;
                 dataSize = this.packetSizeBytes;
             }
-            else
-            {
+            else {
                 // Every packet needs to be the same size, so zero pad the last one if we need to.
                 const actualLength = modelBytes.length - offset;
                 const data = modelBytes.subarray(offset, actualLength + offset);
@@ -241,7 +273,7 @@ export class Printer {
                 crc = crcResult;
 
                 packet = Buffer.alloc(this.packetSizeBytes);
-                for (let i = 0; i < data.length; ++i){
+                for (let i = 0; i < data.length; ++i) {
                     packet.writeUInt32LE(data[i], i);
                 }
 
@@ -264,7 +296,7 @@ export class Printer {
             bufferToSend.writeUInt32BE(crc, 12);
 
             // Add the data
-            for (let i = 0; i < packet.length; ++i){
+            for (let i = 0; i < packet.length; ++i) {
                 bufferToSend.writeUInt8(packet[i], i + 16);
             }
 
@@ -288,8 +320,7 @@ export class Printer {
     /**
      * Waits fot the printer to acknowledge that a command send to it completed.
      */
-    private async WaitForPrinterAck(commandId: string): Promise<void>
-    {
+    private async WaitForPrinterAck(commandId: string): Promise<void> {
         await this.responseReader.GerPrinterResponse<IPrinterResponse>(commandId);
     }
 
@@ -297,12 +328,10 @@ export class Printer {
      * Validates that we are currently in a valid state to communicate with the printer.
      */
     private ValidatePrinterReady(): void {
-        if (this.isDisposed)
-        {
+        if (this.isDisposed) {
             throw new Error('Printer is no longer connected');
         }
-        if (!this.isConnected)
-        {
+        if (!this.isConnected) {
             throw new Error(('Not connected to printer, or connection lost'));
         }
     }

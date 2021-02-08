@@ -32,4 +32,19 @@ export class MachineCommands
      * The get Temperature version command.
      */
     static readonly GetTemperature = 'M105';
+        
+    /**
+     * The stop printing command
+     */
+    static readonly StopPrinting = 'M26'
+
+    /**
+     * The pause printing command
+     */
+    static readonly PausePrinting = 'M25'
+    
+    /**
+     * The resume printing command
+     */
+    static readonly ResumePrinting = 'M24'
 }
