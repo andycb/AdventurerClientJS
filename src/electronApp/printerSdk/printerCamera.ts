@@ -1,11 +1,45 @@
+import { ErrorLogger } from 'electronApp/core/errorLogger';
+import { EventDispatcher } from '../core/eventDispatcher';
+const MjpegCamera = window.require('mjpeg-camera');
+
 /**
  * Represents the printer's camera.
  */
 export class PrinterCamera {
+     /**
+     * The number of milliseconds to wait for the camera to respond before calling it disconnected.
+     */
+    private readonly lostConnectionTimeout: number = 2000;
+
     /**
      * The address of the printer.
      */
-    readonly printerAddress: string;
+    private readonly printerAddress: string;
+
+    /**
+     * The connection to the mjpeg camera stream.
+     */
+    private camera: any;
+
+    /**
+     * The current timeout.
+     */
+    private currentTimeout: NodeJS.Timeout = null;
+
+     /**
+     * Event raised when a new video frame is available from the camera.
+     */
+    public readonly NewFrame = new EventDispatcher<string>();
+
+    /**
+     * Event raised when the camera's availability changes.
+     */
+    public readonly CameraStateChanged = new EventDispatcher<CameraState>();
+
+    /**
+     * Gets the state of the camera.
+     */
+    public CameraState: CameraState = CameraState.Unknown;
 
     /**
      * Initializes a new instance of the PrinterCamera class.
@@ -16,36 +50,82 @@ export class PrinterCamera {
     }
 
     /**
-     * Gets a value indicating if the printer camera is enabled.
+     * Attempts to establish a connection to the printer and starts monitoring it.
      */
-    public IsEnabled(): Promise<boolean> {
-        const checkCamera = (a) => {
-            const request = new XMLHttpRequest();
-            request.timeout = 3500;
-            
-            // Some printers only support streaming, so use the stream feed to check if the camera works
-            // this means that we don't want to check for a full load, as the data is streaming and will never complete. 
-            // So instead wait for the first chunk of data to show it works, then abort the connection.
-            request.onreadystatechange = () => {
-                if (request.readyState == XMLHttpRequest.LOADING) {
-                    a(true);
-                    request.abort();
-                }
-            };
+    private EstablishPrinterConnection(): void {
+        this.camera = new MjpegCamera({
+            url: this.GetStreamAddress()
+        });
 
-            request.onerror = () => {
-                a(false);
-            };
+        // Set a timeout to check if the camera becomes connected
+        this.currentTimeout = setTimeout(() => this.ReportNoConnectionAndAttemptReconnect(), this.lostConnectionTimeout);
+        this.camera.start((e) => {
+            // Connection to camera failed
+            ErrorLogger.NonFatalError(e);
+            this.ReportNoConnectionAndAttemptReconnect();
+        });
 
-            request.ontimeout = () => {
-                a(false);
-            };
+        this.camera.on('data', frame => {
+            // Reset the timeout
+            if (this.currentTimeout){
+                clearTimeout(this.currentTimeout);
+            }
 
-            request.open('GET', this.GetStreamAddress());
-            request.send();
-        };
+            // We got data from the camera, its available!
+            this.UpdateCameraState(CameraState.Available);
 
-        return new Promise<boolean>(checkCamera);
+            // Set a timeout to report disconnected if more data does not arrive.
+            this.currentTimeout = setTimeout(() => this.ReportNoConnectionAndAttemptReconnect(), this.lostConnectionTimeout);
+
+            // Notify subscribers that there is a new frame
+            this.NewFrame.InvokeLazy(() => {
+                // Lazy convert teh stream into a base 64 string only if there is a subscriber listening.
+                return 'data:image/jpeg' + ';base64,' + frame.data.toString('base64');
+            });
+        });
+    }
+
+    /**
+     * Reports that the camera connection is lost and starts trying to reconnect.
+     */
+    private ReportNoConnectionAndAttemptReconnect() {
+        this.DisconnectCamera();
+        this.UpdateCameraState(CameraState.NotAvailable);
+
+        // Wait for a while and try and make a new connection.
+        this.currentTimeout = setTimeout(() => this.EstablishPrinterConnection(), this.lostConnectionTimeout);
+    }
+
+    /**
+     * Connects to the camera.
+     */
+    public ConnectCamera() {
+        this.EstablishPrinterConnection();
+    }
+
+    /**
+     * Disconnect from the camera.
+     */
+    public DisconnectCamera(): void{
+        if (this.camera){
+            this.camera.stop();
+            this.camera = null;
+        }
+
+        if (this.currentTimeout) {
+            clearTimeout(this.currentTimeout);
+        }
+    }
+
+    /**
+     * Updates the current availability state of the camera.
+     * @param newState The new state.
+     */
+    private UpdateCameraState(newState: CameraState) {
+        if (this.CameraState != newState) {
+            this.CameraState = newState;
+            this.CameraStateChanged.Invoke(newState);
+        }
     }
 
     /**
@@ -61,4 +141,24 @@ export class PrinterCamera {
     public GetRootAddress(): string {
         return 'http://' + this.printerAddress + ':8080';
     }
+}
+
+/**
+ * Represents the current state of the camera.
+ */
+export enum CameraState {
+    /**
+     * The state is still loading and is not yet known.
+     */
+    Unknown,
+
+    /**
+     * The camera is available.
+     */
+    Available,
+
+    /**
+     * The printer is not available.
+     */
+    NotAvailable
 }

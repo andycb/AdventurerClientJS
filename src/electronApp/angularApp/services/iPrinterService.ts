@@ -1,4 +1,5 @@
 import { PrinterStatus, FirmwareVersionResponse, TemperatureResponse, PrinterDebugMonitor } from '../../printerSdk/entities';
+import { PrinterCamera } from '../../printerSdk/printerCamera'
 import { EventDispatcher } from '../../core/eventDispatcher';
 
 /**
@@ -16,9 +17,9 @@ export interface IPrinterService {
      */
     ConnectionError: EventDispatcher<Error>;
 
-   /**
-    * Gets a value indicating if the client is currently connected to a printer.
-    */
+    /**
+     * Gets a value indicating if the client is currently connected to a printer.
+     */
     GetIsConnected(): boolean;
 
     /**
@@ -31,6 +32,22 @@ export interface IPrinterService {
      * Disconnects from the current printer.
      */
     Disconnect(): void;
+
+    /**
+     * Stops the printing.
+     */
+    StopPrintingAsync(): Promise<void>;
+
+    /**
+     * Pauses the printing.
+     */
+    PausePrintingAsync(): Promise<void>;
+
+    /**
+     * Resumes the printing.
+     */
+    ResumePrintingAsync(): Promise<void>;
+
 
     /**
      * Resets the connection and attempts to reconnect to the printer.
@@ -73,14 +90,9 @@ export interface IPrinterService {
     GetTemperatureAsync(): Promise<TemperatureResponse>;
 
     /**
-     * Gets a value indicating if the printer camera is enabled.
+     * Gets the printer camera.
      */
-    GetIsCameraEnabled(): Promise<boolean>;
-
-    /**
-     * Gets the address to stream the camera video.
-     */
-    GetCameraVideoStreamAddress(): string;
+    GetCamera(): PrinterCamera;
 
     /***
      * Gets the current debug monitor.
