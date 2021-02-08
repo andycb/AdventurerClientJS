@@ -172,7 +172,7 @@ export class StatusComponent implements OnInit {
     try {
       this.printerService.PausePrintingAsync();
     } catch (error) {
-      throw new ErrorLogger.NonFatalError(error);
+      ErrorLogger.NonFatalError(error);
     }
   }
 
@@ -183,7 +183,7 @@ export class StatusComponent implements OnInit {
     try {
       this.printerService.ResumePrintingAsync();
     } catch (error) {
-      throw new ErrorLogger.NonFatalError(error);
+      ErrorLogger.NonFatalError(error);
     }
   }
 

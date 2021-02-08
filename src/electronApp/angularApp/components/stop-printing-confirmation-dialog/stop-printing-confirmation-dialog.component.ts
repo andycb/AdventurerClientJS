@@ -34,7 +34,7 @@ export class StoprPrintingConfirmationDialogComponent implements OnInit {
     try {
       this.printerService.StopPrintingAsync();
     } catch (error) {
-      throw new ErrorLogger.NonFatalError(error);
+      ErrorLogger.NonFatalError(error);
     }
     this.dialog.close();
   }
