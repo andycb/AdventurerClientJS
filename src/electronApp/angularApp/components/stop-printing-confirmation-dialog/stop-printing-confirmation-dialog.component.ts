@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterService } from '../../services/printerService'
 import { MatDialogRef } from '@angular/material/dialog';
+import { ErrorLogger } from 'electronApp/core/errorLogger';
 
 @Component({
   selector: 'app-stopr-printing-confirmation-dialog',
@@ -30,7 +31,11 @@ export class StoprPrintingConfirmationDialogComponent implements OnInit {
    * Stops the printing.
    */
   public async StopPrintingAsync(): Promise<any> {
-    this.printerService.StopPrintingAsync();
+    try {
+      this.printerService.StopPrintingAsync();
+    } catch (error) {
+      throw new ErrorLogger.NonFatalError(error);
+    }
     this.dialog.close();
   }
 

@@ -164,17 +164,27 @@ export class StatusComponent implements OnInit {
     const diafRef = this.dialog.open(StoprPrintingConfirmationDialogComponent);
     diafRef.disableClose = true;
   }
+
   /**
    * Pauses the printing.
    */
   public PausePrinting(): void {
-    this.printerService.PausePrintingAsync();
+    try {
+      this.printerService.PausePrintingAsync();
+    } catch (error) {
+      throw new ErrorLogger.NonFatalError(error);
+    }
   }
+
   /**
    * Resumes the printing.
    */
   public ResumePrinting(): void {
-    this.printerService.ResumePrintingAsync();
+    try {
+      this.printerService.ResumePrintingAsync();
+    } catch (error) {
+      throw new ErrorLogger.NonFatalError(error);
+    }
   }
 
   /**
