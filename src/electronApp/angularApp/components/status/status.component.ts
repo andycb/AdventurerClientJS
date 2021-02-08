@@ -101,11 +101,13 @@ export class StatusComponent implements OnInit {
    */
   private async UpdateStatusText(): Promise<void> {
     try {
+      ErrorLogger.Trace("StatsComponent::UpdateStatusText - Getting Printer Status");
       const status = await this.printerService.GetPrinterStatusAsync();
       this.PrinterStatus = status.MachineStatus;
       this.MoveMode = status.MoveMode;
       this.Endstop = status.Endstop.X.toString() + ',' + status.Endstop.Y.toString() + ',' + status.Endstop.Z.toString();
 
+      ErrorLogger.Trace("StatsComponent::UpdateStatusText - Getting firmware Info");
       const firmwareInfo = await this.printerService.GetFirmwareVersionAsync();
       this.FirmwareVersion = firmwareInfo.FirmwareVersion;
       this.SerialNumber = firmwareInfo.SerialNumber;
@@ -114,6 +116,7 @@ export class StatusComponent implements OnInit {
         + ',' + firmwareInfo.BuildVolume.Y.toString()
         + ',' + firmwareInfo.BuildVolume.Z.toString();
 
+      ErrorLogger.Trace("StatsComponent::UpdateStatusText - Getting Printer Temp");
       const temp = await this.printerService.GetTemperatureAsync();
       this.Tool0Temp = temp.Tool0Temp.toString();
       this.BuildPlateTemp = temp.BuildPlateTemp.toString();

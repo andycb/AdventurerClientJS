@@ -83,6 +83,7 @@
     "@angular/platform-browser-dynamic": "^11.1.2",
     "@angular/router": "^11.1.2",
     "crc": "^3.8.0",
+    "node-log-rotate": "^0.1.5",
     "mjpeg-camera": "^2.0.0",
     "rxjs": "^6.6.3",
     "tslib": "^2.1.0",
