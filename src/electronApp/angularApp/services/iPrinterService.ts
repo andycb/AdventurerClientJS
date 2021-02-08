@@ -1,4 +1,5 @@
 import { PrinterStatus, FirmwareVersionResponse, TemperatureResponse, PrinterDebugMonitor } from '../../printerSdk/entities';
+import { PrinterCamera } from '../../printerSdk/printerCamera'
 import { EventDispatcher } from '../../core/eventDispatcher';
 
 /**
@@ -89,14 +90,9 @@ export interface IPrinterService {
     GetTemperatureAsync(): Promise<TemperatureResponse>;
 
     /**
-     * Gets a value indicating if the printer camera is enabled.
+     * Gets the printer camera.
      */
-    GetIsCameraEnabled(): Promise<boolean>;
-
-    /**
-     * Gets the address to stream the camera video.
-     */
-    GetCameraVideoStreamAddress(): string;
+    GetCamera(): PrinterCamera;
 
     /***
      * Gets the current debug monitor.
