@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
 import { ErrorLogger } from 'electronApp/core/errorLogger';
-import { StoprPrintingConfirmationDialogComponent } from "../stop-printing-confirmation-dialog/stop-printing-confirmation-dialog.component";
+import { StopPrintingConfirmationDialogComponent } from "../stop-printing-confirmation-dialog/stop-printing-confirmation-dialog.component";
 import { MatDialog } from '@angular/material/dialog';
 import { CameraState } from '../../../printerSdk/printerCamera'
 
@@ -166,7 +166,7 @@ export class StatusComponent implements OnInit {
     */
   public OpenStopPrintingDialog(): void {
     // Open the confirmation dialog and prevent soft dismissing
-    const diafRef = this.dialog.open(StoprPrintingConfirmationDialogComponent);
+    const diafRef = this.dialog.open(StopPrintingConfirmationDialogComponent);
     diafRef.disableClose = true;
   }
 
