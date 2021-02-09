@@ -11,7 +11,7 @@ import { ErrorLogger } from 'electronApp/core/errorLogger';
 export class StopPrintingConfirmationDialogComponent implements OnInit {
 
   /**
-   * Initializes a new instance of the StoprPrintingConfirmationDialogComponent class.
+   * Initializes a new instance of the StopPrintingConfirmationDialogComponent class.
    * @param dialog The dialog that this component is hosted in.
    * @param printerService The printer service.
    */
