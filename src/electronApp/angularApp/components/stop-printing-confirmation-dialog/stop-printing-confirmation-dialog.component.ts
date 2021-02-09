@@ -8,15 +8,15 @@ import { ErrorLogger } from 'electronApp/core/errorLogger';
   templateUrl: './stop-printing-confirmation-dialog.component.html',
   styleUrls: ['./stop-printing-confirmation-dialog.component.css']
 })
-export class StoprPrintingConfirmationDialogComponent implements OnInit {
+export class StopPrintingConfirmationDialogComponent implements OnInit {
 
   /**
-   * Initializes a new instance of the StoprPrintingConfirmationDialogComponent class.
+   * Initializes a new instance of the StopPrintingConfirmationDialogComponent class.
    * @param dialog The dialog that this component is hosted in.
    * @param printerService The printer service.
    */
   constructor(
-    private dialog: MatDialogRef<StoprPrintingConfirmationDialogComponent>,
+    private dialog: MatDialogRef<StopPrintingConfirmationDialogComponent>,
     private printerService: PrinterService) {
   }
 
