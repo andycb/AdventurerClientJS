@@ -55,9 +55,19 @@ export class StatusComponent implements OnInit {
   public BuildPlateTemp: string;
 
   /**
+   * Gets the target temperature (un celsius) of the build plate.
+   */
+  public BuildPlateTargetTemp: string;
+
+  /**
    * Gets the temperature (un celsius) of the extruder.
    */
   public Tool0Temp: string;
+
+  /**
+   * Gets the target temperature (un celsius) of the extruder.
+   */
+  public Tool0TargetTemp: string;
 
   /**
    * Indicates that the printer camera is available.
@@ -106,7 +116,7 @@ export class StatusComponent implements OnInit {
       this.PrinterStatus = status.MachineStatus;
       this.MoveMode = status.MoveMode;
       this.Endstop = status.Endstop.X.toString() + ',' + status.Endstop.Y.toString() + ',' + status.Endstop.Z.toString();
-
+      
       ErrorLogger.Trace("StatsComponent::UpdateStatusText - Getting firmware Info");
       const firmwareInfo = await this.printerService.GetFirmwareVersionAsync();
       this.FirmwareVersion = firmwareInfo.FirmwareVersion;
@@ -120,6 +130,8 @@ export class StatusComponent implements OnInit {
       const temp = await this.printerService.GetTemperatureAsync();
       this.Tool0Temp = temp.Tool0Temp.toString();
       this.BuildPlateTemp = temp.BuildPlateTemp.toString();
+      this.Tool0TargetTemp = temp.Tool0TargetTemp.toString();
+      this.BuildPlateTargetTemp = temp.BuildPlateTargetTemp.toString();
 
       const cameraState = this.printerService.GetCamera().CameraState;
       this.CameraAvailable = cameraState == CameraState.Available;
