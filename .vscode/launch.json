@@ -27,7 +27,7 @@
         "${workspaceRoot}/src/electronMain.js",
         "--remote-debugging-port=9222"
       ],
-      "webRoot": "${workspaceRoot}"
+      "webRoot": "${workspaceRoot}/src"
     }
   ]
 }
