@@ -6,6 +6,7 @@ import { PrinterResponseReader } from './printerResponseReader';
 import { PrinterCamera } from './printerCamera'
 import { PrinterStatus, FirmwareVersionResponse, TemperatureResponse, IPrinterResponse, PrinterDebugMonitor } from './entities';
 import { MachineCommands } from './machineCommands';
+import { PromiseWithProgress } from '../core/PromiseWithProgress'
 
 /**
  * Represents the printer.
@@ -225,12 +226,24 @@ export class Printer {
         return this.WaitForPrinterAck(MachineCommands.PrintFileFromSd);
     }
 
-    /**
+        /**
      * Transfers a file to the printer's storage with a given name.
      * @param filePath The path to the file to transfer.
      * @param fileName The name of the file to store it as (without file extension)
      */
-    async StoreFileAsync(filePath: string, fileName: string): Promise<void> {
+    StoreFileAsync(filePath: string, fileName: string): PromiseWithProgress<void> {
+        return new PromiseWithProgress<void>((updateProgress: (value: number) => void) => {
+            return this.StoreFileAsyncInternal(filePath, fileName, updateProgress);
+        });
+    }
+
+    /**
+     * Transfers a file to the printer's storage with a given name.
+     * @param filePath The path to the file to transfer.
+     * @param fileName The name of the file to store it as (without file extension)
+     * @param updateProgress The function to cal with progress updates
+     */
+    private async StoreFileAsyncInternal(filePath: string, fileName: string, updateProgress: (number: number) => void): Promise<void> {
         this.ValidatePrinterReady();
 
         // Load the file from disk
@@ -302,6 +315,10 @@ export class Printer {
 
             // Send it to the printer
             this.SendBufferToPrinter(bufferToSend);
+
+            // Update the progress
+            const progress = offset / modelBytes.length;
+            updateProgress(progress);
 
             offset += this.packetSizeBytes;
             ++count;
