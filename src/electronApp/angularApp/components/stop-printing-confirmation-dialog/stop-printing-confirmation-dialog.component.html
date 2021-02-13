@@ -4,7 +4,7 @@
     <div mat-dialog-content>Are you sure you want to stop printing?</div>
 
     <mat-dialog-actions align="end">
-        <button (click)="Cancel()" mat-button mat-dialog-close>Cancel</button>
-        <button (click)="StopPrintingAsync()" mat-button cdkFocusInitial>Stop Printing</button>
+        <button (click)="StopPrintingAsync()" mat-button>Stop Printing</button>
+        <button (click)="Cancel()" mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
     </mat-dialog-actions>
 </div>

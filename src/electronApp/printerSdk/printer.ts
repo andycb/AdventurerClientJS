@@ -7,6 +7,7 @@ import { PrinterCamera } from './printerCamera'
 import { PrinterStatus, FirmwareVersionResponse, TemperatureResponse, IPrinterResponse, PrinterDebugMonitor } from './entities';
 import { MachineCommands } from './machineCommands';
 import { PromiseWithProgress } from '../core/PromiseWithProgress'
+import { ErrorLogger } from 'electronApp/core';
 
 /**
  * Represents the printer.
@@ -258,6 +259,7 @@ export class Printer {
         });
 
         // Start a transfer
+        ErrorLogger.Trace("Starting file transfer");
         let message = '~' + MachineCommands.BeginWriteToSdCard + ' ' + modelBytes.length + ' 0:/user/' + fileName;
         this.SendToPrinter(message);
         await this.WaitForPrinterAck(MachineCommands.BeginWriteToSdCard);
@@ -295,7 +297,6 @@ export class Printer {
                 dataSize = actualLength;
             }
 
-
             // Always start each packet with four bytes
             const bufferToSend = Buffer.alloc(this.packetSizeBytes + 16);
             bufferToSend.writeUInt16LE(0x5a, 0);
@@ -327,6 +328,7 @@ export class Printer {
         this.SendToPrinter('');
 
         // Tell the printer that we have finished the file transfer
+        ErrorLogger.Trace("Ending file transfer");
         message = '~' + MachineCommands.EndWriteToSdCard;
 
         this.SendToPrinter(message);
