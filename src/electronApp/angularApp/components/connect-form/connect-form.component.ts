@@ -105,12 +105,12 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
    * Invoked when the Angular component finished rendering.
    */
   ngAfterViewInit(): void {
-    let lastIP = DataSaver.GetLastIP(); // get the lastIP from storage, if not found set ""
+    let lastIP = DataSaver.GetSavedIPs()[0];
     this.PrinterAddress.setValue(lastIP);
     this.ipInputField.nativeElement.click(); // click on input field
     this.PrinterAddress.markAsDirty();
   }
-
+  
   /**
    * Invoked when the connect button is pressed
    */
@@ -118,14 +118,14 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
     if (this.PrinterAddress.value.trim().length === 0) {
       return;
     }
-
+    
     try {
       await this.printerService.ConnectAsync(this.PrinterAddress.value);
-      DataSaver.SetLastIP(this.PrinterAddress.value);
+      DataSaver.SaveLastIP(this.PrinterAddress.value);
     } catch (e) {
       this.isError = true;
       ErrorLogger.NonFatalError(e);
     }
-
+    
   }
 }
