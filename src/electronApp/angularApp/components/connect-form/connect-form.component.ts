@@ -76,6 +76,9 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
    */
   PrinterAddress = new FormControl("", [Validators.required]);
 
+  /**
+   * ElementRef for the ip Address input field
+   */
   @ViewChild("ipInput") ipInputField: ElementRef;
 
   /**
@@ -105,7 +108,7 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
       this.returnUrl = params.returnUrl as string;
     });
     this.ips = DataSaver.GetSavedIPs();
-    let lastIP = DataSaver.GetSavedIPs()[0];
+    let lastIP = this.ips[0];
     this.PrinterAddress.setValue(lastIP);
   }
 
@@ -115,7 +118,7 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.ipInputField.nativeElement.click(); // click on input field
   }
-  
+
   /**
    * Invoked when the connect button is pressed
    */
@@ -123,16 +126,20 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
     if (this.PrinterAddress.value.trim().length === 0) {
       return;
     }
-    
+
     try {
       await this.printerService.ConnectAsync(this.PrinterAddress.value);
       DataSaver.SaveLastIP(this.PrinterAddress.value);
     } catch (e) {
       this.isError = true;
       ErrorLogger.NonFatalError(e);
-    } 
+    }
   }
-  
+
+  /**
+   * Sets the selected ip into the Address field
+   * @param ip The ip to set in the Address field
+   */
   public setIP(ip: string) {
     DataSaver.SaveLastIP(ip);
     this.PrinterAddress.setValue(ip);
