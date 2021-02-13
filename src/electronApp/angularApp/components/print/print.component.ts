@@ -77,7 +77,7 @@ export class PrintComponent implements OnInit {
           this.ErrorMessage = null;
   
           ErrorLogger.Trace("PrintComponent::uploadFile - Storing file");
-          await this.printerService.StoreFileAsync(path)
+          await this.printerService.StoreFileAsync(path).Promise;
   
           ErrorLogger.Trace("PrintComponent::uploadFile - Printing file");
           await this.printerService.PrintFileAsync(event[0].name);

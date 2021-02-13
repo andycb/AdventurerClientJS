@@ -32,10 +32,11 @@ export class StopPrintingConfirmationDialogComponent implements OnInit {
    */
   public async StopPrintingAsync(): Promise<any> {
     try {
-      this.printerService.StopPrintingAsync();
+      await this.printerService.StopPrintingAsync();
     } catch (error) {
       ErrorLogger.NonFatalError(error);
     }
+
     this.dialog.close();
   }
 

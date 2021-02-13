@@ -17,6 +17,10 @@
 
 .button-row {
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+    align-items: left;
+}
+
+.button-row button {
+    margin-right: 5px;
+    width: 36px;
 }

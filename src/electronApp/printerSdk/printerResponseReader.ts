@@ -187,9 +187,11 @@ export class PrinterResponseReader
             case MachineCommands.BeginWriteToSdCard:
             case MachineCommands.EndWriteToSdCard:
             case MachineCommands.PrintFileFromSd:
+            case MachineCommands.StopPrinting:
+            case MachineCommands.PausePrinting:
                 return null;
             default:
-                throw new Error();
+                throw new Error("Unknown command cannot be mapped to a return value");
         }
     }
 }

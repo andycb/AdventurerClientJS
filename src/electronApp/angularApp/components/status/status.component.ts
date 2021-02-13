@@ -173,9 +173,9 @@ export class StatusComponent implements OnInit {
   /**
    * Pauses the printing.
    */
-  public PausePrinting(): void {
+  public async PausePrinting(): Promise<void> {
     try {
-      this.printerService.PausePrintingAsync();
+      await this.printerService.PausePrintingAsync();
     } catch (error) {
       ErrorLogger.NonFatalError(error);
     }
@@ -184,9 +184,9 @@ export class StatusComponent implements OnInit {
   /**
    * Resumes the printing.
    */
-  public ResumePrinting(): void {
+  public async ResumePrinting(): Promise<void> {
     try {
-      this.printerService.ResumePrintingAsync();
+      await this.printerService.ResumePrintingAsync();
     } catch (error) {
       ErrorLogger.NonFatalError(error);
     }
