@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ErrorLogger } from 'electronApp/core/errorLogger';
 
 @Component({
-  selector: 'app-stopr-printing-confirmation-dialog',
+  selector: 'app-stop-printing-confirmation-dialog',
   templateUrl: './stop-printing-confirmation-dialog.component.html',
   styleUrls: ['./stop-printing-confirmation-dialog.component.css']
 })

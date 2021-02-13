@@ -178,7 +178,7 @@ export class PrinterResponseReader
     {
         switch (command)
         {
-            case MachineCommands.GetEndstopStaus:
+            case MachineCommands.GetEndstopStatus:
                 return new PrinterStatus(data);
             case MachineCommands.GetFirmwareVersion:
                 return new FirmwareVersionResponse(data);
