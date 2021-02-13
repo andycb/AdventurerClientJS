@@ -30,7 +30,7 @@
 }
 
 .ipList {
-  background-color: #222;
+  background: #eee;
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
@@ -38,4 +38,10 @@
   height: 130px;
   overflow-y: auto;
   border-radius: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ipList {
+    background: #222;
+  }
 }
