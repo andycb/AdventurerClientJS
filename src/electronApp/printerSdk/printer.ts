@@ -170,11 +170,11 @@ export class Printer {
      */
     GetPrinterStatusAsync(): Promise<PrinterStatus> {
         this.ValidatePrinterReady();
-        const message = '~' + MachineCommands.GetEndstopStaus;
+        const message = '~' + MachineCommands.GetEndstopStatus;
         this.SendToPrinter(message);
 
         // Get its answer
-        return this.responseReader.GerPrinterResponse<PrinterStatus>(MachineCommands.GetEndstopStaus);
+        return this.responseReader.GerPrinterResponse<PrinterStatus>(MachineCommands.GetEndstopStatus);
     }
 
     /**

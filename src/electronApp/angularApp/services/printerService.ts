@@ -72,7 +72,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public StopPrintingAsync(): Promise<void> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.StopPrintingAsync();
@@ -81,7 +83,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public PausePrintingAsync(): Promise<void> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.PausePrintingAsync();
@@ -90,7 +94,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public ResumePrintingAsync(): Promise<void> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.ResumePrintingAsync();
@@ -99,7 +105,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public async ReconnectAsync(): Promise<any> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         const address = this.printer.printerAddress;
@@ -110,7 +118,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public GetPrinterStatusAsync(): Promise<PrinterStatus> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.GetPrinterStatusAsync();
@@ -119,7 +129,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public PrintFileAsync(fileName: string): Promise<any> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.PrintFileAsync(fileName);
@@ -128,7 +140,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public SendDebugCommandAsync(command: string): Promise<void> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.SendDebugCommandAsync(command);
@@ -137,7 +151,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public GetFirmwareVersionAsync(): Promise<FirmwareVersionResponse> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.GetFirmwareVersionAsync();
@@ -146,7 +162,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public GetTemperatureAsync(): Promise<TemperatureResponse> {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.GetTemperatureAsync();
@@ -155,7 +173,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     public StoreFileAsync(filePath: string): PromiseWithProgress<void>{ 
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         // Deal with .gcode files by stripping the extension and using .g. Leave gx files alone
@@ -180,7 +200,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     GetCamera(): PrinterCamera {
         if (this.printer == null){
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.PrinterCamera;
@@ -189,7 +211,9 @@ export class PrinterService implements IPrinterService {
     /** @inheritdoc */
     GetCameraVideoStreamAddress(): string {
         if (this.printer == null) {
-            throw new Error('Cannot call this method before calling and awaiting ConnectAsnc()');
+            throw new Error(
+              "Cannot call this method before calling and awaiting ConnectAsync()"
+            );
         }
 
         return this.printer.PrinterCamera.GetStreamAddress();

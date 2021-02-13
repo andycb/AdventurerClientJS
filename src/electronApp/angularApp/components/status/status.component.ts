@@ -166,8 +166,8 @@ export class StatusComponent implements OnInit {
     */
   public OpenStopPrintingDialog(): void {
     // Open the confirmation dialog and prevent soft dismissing
-    const diafRef = this.dialog.open(StopPrintingConfirmationDialogComponent);
-    diafRef.disableClose = true;
+    const diaRef = this.dialog.open(StopPrintingConfirmationDialogComponent);
+    diaRef.disableClose = true;
   }
 
   /**

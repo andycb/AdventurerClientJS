@@ -1,7 +1,7 @@
 {
   "name": "adventurerclient",
   "version": "0.0.1",
-  "description": "An app for controling Flashforge printers",
+  "description": "An app for controlling Flashforge printers",
   "author": "Andy Bradford <hi@andycb.com>",
   "license": "MIT",
   "repository": "https://github.com/andycb/AdventurerClientJS",

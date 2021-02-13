@@ -43,7 +43,7 @@ export class AppComponent {
    */
   private OnPrinterConnectionError(error: Error) {
     // Open the error dialog and prevent soft dismissing
-    const diafRef = this.dialog.open(ConnectionErrorDialogComponent);
-    diafRef.disableClose = true;
+    const diaRef = this.dialog.open(ConnectionErrorDialogComponent);
+    diaRef.disableClose = true;
   }
 }
