@@ -4,27 +4,7 @@ import { ErrorLogger } from "./errorLogger";
  * Save data locally
  */
 export class DataSaver {
-  static readonly lastIPKey = "lastIP";
   static readonly lastIPsKey = "lastIPs";
-
-  /**
-   * Gets the last IP address
-   */
-  public static GetLastIP(): string {
-    return localStorage.getItem(this.lastIPKey) || "";
-  }
-
-  /**
-   * Sets the last used IP-Address
-   * @param ip The ip address to be saved
-   */
-  public static SetLastIP(ip: string): void {
-    try {
-      localStorage.setItem(this.lastIPKey, ip);
-    } catch (error) {
-      ErrorLogger.NonFatalError(error);
-    }
-  }
 
   /**
    * Saves the IP-Address into the list of last used IPs
