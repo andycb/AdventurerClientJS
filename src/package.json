@@ -1,116 +1,116 @@
 {
-  "name": "adventurerclient",
-  "version": "0.0.1",
-  "description": "An app for controling Flashforge printers",
-  "author": "Andy Bradford <hi@andycb.com>",
-  "license": "MIT",
-  "repository": "https://github.com/andycb/AdventurerClientJS",
-  "main": "electronMain.js",
-  "build": {
-    "appId": "com.andycb.adventurerclientjs",
-    "productName": "Adventurer Client",
-    "artifactName": "AdventurerClient-${os}${arch}.${ext}",
-    "mac": {
-      "target": [
-        "dmg"
-      ],
-      "category": "public.app-category.utilities"
-    },
-    "directories": {
-      "output": "distPackages"
-    },
-    "dmg": {
-      "window": {
-        "height": 290
-      },
-      "contents": [
-        {
-          "x": 68,
-          "y": 125
+    "name": "adventurerclient",
+    "version": "0.0.1",
+    "description": "An app for controling Flashforge printers",
+    "author": "Andy Bradford <hi@andycb.com>",
+    "license": "MIT",
+    "repository": "https://github.com/andycb/AdventurerClientJS",
+    "main": "electronMain.js",
+    "build": {
+        "appId": "com.andycb.adventurerclientjs",
+        "productName": "Adventurer Client",
+        "artifactName": "AdventurerClient-${os}${arch}.${ext}",
+        "mac": {
+            "target": [
+                "dmg"
+            ],
+            "category": "public.app-category.utilities"
         },
-        {
-          "x": 337,
-          "y": 125,
-          "type": "link",
-          "path": "/Applications"
+        "directories": {
+            "output": "distPackages"
+        },
+        "dmg": {
+            "window": {
+                "height": 290
+            },
+            "contents": [{
+                    "x": 68,
+                    "y": 125
+                },
+                {
+                    "x": 337,
+                    "y": 125,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ]
+        },
+        "win": {
+            "target": [
+                "nsis",
+                "appx"
+            ]
+        },
+        "appx": {
+            "backgroundColor": "#6041b0",
+            "publisher": "CN=0E414509-FDE4-4669-86D3-4B5F55E69BF3",
+            "showNameOnTiles": "true",
+            "identityName": "45329AndyBradford.AdventurerClient",
+            "publisherDisplayName": "Andy Bradford",
+            "applicationId": "AndyBradford.AdventurerClient"
         }
-      ]
     },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
+    "scripts": {
+        "ng": "ng",
+        "start": "ng serve",
+        "build": "ng build",
+        "test": "ng test",
+        "lint": "ng lint",
+        "e2e": "ng e2e",
+        "postinstall": "install-app-deps",
+        "electron-build": "tsc electronMain.ts && ng build --base-href ./",
+        "electron": "tsc electronMain.ts && ng build --base-href ./ && electron .",
+        "distwin": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64 --publish always",
+        "distmac": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --mac --x64 --publish always",
+        "distlinux": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --linux --ia32 --armv7l --arm64 --publish always"
     },
-    "win": {
-      "target": [
-        "nsis",
-        "appx"
-      ]
+    "private": true,
+    "dependencies": {
+        "@angular/animations": "^11.1.2",
+        "@angular/cdk": "^11.1.2",
+        "@angular/common": "^11.1.2",
+        "@angular/compiler": "^11.1.2",
+        "@angular/core": "^11.1.2",
+        "@angular/forms": "^11.1.2",
+        "@angular/material": "^11.1.2",
+        "@angular/platform-browser": "^11.1.2",
+        "@angular/platform-browser-dynamic": "^11.1.2",
+        "@angular/router": "^11.1.2",
+        "crc": "^3.8.0",
+        "node-log-rotate": "^0.1.5",
+        "mjpeg-camera": "^2.0.0",
+        "rxjs": "^6.6.3",
+        "tslib": "^2.1.0",
+        "zone.js": "^0.11.3"
     },
-    "appx": {
-      "backgroundColor": "#6041b0",
-      "publisher": "CN=0E414509-FDE4-4669-86D3-4B5F55E69BF3",
-      "showNameOnTiles": "true",
-      "identityName": "45329AndyBradford.AdventurerClient",
-      "publisherDisplayName": "Andy Bradford",
-      "applicationId": "AndyBradford.AdventurerClient"
+    "devDependencies": {
+        "@angular-devkit/build-angular": "^0.1101.2",
+        "@angular/cli": "^11.1.4",
+        "@angular/compiler-cli": "^11.1.2",
+        "@types/jasmine": "^3.6.3",
+        "@types/jasminewd2": "^2.0.3",
+        "@types/node": "^14.14.25",
+        "codelyzer": "^6.0.0",
+        "electron": "^11.2.3",
+        "electron-builder": "^22.8.0",
+        "electron-icon-maker": "0.0.5",
+        "electron-packager": "^15.0.0",
+        "jasmine-core": "^3.6.0",
+        "jasmine-spec-reporter": "^6.0.0",
+        "karma": "^6.1.0",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-coverage-istanbul-reporter": "^3.0.2",
+        "karma-jasmine": "^4.0.1",
+        "karma-jasmine-html-reporter": "^1.5.0",
+        "protractor": "^7.0.0",
+        "ts-node": "^9.1.1",
+        "tslint": "^6.1.0",
+        "typescript": "~4.0.5"
     }
-  },
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "install-app-deps",
-    "electron": "tsc electronMain.ts && ng build --base-href ./ && electron .",
-    "distwin": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --win --ia32 --x64 --publish always",
-    "distmac": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --mac --x64 --publish always",
-    "distlinux": "tsc electronMain.ts && ng build --base-href ./ && electron-builder --linux --ia32 --armv7l --arm64 --publish always"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "^11.1.2",
-    "@angular/cdk": "^11.1.2",
-    "@angular/common": "^11.1.2",
-    "@angular/compiler": "^11.1.2",
-    "@angular/core": "^11.1.2",
-    "@angular/forms": "^11.1.2",
-    "@angular/material": "^11.1.2",
-    "@angular/platform-browser": "^11.1.2",
-    "@angular/platform-browser-dynamic": "^11.1.2",
-    "@angular/router": "^11.1.2",
-    "crc": "^3.8.0",
-    "node-log-rotate": "^0.1.5",
-    "mjpeg-camera": "^2.0.0",
-    "rxjs": "^6.6.3",
-    "tslib": "^2.1.0",
-    "zone.js": "^0.11.3"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1101.2",
-    "@angular/cli": "^11.1.4",
-    "@angular/compiler-cli": "^11.1.2",
-    "@types/jasmine": "^3.6.3",
-    "@types/jasminewd2": "^2.0.3",
-    "@types/node": "^14.14.25",
-    "codelyzer": "^6.0.0",
-    "electron": "^11.2.3",
-    "electron-builder": "^22.8.0",
-    "electron-icon-maker": "0.0.5",
-    "electron-packager": "^15.0.0",
-    "jasmine-core": "^3.6.0",
-    "jasmine-spec-reporter": "^6.0.0",
-    "karma": "^6.1.0",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-coverage-istanbul-reporter": "^3.0.2",
-    "karma-jasmine": "^4.0.1",
-    "karma-jasmine-html-reporter": "^1.5.0",
-    "protractor": "^7.0.0",
-    "ts-node": "^9.1.1",
-    "tslint": "^6.1.0",
-    "typescript": "~4.1.3"
-  }
 }

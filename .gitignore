@@ -108,3 +108,6 @@ package-lock.json
 /out/
 distPackages/
 src/electronMain.js
+
+# VSCode settings
+settings.json
