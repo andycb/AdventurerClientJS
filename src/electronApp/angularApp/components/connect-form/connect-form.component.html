@@ -7,21 +7,28 @@
         class="error warningColor">Failed to connect to printer, is the address correct?</span>
 
   <mat-form-field class="example-full-width">
-      <mat-label>Printer Address</mat-label>
-      <input (keyup.enter)="connect()"
-             matInput
-             [formControl]="PrinterAddress"
-             [errorStateMatcher]="matcher"
-             placeholder="Ex. 192.168.1.14"
-             #ipInput
-             onfocus="this.select()"
-             onclick="this.select()">
-      <mat-error *ngIf="PrinterAddress.hasError('required')">
-          Printer address is <strong>required</strong>
-      </mat-error>
+    <mat-label>Printer Address</mat-label>
+    <input (keyup.enter)="connect()"
+           matInput
+           [formControl]="PrinterAddress"
+           [errorStateMatcher]="matcher"
+           placeholder="Ex. 192.168.1.14"
+           #ipInput
+           onfocus="this.select()"
+           onclick="this.select()">
+    <mat-error *ngIf="PrinterAddress.hasError('required')">
+      Printer address is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
 
   <br>
   <a mat-stroked-button
      (click)="connect()">Connect</a>
+  <mat-nav-list dense
+                class="ipList">
+    <mat-list-item *ngFor="let address of ips"
+                   (click)="setIP(address)">
+      <a>{{ address }}</a>
+    </mat-list-item>
+  </mat-nav-list>
 </div>

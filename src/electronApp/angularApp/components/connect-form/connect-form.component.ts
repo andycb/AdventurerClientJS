@@ -67,6 +67,11 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
   public matcher = new MyErrorStateMatcher();
 
   /**
+   * Array of last used IPs
+   */
+  public ips: string[];
+
+  /**
    * Gets the printer address form.
    */
   PrinterAddress = new FormControl("", [Validators.required]);
@@ -99,16 +104,16 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.returnUrl = params.returnUrl as string;
     });
+    this.ips = DataSaver.GetSavedIPs();
+    let lastIP = DataSaver.GetSavedIPs()[0];
+    this.PrinterAddress.setValue(lastIP);
   }
 
   /**
    * Invoked when the Angular component finished rendering.
    */
   ngAfterViewInit(): void {
-    let lastIP = DataSaver.GetSavedIPs()[0];
-    this.PrinterAddress.setValue(lastIP);
     this.ipInputField.nativeElement.click(); // click on input field
-    this.PrinterAddress.markAsDirty();
   }
   
   /**
@@ -125,7 +130,12 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
     } catch (e) {
       this.isError = true;
       ErrorLogger.NonFatalError(e);
-    }
-    
+    } 
+  }
+  
+  public setIP(ip: string) {
+    DataSaver.SaveLastIP(ip);
+    this.PrinterAddress.setValue(ip);
+    this.ipInputField.nativeElement.click(); // click on input field
   }
 }
