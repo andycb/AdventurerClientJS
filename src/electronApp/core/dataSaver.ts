@@ -1,5 +1,3 @@
-import { ErrorLogger } from "./errorLogger";
-
 /**
  * Save data locally
  */
