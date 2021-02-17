@@ -6,7 +6,7 @@ export class MachineCommands
     /**
      * The Get endstop status command.
      */
-    static readonly GetEndstopStaus = 'M119';
+    static readonly GetEndstopStatus = 'M119';
 
     /**
      * The begin write to SD card command.
