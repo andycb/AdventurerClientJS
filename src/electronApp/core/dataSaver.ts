@@ -9,25 +9,25 @@ export class DataSaver {
    * @param ip The ip address to be saved
    */
   public static SaveLastIP(ip: string): void {
-    let LastIPs = localStorage.getItem(this.lastIPsKey);
+    let lastIPs = localStorage.getItem(this.lastIPsKey);
     
-    if (LastIPs != null) { // If there are already IPs saved
-      let IPs: string[] = LastIPs.toString().split(",");
-      let index = IPs.indexOf(ip);
+    if (lastIPs != null) { // If there are already IPs saved
+      let ipArray: string[] = lastIPs.toString().split(",");
+      let index = ipArray.indexOf(ip);
 
       if (index != -1) { // If the IP is already in the list, move it to first place
-        this.array_move(IPs, index, 0);
+        this.array_move(ipArray, index, 0);
       } 
       else { // If it's not in the list add it and put it in first place
-        let length = IPs.push(ip);
-        this.array_move(IPs, length - 1, 0);
+        let length = ipArray.push(ip);
+        this.array_move(ipArray, length - 1, 0);
       }
       
-      localStorage.setItem(this.lastIPsKey, IPs.toString());
+      localStorage.setItem(this.lastIPsKey, ipArray.toString());
     } else { // If there are no IPs saved
-      let IPs: string[];
-      IPs = [ip];
-      localStorage.setItem(this.lastIPsKey, IPs.toString());
+      let ipArray: string[];
+      ipArray = [ip];
+      localStorage.setItem(this.lastIPsKey, ipArray.toString());
     }
   }
 
@@ -52,10 +52,10 @@ export class DataSaver {
    * Returns an array of the last used IPs
    */
   public static GetSavedIPs(): string[] {
-    let LastIPs = localStorage.getItem(this.lastIPsKey);
-    if (LastIPs != null) {
-      let IPs: string[] = LastIPs.toString().split(",");
-      return IPs;
+    let lastIPs = localStorage.getItem(this.lastIPsKey);
+    if (lastIPs != null) {
+      let ipArray: string[] = lastIPs.toString().split(",");
+      return ipArray;
     }
     return [];
   }
