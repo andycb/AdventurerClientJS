@@ -1,44 +1,24 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-} from "@angular/core";
-import { PrinterService } from "../../services/printerService";
-import { ErrorLogger } from "../../../core/errorLogger";
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators,
-} from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { DataSaver } from "../../../core/dataSaver";
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, } from '@angular/core';
+import { PrinterService } from '../../services/printerService';
+import { ErrorLogger } from '../../../core/errorLogger';
+import { FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import { ErrorStateMatcher} from '@angular/material/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DataSaver } from '../../../core/dataSaver';
 
 /**
  * Error matcher for the printer address.
  */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
+  
   /**
    * Checks if a control is in an error state.
    * @param control The control to check.
    * @param form The form the control is in.
    */
-  public isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
+  public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }
 
@@ -46,9 +26,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
  * The connect form component, shown when not connected to a printer.
  */
 @Component({
-  selector: "app-connect-form",
-  templateUrl: "./connect-form.component.html",
-  styleUrls: ["./connect-form.component.css"],
+  selector: 'app-connect-form',
+  templateUrl: './connect-form.component.html',
+  styleUrls: ['./connect-form.component.css']
 })
 export class ConnectFormComponent implements OnInit, AfterViewInit {
   /**
@@ -74,7 +54,9 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
   /**
    * Gets the printer address form.
    */
-  PrinterAddress = new FormControl("", [Validators.required]);
+  PrinterAddress = new FormControl('', [
+    Validators.required
+  ]);
 
   /**
    * ElementRef for the ip Address input field
@@ -87,15 +69,12 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
    * @param printerService The printer service.
    * @param router The Angular router.
    */
-  constructor(
-    private route: ActivatedRoute,
-    private printerService: PrinterService,
-    private router: Router
-  ) {
-    this.printerService.ConnectionStateChanged.Register((isConnected) => {
+  constructor(private route: ActivatedRoute, private printerService: PrinterService, private router: Router){
+    
+    this.printerService.ConnectionStateChanged.Register(isConnected => {
       // If we now how a connection, continue to our original destination
-      if (isConnected) {
-        this.router.navigate([this.returnUrl ?? "/"]);
+      if (isConnected){
+        this.router.navigate([this.returnUrl ?? '/']);
       }
     });
   }
@@ -104,7 +83,7 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
    * Invoked when the Angular component is initialized.
    */
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe(params => {
       this.returnUrl = params.returnUrl as string;
     });
     this.ips = DataSaver.GetSavedIPs();
@@ -127,10 +106,11 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    try {
+    try{
       await this.printerService.ConnectAsync(this.PrinterAddress.value);
       DataSaver.SaveLastIP(this.PrinterAddress.value);
-    } catch (e) {
+    }
+    catch (e) {
       this.isError = true;
       ErrorLogger.NonFatalError(e);
     }
