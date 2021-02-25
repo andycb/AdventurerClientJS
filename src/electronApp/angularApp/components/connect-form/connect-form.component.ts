@@ -5,6 +5,8 @@ import { FormControl, FormGroupDirective, NgForm, Validators} from '@angular/for
 import { ErrorStateMatcher} from '@angular/material/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataSaver } from '../../../core/dataSaver';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 /**
  * Error matcher for the printer address.
@@ -49,7 +51,12 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
   /**
    * Array of last used IPs
    */
-  public ips: string[];
+  private ips: string[];
+
+  /**
+   * Array of the filtered IPs
+   */
+  public filteredIPs: Observable<string[]>;
 
   /**
    * Gets the printer address form.
@@ -87,8 +94,10 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
       this.returnUrl = params.returnUrl as string;
     });
     this.ips = DataSaver.GetSavedIPs();
-    let lastIP = this.ips[0];
-    this.PrinterAddress.setValue(lastIP);
+    this.filteredIPs = this.PrinterAddress.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
   }
 
   /**
@@ -124,5 +133,15 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
     DataSaver.SaveLastIP(ip);
     this.PrinterAddress.setValue(ip);
     this.ipInputField.nativeElement.click(); // click on input field
+  }
+
+  /**
+   * Filters the options for autocomplete
+   * @param value 
+   */
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    debugger;
+    return this.ips.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 }

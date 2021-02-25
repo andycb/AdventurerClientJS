@@ -12,6 +12,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 /**
  * Modulus containing the requires Angular material modules.
@@ -33,6 +34,7 @@ import {MatListModule } from '@angular/material/list';
     MatCheckboxModule,
     MatDialogModule,
     MatListModule,
+    MatAutocompleteModule,
   ],
   exports: [
     MatSidenavModule,
@@ -47,6 +49,7 @@ import {MatListModule } from '@angular/material/list';
     MatCheckboxModule,
     MatDialogModule,
     MatListModule,
+    MatAutocompleteModule,
   ]
 })
 export class MaterialModule { }

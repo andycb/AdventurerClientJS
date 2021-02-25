@@ -14,7 +14,14 @@
            placeholder="Ex. 192.168.1.14"
            #ipInput
            onfocus="this.select()"
-           onclick="this.select()">
+           onclick="this.select()"
+           autofocus
+           [matAutocomplete]="auto">
+           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let address of filteredIPs | async" [value]="address">
+              {{address}}
+            </mat-option>
+          </mat-autocomplete>
     <mat-error *ngIf="PrinterAddress.hasError('required')">
       Printer address is <strong>required</strong>
     </mat-error>
@@ -23,11 +30,4 @@
   <br>
   <a mat-stroked-button
      (click)="connect()">Connect</a>
-  <mat-nav-list dense
-                class="ipList">
-    <mat-list-item *ngFor="let address of ips"
-                   (click)="setIP(address)">
-      <a>{{ address }}</a>
-    </mat-list-item>
-  </mat-nav-list>
 </div>
