@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
 import { ErrorLogger } from '../../../core/errorLogger';
 import { FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
@@ -32,7 +32,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './connect-form.component.html',
   styleUrls: ['./connect-form.component.css']
 })
-export class ConnectFormComponent implements OnInit, AfterViewInit {
+export class ConnectFormComponent implements OnInit {
   /**
    * Gets a value indicating that the error message should be shown.
    */
@@ -98,13 +98,9 @@ export class ConnectFormComponent implements OnInit, AfterViewInit {
       startWith(''),
       map(value => this._filter(value))
     );
-  }
-
-  /**
-   * Invoked when the Angular component finished rendering.
-   */
-  ngAfterViewInit(): void {
-    this.ipInputField.nativeElement.click(); // click on input field
+    window.setTimeout(() => {
+      this.ipInputField.nativeElement.focus(); // click on input field 
+    });
   }
 
   /**
