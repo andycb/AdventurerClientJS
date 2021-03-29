@@ -137,7 +137,6 @@ export class ConnectFormComponent implements OnInit {
    */
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    debugger;
     return this.ips.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 }
