@@ -1,47 +1,31 @@
 @media (prefers-color-scheme: dark) {
-  .loginForm {
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
-  }
+    .loginForm {
+        box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.3);
+    }
 }
 
 .loginForm {
-  padding: 20px;
-  margin: 20px;
-  overflow-y: scroll;
-  overflow: hidden;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 20px;
+    overflow-y: scroll;
+    overflow: hidden; 
+
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.2);
 }
 
-.loginForm input {
-  margin-top: 10px;
-  display: inline-block;
+.loginForm input{
+    margin-top: 10px;
+    display: inline-block;
 }
 
 .loginForm .instructions {
-  font-size: 95%;
-  font-weight: lighter;
+    font-size: 95%;
+    font-weight: lighter;
 }
 
 .loginForm .error {
-  font-size: 95%;
-  font-weight: lighter;
-  display: block;
-  margin-top: 10px;
-}
-
-.ipList {
-  background: #eee;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 200px;
-  height: 130px;
-  overflow-y: auto;
-  border-radius: 5px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .ipList {
-    background: #222;
-  }
+    font-size: 95%;
+    font-weight: lighter;
+    display: block;
+    margin-top: 10px;
 }
