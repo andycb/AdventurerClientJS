@@ -95,9 +95,10 @@ export class ConnectFormComponent implements OnInit {
     });
     this.ips = DataSaver.GetSavedIPs();
     this.filteredIPs = this.PrinterAddress.valueChanges.pipe(
-      startWith(''),
+      startWith(),
       map(value => this._filter(value))
     );
+    this.PrinterAddress.setValue(this.ips[0]);
     window.setTimeout(() => {
       this.ipInputField.nativeElement.focus(); // click on input field 
     });

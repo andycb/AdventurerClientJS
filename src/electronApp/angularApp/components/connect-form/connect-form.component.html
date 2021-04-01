@@ -13,7 +13,9 @@
            [errorStateMatcher]="matcher"
            placeholder="Ex. 192.168.1.14"
            #ipInput
-           [matAutocomplete]="auto">
+           [matAutocomplete]="auto"
+           onfocus="this.select()"
+           onclick="this.select()">
            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
             <mat-option *ngFor="let address of filteredIPs | async" [value]="address">
               {{address}}
