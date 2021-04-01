@@ -11,7 +11,6 @@ import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 /**
@@ -33,7 +32,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTableModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatListModule,
     MatAutocompleteModule,
   ],
   exports: [
@@ -48,7 +46,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTableModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatListModule,
     MatAutocompleteModule,
   ]
 })
