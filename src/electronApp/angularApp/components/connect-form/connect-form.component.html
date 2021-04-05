@@ -2,21 +2,31 @@
   <h1>Hello!</h1>
 
   <h2 class="instructions">Enter printer's IP address to continue</h2>
-  <span *ngIf="isError" onkeypress="OnkeyPress" class="error warningColor">Failed to connect to printer, is the address correct?</span>
+  <span *ngIf="isError"
+        class="error warningColor">Failed to connect to printer, is the address correct?</span>
 
   <mat-form-field class="example-full-width">
     <mat-label>Printer Address</mat-label>
-    <input 
-      (keyup.enter)="connect()"
-      matInput [formControl]="PrinterAddress" 
-      [errorStateMatcher]="matcher"
-      placeholder="Ex. 192.168.1.14">
-
+    <input (keyup.enter)="connect()"
+           matInput
+           [formControl]="PrinterAddress"
+           [errorStateMatcher]="matcher"
+           placeholder="Ex. 192.168.1.14"
+           #ipInput
+           [matAutocomplete]="auto"
+           onfocus="this.select()"
+           onclick="this.select()">
+           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let address of filteredIPs | async" [value]="address">
+              {{address}}
+            </mat-option>
+          </mat-autocomplete>
     <mat-error *ngIf="PrinterAddress.hasError('required')">
       Printer address is <strong>required</strong>
     </mat-error>
   </mat-form-field>
 
   <br>
-  <a mat-stroked-button (click)="connect()">Connect</a>
-</div> 
+  <a mat-stroked-button
+     (click)="connect()">Connect</a>
+</div>

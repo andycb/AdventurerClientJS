@@ -1,15 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, } from '@angular/core';
 import { PrinterService } from '../../services/printerService';
 import { ErrorLogger } from '../../../core/errorLogger';
 import { FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import { ErrorStateMatcher} from '@angular/material/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DataSaver } from '../../../core/dataSaver';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 /**
- * Error matcher for teh printer address.
+ * Error matcher for the printer address.
  */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-
+  
   /**
    * Checks if a control is in an error state.
    * @param control The control to check.
@@ -46,11 +49,26 @@ export class ConnectFormComponent implements OnInit {
   public matcher = new MyErrorStateMatcher();
 
   /**
+   * Array of last used IPs
+   */
+  private ips: string[];
+
+  /**
+   * Array of the filtered IPs
+   */
+  public filteredIPs: Observable<string[]>;
+
+  /**
    * Gets the printer address form.
    */
   PrinterAddress = new FormControl('', [
     Validators.required
   ]);
+
+  /**
+   * ElementRef for the ip Address input field
+   */
+  @ViewChild("ipInput") ipInputField: ElementRef;
 
   /**
    * Initializes a new instance of the ConnectFormComponent.
@@ -59,7 +77,7 @@ export class ConnectFormComponent implements OnInit {
    * @param router The Angular router.
    */
   constructor(private route: ActivatedRoute, private printerService: PrinterService, private router: Router){
-
+    
     this.printerService.ConnectionStateChanged.Register(isConnected => {
       // If we now how a connection, continue to our original destination
       if (isConnected){
@@ -75,6 +93,15 @@ export class ConnectFormComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.returnUrl = params.returnUrl as string;
     });
+    this.ips = DataSaver.GetSavedIPs();
+    this.filteredIPs = this.PrinterAddress.valueChanges.pipe(
+      startWith(),
+      map(value => this._filter(value))
+    );
+    this.PrinterAddress.setValue(this.ips[0]);
+    window.setTimeout(() => {
+      this.ipInputField.nativeElement.focus(); // click on input field 
+    });
   }
 
   /**
@@ -87,10 +114,30 @@ export class ConnectFormComponent implements OnInit {
 
     try{
       await this.printerService.ConnectAsync(this.PrinterAddress.value);
+      DataSaver.SaveLastIP(this.PrinterAddress.value);
     }
     catch (e) {
       this.isError = true;
       ErrorLogger.NonFatalError(e);
     }
+  }
+
+  /**
+   * Sets the selected ip into the Address field
+   * @param ip The ip to set in the Address field
+   */
+  public setIP(ip: string) {
+    DataSaver.SaveLastIP(ip);
+    this.PrinterAddress.setValue(ip);
+    this.ipInputField.nativeElement.click(); // click on input field
+  }
+
+  /**
+   * Filters the options for autocomplete
+   * @param value 
+   */
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.ips.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 }
