@@ -59,7 +59,7 @@ var server = net.createServer((socket) => {
                 case "M105":
                     var t1 = Math.floor(Math.random() * Math.floor(200));
                     var t2 = Math.floor(Math.random() * Math.floor(100));
-                    respond("T0:" + t1 + " /0 B:" + t2 + "/0");
+                    respond("T0:" + t1 + " /" + (t1 + 15) + " B:" + t2 + "/" + (t2 + 10) + " ");
                     respond("ok");
                     break;
 
