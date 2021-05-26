@@ -129,8 +129,8 @@ export class StatusComponent implements OnInit {
       ErrorLogger.Trace("StatsComponent::UpdateStatusText - Getting Printer Temp");
       const temp = await this.printerService.GetTemperatureAsync();
       this.Tool0Temp = temp.Tool0Temp.toString();
-      this.BuildPlateTemp = temp.BuildPlateTemp.toString();
       this.Tool0TargetTemp = temp.Tool0TargetTemp.toString();
+      this.BuildPlateTemp = temp.BuildPlateTemp.toString();
       this.BuildPlateTargetTemp = temp.BuildPlateTargetTemp.toString();
       
       const cameraState = this.printerService.GetCamera().CameraState;
