@@ -40,7 +40,7 @@ var server = net.createServer((socket) => {
             switch(command){
                 case "M119":
                     respond("Endstop: X-max:1 Y-max:0 Z-max:0");
-                    respond("MachineStatus: READY");
+                    respond("MachineStatus: BUILDING_FROM_SD");
                     respond("MoveMode: READY");
                     respond("Status: S:0 L:0 J:0 F:0");
                     respond("ok");
