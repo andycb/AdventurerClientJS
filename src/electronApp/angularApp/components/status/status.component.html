@@ -36,12 +36,24 @@
 
     <tr>
         <th>Extruder temperature</th>
-        <td>{{Tool0Temp}}</td>
+        <div *ngIf="IsPrinting; then IsPrintingBlock1 else notPrintingBlock1"></div>
+        <ng-template #IsPrintingBlock1>
+            <td>{{Tool0Temp}}°C / {{Tool0TargetTemp}}°C</td>
+        </ng-template>
+        <ng-template #notPrintingBlock1>
+            <td>{{Tool0Temp}}°C</td>
+        </ng-template>
     </tr>
 
     <tr>
         <th>Build plate temperature</th>
-        <td>{{BuildPlateTemp}}</td>
+        <div *ngIf="IsPrinting; then IsPrintingBlock2 else notPrintingBlock2"></div>
+        <ng-template #IsPrintingBlock2>
+            <td>{{BuildPlateTemp}}°C / {{BuildPlateTargetTemp}}°C</td>
+        </ng-template>
+        <ng-template #notPrintingBlock2>
+            <td>{{BuildPlateTemp}}°C</td>
+        </ng-template>
     </tr>
 
     <tr>

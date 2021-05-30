@@ -40,7 +40,7 @@ var server = net.createServer((socket) => {
             switch(command){
                 case "M119":
                     respond("Endstop: X-max:1 Y-max:0 Z-max:0");
-                    respond("MachineStatus: READY");
+                    respond("MachineStatus: BUILDING_FROM_SD");
                     respond("MoveMode: READY");
                     respond("Status: S:0 L:0 J:0 F:0");
                     respond("ok");
@@ -59,7 +59,7 @@ var server = net.createServer((socket) => {
                 case "M105":
                     var t1 = Math.floor(Math.random() * Math.floor(200));
                     var t2 = Math.floor(Math.random() * Math.floor(100));
-                    respond("T0:" + t1 + " /0 B:" + t2 + "/0");
+                    respond("T0:" + t1 + " /" + (t1 + 15) + " B:" + t2 + "/" + (t2 + 10) + " ");
                     respond("ok");
                     break;
 
