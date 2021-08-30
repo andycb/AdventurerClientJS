@@ -101,7 +101,7 @@ jobs:
     inputs:
       SourceFolder: 'src/distPackages'
       Contents: |
-        AdventurerClient-mac.dmg
+        AdventurerClient-macx64.dmg
       TargetFolder: 'drop'
       CleanTargetFolder: true
       preserveTimestamp: true
