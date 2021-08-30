@@ -97,7 +97,7 @@
     "@types/jasminewd2": "^2.0.3",
     "@types/node": "^16.7.6",
     "codelyzer": "^6.0.0",
-    "electron": "^12.0.5",
+    "electron": "^13.2.3",
     "electron-builder": "^22.10.5",
     "electron-icon-maker": "0.0.5",
     "electron-packager": "^15.0.0",
@@ -109,7 +109,7 @@
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.5.0",
     "protractor": "^7.0.0",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.2.1",
     "tslint": "^6.1.0",
     "typescript": "~4.1.5"
   }
