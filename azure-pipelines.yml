@@ -16,7 +16,7 @@ jobs:
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '10.x'
+      versionSpec: '16.x'
     displayName: 'Install Node.js'
 
   - script: |
@@ -76,7 +76,7 @@ jobs:
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '10.x'
+      versionSpec: '16.x'
     displayName: 'Install Node.js'
 
   - script: |
@@ -101,7 +101,7 @@ jobs:
     inputs:
       SourceFolder: 'src/distPackages'
       Contents: |
-        AdventurerClient-mac.dmg
+        AdventurerClient-macx64.dmg
       TargetFolder: 'drop'
       CleanTargetFolder: true
       preserveTimestamp: true
