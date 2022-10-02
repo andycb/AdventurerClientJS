@@ -2,6 +2,12 @@ import { PrinterStatus, FirmwareVersionResponse, TemperatureResponse, PrinterDeb
 import { PrinterCamera } from '../../printerSdk/printerCamera'
 import { EventDispatcher, PromiseWithProgress } from '../../core';
 
+
+export class TransferFileStatus extends PromiseWithProgress<void> {
+	public OriginName :string
+	public SaveName :string
+}
+
 /**
  * Interface fot the printer service.
  */
@@ -77,7 +83,7 @@ export interface IPrinterService {
      * will be renamed to .g.
      * @param filePath The path of the file to transferer.
      */
-    StoreFileAsync(filePath: string): PromiseWithProgress<void>;
+    StoreFileAsync(filePath: string): TransferFileStatus;
 
     /**
      * Requests the firmware version info from the printer.
