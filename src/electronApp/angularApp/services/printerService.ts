@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IPrinterService } from './iPrinterService';
+import { IPrinterService, TransferFileStatus } from './iPrinterService';
 import { PrinterStatus, TemperatureResponse, FirmwareVersionResponse, PrinterDebugMonitor,  } from '../../printerSdk/entities';
 import { Printer } from '../../printerSdk/printer';
 import { PrinterCamera } from '../../printerSdk/printerCamera';
@@ -153,7 +153,7 @@ export class PrinterService implements IPrinterService {
 	}
 
 	/** @inheritdoc */
-	public StoreFileAsync(filePath: string): PromiseWithProgress<void> {
+	public StoreFileAsync(filePath: string): TransferFileStatus {
 		if (this.printer == null) {
 			throw new Error('Cannot call this method before calling and awaiting ConnectAsync()');
 		}
@@ -173,7 +173,11 @@ export class PrinterService implements IPrinterService {
 			fileName = fileName + '.gx';
 		}
 
-		return this.printer.StoreFileAsync(filePath, fileName);
+		let result = this.printer.StoreFileAsync(filePath, fileName) as TransferFileStatus
+		result.OriginName = pathInfo.name + pathInfo.ext
+		result.SaveName = fileName
+		
+		return result;
 	}
 
 	/** @inheritdoc */
